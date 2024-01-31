@@ -1,0 +1,5 @@
+<div class="flex rounded-md min p-2 mx-auto items-center border-2 w-max" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header', 'text-white': parent == 'sidebar', 'text-mainp': parent == 'header'}">
+    <div class="rounded-full border-2 overflow-clip w-8 h-8 grid place-items-center" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header'}"><img src="./assets/svgs/avatar.svg" [ngClass]="{'white-icon': parent == 'sidebar', 'pink-icon': parent == 'header'}" alt=""></div>
+    <div class="ml-2">Admin</div>
+    <div class="ml-4"><img src="./assets/svgs/chevron_down.svg" alt=""></div>
+</div>

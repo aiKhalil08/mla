@@ -1,0 +1,56 @@
+<main>
+    <div class="h-[250px] relative"> <!-- banner wrapper -->
+        <img src="/assets/images/phoning_girl.png" alt="" class="absolute w-full h-full object-cover">
+        <div class="w-full h-full bg-mainp/50 absolute flex items-center justify-center">
+            <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
+                <div class="font-bold text-4xl mb-4 text-center">COURSE CATALOGUE</div>
+                <div class="text-lg text-center">Discover our wide range of courses</div>
+            </div>
+        </div>
+    </div>
+    <div class="h-[180px] flex justify-center items-center"> <!-- searchbar wrapper -->
+        <div class="w-full max-w-[768px] h-3/5 bg-[#E1E1E1] relative">
+            <input type="text"
+                class="outline-0 w-[90%] p-4 pr-40 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 placeholder:text-sm" placeholder="What do you want to learn?" />
+            <button
+                class="border-0 rounded-full bg-mainp py-4 px-8 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span>Search</span><img class="white-icon w-4 h-4" src="/assets/svgs/search_icon.svg" alt=""></button>
+        </div>
+    </div>
+    <!-- <div class="flex justify-center items-center">
+        <div class="max-w-[900px] p-4">
+            <h3 class="text-2xl font-semibold">Mitiget Learning Academy</h3>
+            <p class="mt-4">
+                Mitiget Learning Academy (MLA) is an arm of Mitiget that provides cutting edge learning interventions and capacity
+                building endeavours for small, medium and large scale enterprises both in public and private sectors in Nigeria and
+                beyond. We provide targeted contents that impact learner’s culture in order to stimulate performance in your
+                organization. Our exceptional approach to learning is innovative, convenient and tailored to help organizations achieve
+                strategic goals. We deliver learning using multi-channels alongside support mechanisms involving our team of experienced
+                trainers and counselors.
+            </p>
+        </div>
+    </div> -->
+    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- our training courses section -->
+        <div class="w-full max-w-[900px] relative">
+            <h3 class="text-2xl">Our Training Courses</h3>
+            <div class="w-full flex justify-center">
+                <div class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)]">
+                    <a routerLink="/course/{{course.name}}" routerLinkActive="" *ngFor="let course of courses"
+                        class="min-w-[300px] lg:min-w-0 auto-rows-[1fr] border border-black rounded-xl relative overflow-hidden hover:cursor-pointer px-4 py-6 flex flex-col">
+                        <div class="text-xl">{{course.name}}</div>
+                        <div class="mt-4 flex-grow">{{course.description}}</div>
+                        <div class="mt-4 flex items-center">
+                            <a
+                                class="flex gap-x-2 hover:gap-x-4 hover:text-mainp hover:underline transition-all justify-start items-center">
+                                <span>View course</span><img class="h-3 w-7 text-white" src="/assets/svgs/arrow_right_black.svg"
+                                    alt="" />
+                            </a>
+                            <span class="flex-grow"></span>
+                            <img src="/assets/svgs/cart_pink.svg" class="cursor-pointer" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <app-expand-item-link text="View Calender" location=""></app-expand-item-link>
+        </div>
+    </div>
+</main>

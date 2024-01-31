@@ -1,0 +1,18 @@
+<div class="py-4 px-4 fixed top-0 left-0 w-full bg-white flex z-40 border-b border-b-mainp items-center"> <!-- header -->
+    <a href="/">
+        <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+    </a>
+    <div class="flex-grow"></div>
+    <img (click)="toggleMenu($event)" class="transition-all mr-3 md:hidden h-8 w-8 pink-icon"
+        src="/assets/svgs/hamburger.svg">
+    <app-user-info-box class="max-[768px]:hidden" parent="header"></app-user-info-box>
+    <!-- <div class="text-mainp flex gap-x-1 items-center"><span>admin@mitiget.com</span><img src="./assets/svgs/chevron_down.svg" class="pink-icon" /></div> -->
+</div>
+<div class="py-8 px-4 fixed top-[102px] overflow-y-auto h-[calc(100vh-118px)] m-2 bg-mainp text-white flex flex-col z-30 min-w-80 transition-all rounded-lg ring-mainp ring-1 md:top-0 md:left-0 md:mt-[102px] md:h-full md:m-0 md:rounded-none md:ring-0 " [class.left-[0px]]="expanded" [class.left-[-440px]]="!expanded"> <!-- sidebar -->
+    <ul class="list-none flex flex-col w-[200px] mx-auto gap-y-6">
+        <app-sidebar-nav-link *ngFor="let item of sidebar_items" [item]="item"></app-sidebar-nav-link>
+    </ul>
+    <div class="grow"></div>
+    <app-user-info-box class="md:hidden" parent="sidebar"></app-user-info-box>
+</div>
+<router-outlet></router-outlet>
