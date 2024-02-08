@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Module } from 'src/app/interfaces/course';
+import { Module } from 'src/app/interfaces/certificate-course';
 
 @Component({
   selector: 'app-module-item',
@@ -21,7 +21,9 @@ export class ModuleItemComponent implements OnInit {
   // constructor() {
   //   this.expanded = false;
   // }
-
+  get points() {
+    return (<string>this.module.overview).split("\n");
+  }
   
 
   toggleDropdown() {

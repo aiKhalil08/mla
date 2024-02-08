@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .tc {
+        @apply border border-slate-500 p-4;
+    }
+    th.tc {@apply whitespace-nowrap}
+}
+
 
 * {
     margin: 0;
@@ -69,6 +76,30 @@ h3 {
     font-size: 1.17rem;
 }
 
+/* main {
+    background-color: blue;
+    margin-bottom: 0px;
+} */
+
+main {
+    /* background-color: red; */
+}
+
+main.landing {
+    /* position: relative; */
+    /* top: 65px; */
+    margin-top: 65px;
+}
+
+main.portal {
+    /* position: relative; */
+    margin-top: 103px;
+}
+
+main.portal > form {
+    max-width: 500px;
+}
+
 .loader {
     margin: 24px 0;
   width: 50px;
@@ -118,8 +149,9 @@ h3 {
 } */
 
 @media screen and (min-width: 1024px) {
-    main {
-        /* background-color: red; */
+    main.landing {
+        margin-top: 0;
+        /* background-color: yellow; */
         /* margin-top: 0px; */
         /* min-height: calc(100vh - 185px); */
     }

@@ -1,0 +1,8 @@
+<div class="w-full flex justify-center" [class.h-auto]="!loaded">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="course_items"
+        class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)] items-stretch">
+        <app-offshore-course-item *ngFor="let course_item of course_items" [course]="course_item"></app-offshore-course-item>
+    </div>
+</div>
+<app-do-more-link *ngIf="count != 'all'" text="View Catalogue" location="/course-catalogue"></app-do-more-link>

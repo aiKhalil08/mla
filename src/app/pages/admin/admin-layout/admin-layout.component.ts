@@ -19,7 +19,7 @@ export class AdminLayoutComponent {
   sidebar_items: SidebarItem[] = [
     {text: 'Dashboard', location: '/admin', image: './assets/svgs/dashboard_icon.svg'},
     // {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
-    {text: 'Courses', location: '/admin/add-course', image: './assets/svgs/courses_icon.svg'},
+    {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
     // {text: 'Events', location: '/admin/events', image: './assets/svgs/events_icon.svg'},
     {text: 'Events', location: '/admin/add-event', image: './assets/svgs/events_icon.svg'},
     // {text: 'Resources', location: '/admin/resources', image: './assets/svgs/resources_icon.svg'},

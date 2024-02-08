@@ -12,8 +12,8 @@ bootstrapApplication(AppComponent, {
     providers: [
       importProvidersFrom(BrowserModule, AppRoutingModule),
       provideHttpClient(withInterceptorsFromDi()),
-      // {provide: 'DOMAIN_NAME', useValue: 'http://localhost:8000/api'}
-      {provide: 'DOMAIN_NAME', useValue: 'https://mlaapi.mitiget.com/api'}
+      {provide: 'DOMAIN_NAME', useValue: 'http://localhost:8000/api'}
+      // {provide: 'DOMAIN_NAME', useValue: 'https://mlaapi.mitiget.com/api'}
     ]
 })
   .catch(err => console.error(err));

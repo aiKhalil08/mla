@@ -1,13 +1,16 @@
 <div class="bg-gray-100 hover:cursor-pointer">
     <div (click)="toggleDropdown()" class="p-4 flex"><span>Module {{index}}</span><span class="flex-grow"></span><img src="/assets/svgs/gtd.svg" class="transition-all" [class.rotate-180]="expanded" alt=""></div>
     <div class="overflow-hidden transition-[max-height] duration-150 ease-linear px-4" [class.max-h-0]="!expanded" [class.max-h-[500px]]="expanded">
-        <div class=" pt-2">
-            <h4 class="font-semibold">Learning Objective:</h4>
+        <div class=" pt-0">
+            <!-- <h4 class="font-semibold">Learning Objective:</h4> -->
             <p class="my-2">{{module.objective}}</p>
         </div>
-        <div class=" pt-2">
-            <h4 class="font-semibold">Overview:</h4>
-            <p class="my-2">{{module.overview}}</p>
+        <div class=" pt-0">
+            <!-- <h4 class="font-semibold">Overview:</h4> -->
+            <!-- <p class="my-2">{{module.overview}}</p> -->
+            <ul class="list-none">
+                <li *ngFor="let point of points; index as i">- {{point}}</li>
+            </ul>
         </div>
     </div>
 </div>

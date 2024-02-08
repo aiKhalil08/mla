@@ -4,7 +4,9 @@ import { EnrollButtonComponent } from "../../partials/buttons/enroll-button/enro
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
 import { DoMoreLinkComponent } from "../../partials/links/do-more-link/do-more-link.component";
-import { CourseListComponent } from "../../partials/course-list/course-list.component";
+import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
+import { CertificationCourseListComponent } from "../../partials/certification-course-list/certification-course-list.component";
+import { OffshoreCourseListComponent } from "../../partials/offshore-course-list/offshore-course-list.component";
 
 interface Event {
     name: string,
@@ -26,7 +28,7 @@ interface Resource {
     standalone: true,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    imports: [CommonModule, EnrollButtonComponent, RouterLink, RouterLinkActive, ExpandItemLinkComponent, DoMoreLinkComponent, CourseListComponent]
+    imports: [CommonModule, EnrollButtonComponent, RouterLink, RouterLinkActive, ExpandItemLinkComponent, DoMoreLinkComponent, CertificateCourseListComponent, CertificationCourseListComponent, OffshoreCourseListComponent]
 })
 export class HomeComponent {
     events: Event[] = [

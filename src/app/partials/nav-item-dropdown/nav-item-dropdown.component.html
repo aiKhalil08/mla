@@ -1,6 +1,6 @@
 <li class="relative overflow-visible" (mouseover)="unfold($event)" (mouseout)="fold($event)">
-    <a routerLink="/course-catalogue" (click)="toggleDropdown($event)"
-        class="group flex gap-x-1 items-center hover:text-mainp cursor-pointer font-medium transition-all"><span>{{item.name}}</span><img class="group-hover:[filter:_invert(100%)_url('/assets/svgs/filters.svg#mainp_filter')] transition-all rotate-[-90deg] lg:rotate-0" src="/assets/svgs/chevron_down.svg" [class.rotate-[0deg]]="expanded" alt=""></a>
+    <div (click)="toggleDropdown($event)"
+        class="group flex gap-x-1 items-center hover:text-mainp cursor-pointer font-medium transition-all"><span>{{item.name}}</span><img class="group-hover:[filter:_invert(100%)_url('/assets/svgs/filters.svg#mainp_filter')] transition-all rotate-[-90deg] lg:rotate-0" src="/assets/svgs/chevron_down.svg" [class.rotate-[0deg]]="expanded" alt=""></div>
     <!-- <div class="bg-white max-h-0 transition-[max-height] ease-linear duration-150 overflow-hidden lg:border lg:border-mainp lg:absolute z-[9999] lg:overflow-visible lg:max-h-none lg:top-full lg:left-0 mt-1" [class.max-h-[200px]]="expanded"> -->
         <ul (mouseover)="unfold($event)" (mouseout)="fold($event)" class="pl-2 transition-[max-height] ease-linear bg:white lg:bg-slate-50 max-h-0 z-40 mt-1 lg:absolute lg:max-h-none lg:top-full lg:min-w-[300px] lg:left-0 lg:p-4 lg:mt-0 overflow-hidden lg:shadow-2xl lg:border lg:border-gray-100 lg:rounded-md lg:flex lg:flex-col lg:gap-y-4" [class.lg:hidden]="folded" [class.lg:block]="!folded" [class.max-h-[200px]]="expanded">
             <li class="py-1 my-1 lg:hidden" *ngFor="let item of item.items"><app-expand-item-link [noArrow]="true" [smaller_text]="true" [text]="item['item-name']" [location]="item.link"></app-expand-item-link></li>
@@ -12,3 +12,5 @@
         </ul>
     <!-- </div> -->
 </li>
+
+<!-- '/course-catalogue/certificate-courses' -->

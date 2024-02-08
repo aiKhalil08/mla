@@ -1,0 +1,83 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Certificate Courses</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Course Code</th>
+                            <th class="tc">Course Title</th>
+                            <th class="tc">Course Price</th>
+                            <th class="tc">Discount (%)</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let course of certificate_courses">
+                            <td class="tc">{{course.code}}</td>
+                            <td class="tc">{{course.title}}</td>
+                            <td class="tc">{{parse(course.price).amount}} {{parse(course.price).currency == 'NGN (₦)' ? '₦' : '$'}}</td>
+                            <td class="tc">{{course.discount || 'NONE'}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/certificate-course/{{course.code}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Course" location="/admin/add-certificate-course"></app-redirect-button>
+        </div>
+        <div class="relative flex flex-col gap-y-6 mt-12">
+            <h3>Certification Courses</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Course Code</th>
+                            <th class="tc">Course Title</th>
+                            <th class="tc">Course Price</th>
+                            <th class="tc">Discount (%)</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let course of certification_courses">
+                            <td class="tc">{{course.code}}</td>
+                            <td class="tc">{{course.title}}</td>
+                            <td class="tc">{{parse(course.price).amount}} {{parse(course.price).currency == 'NGN (₦)' ? '₦' : '$'}}</td>
+                            <td class="tc">{{course.discount || 'NONE'}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/certification-course/{{course.code}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Course" location="/admin/add-certification-course"></app-redirect-button>
+        </div>
+        <div class="relative flex flex-col gap-y-6 mt-12">
+            <h3>Offshore Courses</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Course Title</th>
+                            <th class="tc">Course Price</th>
+                            <th class="tc">Location</th>
+                            <th class="tc">Discount (%)</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let course of offshore_courses">
+                            <td class="tc">{{course.title}}</td>
+                            <td class="tc">{{parse(course.price).amount}} {{parse(course.price).currency == 'NGN (₦)' ? '₦' : '$'}}</td>
+                            <td class="tc">{{course.location}}</td>
+                            <td class="tc">{{course.discount || 'NONE'}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/offshore-course/{{course.title}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Course" location="/admin/add-offshore-course"></app-redirect-button>
+        </div>
+    </div>
+</main>

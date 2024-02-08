@@ -27,9 +27,9 @@ export class AppComponent implements OnInit {
     {
       name: 'Course Catalogue',
       items: [
-        {'item-name': 'Certificate Courses', link: '/'},
-        {'item-name': 'Certification Training Courses', link: ''},
-        {'item-name': 'Off-Shore Training Courses', link: ''}
+        {'item-name': 'Certificate Courses', link: '/course-catalogue/certificate-courses'},
+        {'item-name': 'Certification Training Courses', link: '/course-catalogue/certification-courses'},
+        {'item-name': 'Off-Shore Training Courses', link: '/course-catalogue/offshore-courses'}
       ]
     },
     {

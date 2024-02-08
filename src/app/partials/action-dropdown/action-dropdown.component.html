@@ -1,0 +1,9 @@
+<div class="relative w-[120px] h-[38px] self-stretch">
+    <div (click)="folded = !folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': folded, 'rotate-[-225deg]': !folded, 'top-3': folded, 'top-4': !folded}"></div>
+    <div class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-transparent">
+    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 text-sm border border-slate-200 z-20" [class.hidden]="folded" [class.block]="!folded">
+        <app-redirect-button text="Edit" location="/admin/{{type}}/edit/{{id}}"></app-redirect-button>
+        <app-redirect-button text="Delete" location="/admin/{{type}}/edit/{{id}}"></app-redirect-button>
+        <div (click)="setCurrency('USD ($)')" class="p-2 cursor-pointer hover:bg-slate-200">USD ($)</div>
+    </div>
+</div>

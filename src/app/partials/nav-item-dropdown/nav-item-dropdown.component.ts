@@ -20,6 +20,8 @@ export class NavItemDropdownComponent implements OnInit {
     constructor(private router: Router) {}
 
     ngOnInit() {
+      // console.clear();
+      console.log('navbar instantiated');
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {

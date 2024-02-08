@@ -1,11 +1,11 @@
-<main>
+<main class="landing">
     <div class="h-[400px] relative"> <!-- banner wrapper -->
         <img src="/assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl">Learn the latest digital skills for tomorrow’s jobs</div>
                 <div class="font-medium text-lg my-4">The fastest, most effective training to get future-ready</div>
-                <app-enroll-button location="courses" butText='Explore Courses' [hasArrow]="true" bgColor="white" radius="slight"></app-enroll-button>
+                <app-enroll-button location="/course-catalogue" butText='Explore Courses' [hasArrow]="true" bgColor="white" radius="slight"></app-enroll-button>
             </div>
         </div>
     </div>
@@ -34,37 +34,37 @@
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- in demand wrapper -->
         <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Discover our in-demand courses</h3>
-            <div class="mt-2 flex gap-x-4 text-xs">
+            <!-- <div class="mt-2 flex gap-x-4 text-xs">
                 <div>Popular Courses</div>
                 <div>Cyber Security</div>
                 <div>Software Development</div>
                 <div>UI/UX Design</div>
-            </div>
-            <app-course-list type="in_demand"></app-course-list>
+            </div> -->
+            <app-certificate-course-list [count]="6" type="in_demand"></app-certificate-course-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- certificate courses wrapper -->
         <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Discover our certificate courses</h3>
-            <div class="mt-2 flex gap-x-4 text-xs">
+            <!-- <div class="mt-2 flex gap-x-4 text-xs">
                 <div>Popular Courses</div>
                 <div>Cyber Security</div>
                 <div>Software Development</div>
                 <div>UI/UX Design</div>
-            </div>
-            <app-course-list type="certificate"></app-course-list>
+            </div> -->
+            <app-certificate-course-list [count]="6" type="certificate"></app-certificate-course-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- certification courses wrapper -->
         <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Discover our certification courses</h3>
-            <div class="mt-2 flex gap-x-4 text-xs">
+            <!-- <div class="mt-2 flex gap-x-4 text-xs">
                 <div>Popular Courses</div>
                 <div>Cyber Security</div>
                 <div>Software Development</div>
                 <div>UI/UX Design</div>
-            </div>
-            <app-course-list type="certification"></app-course-list>
+            </div> -->
+            <app-certification-course-list [count]="6" type="certification"></app-certification-course-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- off-shore courses wrapper -->
@@ -76,7 +76,7 @@
                 <div>Software Development</div>
                 <div>UI/UX Design</div>
             </div> -->
-            <app-course-list type="off_shore"></app-course-list>
+            <app-offshore-course-list [count]="6" type="off_shore"></app-offshore-course-list>
         </div>
     </div>
     <!-- <div class="relative p-4 pt-10 flex items-center justify-center"> 
@@ -107,7 +107,7 @@
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Empower your mind and shape your future</div>
-                <app-enroll-button location="enroll" butText='Enroll Now' [hasArrow]="true" bgColor="white"
+                <app-enroll-button link="https://wa.link/zdxh1a" butText='Enroll Now' [hasArrow]="true" bgColor="white"
                     radius="curved"></app-enroll-button>
             </div>
         </div>
@@ -164,7 +164,7 @@
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Become a tutor and teach the world today</div>
-                <app-enroll-button location="enroll" butText='Enroll Now' [hasArrow]="true" bgColor="white"
+                <app-enroll-button link="https://wa.link/zdxh1a" butText='Enroll Now' [hasArrow]="true" bgColor="white"
                     radius="curved"></app-enroll-button>
             </div>
         </div>

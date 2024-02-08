@@ -1,4 +1,4 @@
-<main>
+<main class="landing">
     <div class="h-[250px] relative"> <!-- banner wrapper -->
         <img src="/assets/images/phoning_girl.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-mainp/50 absolute flex items-center justify-center">
@@ -29,10 +29,16 @@
             </p>
         </div>
     </div> -->
-    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- our training courses section -->
+    <div class="relative p-4 flex items-center justify-center"> <!-- our training courses section -->
         <div class="w-full max-w-[900px] relative">
-            <h3 class="text-2xl">Our Training Courses</h3>
-            <div class="w-full flex justify-center">
+            <ul class="flex gap-4 flex-wrap">
+                <li><a [class.border-b-2]="selected == 'cc'" [class.border-mainp]="selected == 'cc'" (click)="select('cc')" routerLink="/course-catalogue/certificate-courses">Certificate Courses</a></li>
+                <li><a [class.border-b-2]="selected == 'ctc'" [class.border-mainp]="selected == 'ctc'" (click)="select('ctc')" routerLink="/course-catalogue/certification-courses">Certification Courses</a></li>
+                <li><a [class.border-b-2]="selected == 'oc'" [class.border-mainp]="selected == 'oc'" (click)="select('oc')" routerLink="/course-catalogue/offshore-courses">Offshore Courses</a></li>
+            </ul>
+            <h3 class="text-2xl mt-4">{{section_header}}</h3>
+            <router-outlet></router-outlet>
+            <!-- <div class="w-full flex justify-center">
                 <div class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)]">
                     <a routerLink="/course/{{course.name}}" routerLinkActive="" *ngFor="let course of courses"
                         class="min-w-[300px] lg:min-w-0 auto-rows-[1fr] border border-black rounded-xl relative overflow-hidden hover:cursor-pointer px-4 py-6 flex flex-col">
@@ -50,7 +56,7 @@
                     </a>
                 </div>
             </div>
-            <app-expand-item-link text="View Calender" location=""></app-expand-item-link>
+            <app-expand-item-link text="View Calender" location=""></app-expand-item-link> -->
         </div>
     </div>
 </main>

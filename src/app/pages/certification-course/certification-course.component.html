@@ -1,0 +1,178 @@
+<main class="landing" class="mt-[65px] min-h-[calc(100vh-65px)] grid place-items-center" ><!-- [ngClass]="{'grid': !loaded, 'place-items-center': !loaded} -->
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="course" class="max-w-[100%] overflow-hidden">
+        <!-- <div>course is here and the title is: {{course.title}}!</div> -->
+        <div class="p-4 pt-10 flex items-center justify-center">
+            <div class="w-full max-w-[768px]">
+                <h2 class="text-2xl mb-2">{{course.title}} - {{course.code}}</h2>
+                <div class="bg-mainp relative w-[300px] h-[300px] rounded-lg m-4 md:float-right md:ml-7 md:mb-7">
+                    <img src="{{course.image_url}}" alt="{{course.code}}"
+                        class="w-full h-full -translate-x-3 translate-y-3 rounded-lg object-cover">
+                </div>
+                <ul class="list-none mt-10"> <!-- objectives -->
+                    <li class="flex gap-x-4 items-center my-2" *ngFor="let objective of objectives"><img
+                            src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>{{objective}}</span></li>
+                    <!-- <li class="flex gap-x-4 items-center my-2"><img src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>Have an understanding of the tools available in Microsoft 365.</span></li>
+                        <li class="flex gap-x-4 items-center my-2"><img src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>Learn the needs and requirements of deploying and using Microsoft 365.</span></li>
+                        <li class="flex gap-x-4 items-center my-2"><img src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>Have an understanding of the tools available in Microsoft 365.</span></li>
+                        <li class="flex gap-x-4 items-center my-2"><img src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>Learn the needs and requirements of deploying and using Microsoft 365.</span></li>
+                        <li class="flex gap-x-4 items-center my-2"><img src="/assets/svgs/gt.svg" class="pink-icon" alt=""><span>Have an understanding of the tools available in Microsoft 365.</span></li> -->
+                </ul>
+                <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
+                    <a target="_blank" href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp borders border-transparent rounded">
+                        Contact us to buy
+                    </a>
+                    <!-- <app-enroll-button [hasArrow]="false" bgColor="primary" radius="slight" location="schedule"
+                        butText='View Schedule'></app-enroll-button>
+                    <app-enroll-button [hasArrow]="false" bgColor="white" radius="slight" location="add_cart"
+                        butText='Add to Cart'></app-enroll-button> -->
+                </div>
+            </div>
+        </div>
+        <div class="p-4 pt-10 flex items-center justify-center"> <!-- Overview wrapper -->
+            <div class="w-full max-w-[768px]">
+                <h2 class="text-2xl mb-2">Course Overview</h2>
+                <p class="mt-2">{{course.overview}}</p>
+            </div>
+        </div>
+        <div class="relative mt-8 p-4 bg-mainp flex items-center justify-center"> <!--attendee banner wrapper -->
+            <div class="w-full max-w-[780px] p-4 text-white">
+                <h2 class="text-2xl my-4">Who Can Attend The Course</h2>
+                <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
+                    <li class="flex gap-x-2 items-center" *ngFor="let attendee of attendees"><img
+                            src="/assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{attendee}}</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- learning academy wrapper -->
+            <div class="w-full max-w-[768px] relative">
+                <h3 class="text-2xl">Mitiget Learning Academy</h3>
+                <div
+                    class="w-full max-w-[768px] flex flex-col items-center sm:grid sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 gap-x-6 gap-y-6 mt-8 overflow-x-auto">
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/instructor_led.svg" alt="" class="pink-icon w-10 h-10 justify-self-start">
+                        <div>
+                            <h4 class="font-semibold">Instructor-Led Training</h4>
+                            <p class="mt-4">Interact and engage with instructors with industry experience in engaging
+                                classes.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/industry_approved.svg" alt="" class="pink-icon w-10 h-10 justify-self-start">
+                        <div>
+                            <h4 class="font-semibold">Industry Approved Curriculum</h4>
+                            <p class="mt-4">Empower yourself with the latest courseware updated according to advanced
+                                practices.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/case_studies.svg" alt="" class="pink-icon w-10 h-10 justify-self-start">
+                        <div>
+                            <h4 class="font-semibold">Case Studies</h4>
+                            <p class="mt-4">Empower yourself with the latest courseware updated according to advanced
+                                practices.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/industry_experts.svg" alt="" class="pink-icon w-10 h-10 justify-self-start">
+                        <div>
+                            <h4 class="font-semibold">Industry Experts</h4>
+                            <p class="mt-4">Interact and engage with instructors with industry experience in engaging
+                                classes.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/applicable_skills.svg" alt="" class="w-10 h-10 justify-self-start pink-icon">
+                        <div>
+                            <h4 class="font-semibold">Applicable Skills</h4>
+                            <p class="mt-4">Empower yourself with the latest courseware updated according to advanced practices.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <img src="/assets/svgs/detailed_feedback.svg" alt="" class="pink-icon w-10 h-10 justify-self-start">
+                        <div>
+                            <h4 class="font-semibold">Detailed Feedback</h4>
+                            <p class="mt-4">Empower yourself with the latest courseware updated according to advanced practices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="relative mt-8 p-4 bg-mainp flex items-center justify-center"> <!--prerequisite banner wrapper -->
+            <div class="w-full max-w-[780px] p-4 text-white">
+                <h2 class="text-2xl my-4">Prerequisites for {{course.title}}</h2>
+                <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
+                    <li class="flex gap-x-2 items-center" *ngFor="let prerequisite of prerequisites"><img
+                            src="/assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- modules wrapper -->
+            <div class="w-full max-w-[768px] relative">
+                <h3 class="text-2xl">What Will You Learn</h3>
+                <div class="mt-4 flex flex-col gap-y-4">
+                    <app-module-item *ngFor="let module of modules; index as i" [index]="i+1" [module]="module"></app-module-item>
+                    <div class="bg-mainp p-4 flex items-center">
+                        <p class="text-white">Do you like the curriculum and would like to learn more?</p>
+                        <div class="flex-grow"></div>
+                        <a target="_blank" href="https://wa.me/2349162644779/?text={{message_text}}" class="text-mainp px-6 py-2 font-[500] flex justify-center items-center bg-white borders border-mainp rounded">
+                            Contact us
+                        </a>
+                        <!-- <app-enroll-button [hasArrow]="false" bgColor="white" location="download_brochure"
+                            butText='Download Brochure'></app-enroll-button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="relative mt-8 p-4 bg-mainp flex items-center justify-center"> <!--details banner wrapper -->
+            <div class="w-full max-w-[780px] p-4 text-white">
+                <h2 class="text-2xl my-4">Details</h2>
+                <!-- md:flex-row md:flex-wrap md:gap-x-8 -->
+                <ul class="flex flex-col gap-y-4">
+                    <!-- <li class="flex gap-x-2 items-center">- <span>Start Date: {{date.start}}</span></li>
+                    <li class="flex gap-x-2 items-center">- <span>Duration: {{date.duration}} {{date['duration-unit']}}</span></li>
+                    <li class="flex gap-x-2 items-center">- <span>End Date: {{date.end}}</span></li> -->
+                    <li class="flex gap-x-2 items-center">- <span>Price: {{price.amount}} {{price.currency}}</span></li>
+                    <li class="flex gap-x-2 items-center">- <span>Mode of Delivery: Virtual</span></li>
+                    <!-- <li class="flex gap-x-2 items-center" *ngFor="let prerequisite of parse_json(course.prerequisites)"><img
+                            src="/assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- talk to advisor wrapper -->
+            <div class="w-full max-w-[768px] flex flex-col items-center">
+                <h3 class="text-2xl">Talk to our Learning Advisor</h3>
+                <form action="" class="w-full max-w-[768px] flex flex-col mt-4 gap-y-4">
+                    <div class="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-x-4">
+                        <input type="text" class="p-4 outline-none border w-full" placeholder="First Name">
+                        <input type="text" class="p-4 outline-none border w-full" placeholder="Last Name">
+                        <input type="text" class="p-4 outline-none border w-full" placeholder="Phone Number">
+                        <input type="text" class="p-4 outline-none border w-full" placeholder="Email Address">
+                    </div>
+                    <textarea name="" id="" cols="30" rows="10"
+                        class="resize-none border outline-none p-4">Your message</textarea>
+                    <p class="text-sm">By clicking submit, you agree to Mitiget Learning Academy <a class="text-mainp"
+                            href="">Privacy Policy</a> and <a class="text-mainp" href="">Terms & Conditions</a></p>
+                    <div class="flex justify-center">
+                        <app-enroll-button [hasArrow]="false" bgColor="primary" location="submit_talk"
+                            butText='Submit'></app-enroll-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- recommended courses wrapper -->
+            <div class="w-full max-w-[900px] relative">
+                <h3 class="text-2xl">Discover our in-demand courses</h3>
+                <!-- <div class="mt-2 flex gap-x-4 text-xs">
+                    <div>Popular Courses</div>
+                    <div>Cyber Security</div>
+                    <div>Software Development</div>
+                    <div>UI/UX Design</div>
+                </div> -->
+                <app-certificate-course-list type="recommended"></app-certificate-course-list>
+            </div>
+        </div>
+        
+    </div>
+    
+</main>
