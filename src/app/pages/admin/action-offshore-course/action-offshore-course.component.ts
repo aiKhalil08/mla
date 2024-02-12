@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 // import { CourseService } from 'src/app/course.service';
-import { OffshoreCourseService } from 'src/app/offshore-course.service';
+import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { OffshoreCourse, Date, Module, Price } from 'src/app/interfaces/offshore-course';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,6 +38,7 @@ export class ActionOffshoreCourseComponent implements OnInit {
     let course_title;
     let paramObservable = this.route.paramMap;
     paramObservable.subscribe((param) => {course_title = param.get('course_title')});
+    // console.log(this.offshoreCourseService);return;
     this.offshoreCourseService.get(course_title).subscribe({
       next: (response) => {
         this.course = response;
@@ -53,12 +54,12 @@ export class ActionOffshoreCourseComponent implements OnInit {
               objective: [module.objective],
               overview: [module.overview]
             }))),
-          // date: this.formBuilder.group({
-          //   start: [(<Date>JSON.parse(this.course.date)).start],
-          //   duration: [(<Date>JSON.parse(this.course.date)).duration],
-          //   durationUnit: [(<Date>JSON.parse(this.course.date))['duration-unit']],
-          //   end: [(<Date>JSON.parse(this.course.date)).end]
-          // }),
+          date: this.formBuilder.group({
+            start: [(<Date>JSON.parse(this.course.date)).start],
+            duration: [(<Date>JSON.parse(this.course.date)).duration],
+            durationUnit: [(<Date>JSON.parse(this.course.date))['duration-unit']],
+            end: [(<Date>JSON.parse(this.course.date)).end]
+          }),
           price: this.formBuilder.group({
             amount: [(<Price>JSON.parse(this.course.price)).amount],
             currency: [(<Price>JSON.parse(this.course.price)).currency]
@@ -71,30 +72,30 @@ export class ActionOffshoreCourseComponent implements OnInit {
         setTimeout(()=>{
           (<HTMLImageElement>document.querySelector('#imagePreview')).src = this.course.image_url;
           // (<HTMLEmbedElement>document.querySelector('#schedulePreview')).src = this.course.schedule_url;
-          // let startDate = <HTMLInputElement> document.querySelector('[name="date[start]"]');
-          // let duration = <HTMLInputElement> document.querySelector('[name="date[duration]"]');
-          // let durationUnit = <HTMLInputElement> document.querySelector('[name="date[duration-unit]"]');
-          // let endDate = <HTMLInputElement> document.querySelector('[name="date[end]"]');
-          // let startChange$ = fromEvent(startDate, 'input');
-          // let durationChange$ = fromEvent(duration, 'input');
-          // let unitChange$ = fromEvent(durationUnit, 'change');
+          let startDate = <HTMLInputElement> document.querySelector('[name="date[start]"]');
+          let duration = <HTMLInputElement> document.querySelector('[name="date[duration]"]');
+          let durationUnit = <HTMLInputElement> document.querySelector('[name="date[duration-unit]"]');
+          let endDate = <HTMLInputElement> document.querySelector('[name="date[end]"]');
+          let startChange$ = fromEvent(startDate, 'input');
+          let durationChange$ = fromEvent(duration, 'input');
+          let unitChange$ = fromEvent(durationUnit, 'change');
       
-          // let lake$ = merge(startChange$, durationChange$, unitChange$);
-          // this.dateStream$ = lake$.pipe(
-          //   map(e => (<HTMLInputElement> e.target).value),
-          //   filter(e => e.length > 0),
-          //   debounceTime(100),
-          //   distinctUntilChanged()
-          // );
+          let lake$ = merge(startChange$, durationChange$, unitChange$);
+          this.dateStream$ = lake$.pipe(
+            map(e => (<HTMLInputElement> e.target).value),
+            filter(e => e.length > 0),
+            debounceTime(100),
+            distinctUntilChanged()
+          );
       
-          // this.dateStream$.subscribe(e => {
-          //   if ([startDate, duration, durationUnit].filter((element)=>element.value !== e).every((element) => element.value != '')) {
-          //     let amount = <DurationInputArg1> duration.value;
-          //     let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
-          //     console.log('changing end date')
-          //     this.endDate.setValue(moment(startDate.value).add(amount, unit).format('yyyy-MM-DD'));
-          //   }
-          // });
+          this.dateStream$.subscribe(e => {
+            if ([startDate, duration, durationUnit].filter((element)=>element.value !== e).every((element) => element.value != '')) {
+              let amount = <DurationInputArg1> duration.value;
+              let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
+              console.log('changing end date')
+              this.endDate.setValue(moment(startDate.value).add(amount, unit).format('yyyy-MM-DD'));
+            }
+          });
         }, 0);
       },
     });

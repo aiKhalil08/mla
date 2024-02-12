@@ -6,7 +6,8 @@
     .tc {
         @apply border border-slate-500 p-4;
     }
-    th.tc {@apply whitespace-nowrap}
+    th.tc {@apply whitespace-nowrap};
+    .hovPink {@apply group-hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#mainp_filter')]}
 }
 
 
@@ -69,6 +70,11 @@ body {
     /* min-height: 100vh; */
     font-family: Poppins;
     /* overflow-y: hidden; */
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
 }
 
 h3 {

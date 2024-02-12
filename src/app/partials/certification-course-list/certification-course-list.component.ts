@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DoMoreLinkComponent } from "../links/do-more-link/do-more-link.component";
-import { CertificationCourseService } from 'src/app/certification-course.service';
+import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { CertificationCourseItem } from 'src/app/interfaces/certification-course';
 import { CertificationCourseItemComponent } from '../certification-course-item/certification-course-item.component';
 

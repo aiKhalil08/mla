@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { CertificateCourseItem, CertificationCourseItem, OffshoreCourseItem } from 'src/app/interfaces/courses';
-import { CoursesService } from 'src/app/courses.service';
+import { CoursesService } from 'src/app/services/courses.service';
 
 
 @Component({

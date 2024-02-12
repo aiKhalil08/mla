@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DoMoreLinkComponent } from "../links/do-more-link/do-more-link.component";
 import { CertificateCourseItem } from 'src/app/interfaces/certificate-course';
 import { CertificateCourseItemComponent } from '../certificate-course-item/certificate-course-item.component';
-import { CertificateCourseService } from 'src/app/certificate-course.service';
+import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 
 @Component({
     selector: 'app-certificate-course-list',

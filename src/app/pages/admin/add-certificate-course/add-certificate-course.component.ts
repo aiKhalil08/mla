@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 // import { CourseService } from 'src/app/course.service';
-import { CertificateCourseService } from 'src/app/certificate-course.service';
+import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 
 @Component({
@@ -150,17 +150,7 @@ export class AddCertificateCourseComponent implements OnInit {
 
   handleImageSelect(event: Event, img: HTMLImageElement) {
     let file = (<HTMLInputElement>event.target).files[0];
-    // this.image.setValue(file);
-    // console.log(file)
-    // console.log(this.image);
-    // this.courseGroup.patchValue({'image': file});
     let reader = new FileReader();
-    // let image = new FileReader();
-    // image.onloadend = () => {
-    //   this.imageFile = reader.result;
-    //   console.log(this.imageFile);
-    // };
-    // if (file) image.readAsBinaryString(file);
     reader.onloadend = () => {
       img.src = <string>reader.result;
       this.pictureSelected = true;

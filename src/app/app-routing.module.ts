@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { AddEventComponent } from './pages/admin/add-event/add-event.component';
-import { AddResourceComponent } from './pages/admin/add-resource/add-resource.component';
 import { AdminLayoutComponent } from './pages/admin/admin-layout/admin-layout.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { BlogComponent } from './pages/blog/blog.component';
@@ -25,6 +24,12 @@ import { ActionOffshoreCourseComponent } from './pages/admin/action-offshore-cou
 import { CertificateCourseListComponent } from './partials/certificate-course-list/certificate-course-list.component';
 import { CertificationCourseListComponent } from './partials/certification-course-list/certification-course-list.component';
 import { OffshoreCourseListComponent } from './partials/offshore-course-list/offshore-course-list.component';
+import { AddBlogComponent } from './pages/admin/add-blog/add-blog.component';
+import { AddTestimonialComponent } from './pages/admin/add-testimonial/add-testimonial.component';
+import { ActionBlogComponent } from './pages/admin/action-blog/action-blog.component';
+import { ActionEventComponent } from './pages/admin/action-event/action-event.component';
+import { EventComponent } from './pages/event/event.component';
+import { ActionTestimonialComponent } from './pages/admin/action-testimonial/action-testimonial.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, title: 'MLA | Home'},
@@ -32,7 +37,9 @@ const routes: Routes = [
   {path: 'certification-course/:course_code', component: CertificationCourseComponent, title: 'Certification Course'},
   {path: 'offshore-course/:course_title', component: OffshoreCourseComponent, title: 'Offshore Course'},
   {path: 'blogs', component: BlogsComponent, title: 'Blogs'},
-  {path: 'blog', component: BlogComponent, title: 'Blog'},
+  {path: 'blog/:heading', component: BlogComponent, title: 'Blog'},
+  // {path: 'events', component: BlogsComponent, title: 'Blogs'},
+  {path: 'event/:name', component: EventComponent, title: 'Event'},
   {path: 'connect-with-us', component: ConnectWithUsComponent, title: 'Connect With Us'},
   {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
   {
@@ -59,10 +66,14 @@ const routes: Routes = [
       {path: 'add-certification-course', component: AddCertificationCourseComponent, title: 'Add Certification Course | Admin'},
       {path: 'add-offshore-course', component: AddOffshoreCourseComponent, title: 'Add Offshore Course | Admin'},
       {path: 'add-event', component: AddEventComponent, title: 'Add Event | Admin'},
-      {path: 'add-resource', component: AddResourceComponent, title: 'Add Resource | Admin'},
+      {path: 'add-blog', component: AddBlogComponent, title: 'Add Blog | Admin'},
+      {path: 'add-testimonial', component: AddTestimonialComponent, title: 'Add Testimonial | Admin'},
       {path: 'certificate-course/:course_code', component: ActionCertificateCourseComponent, title: 'Action Certificate Course | Admin'},
       {path: 'certification-course/:course_code', component: ActionCertificationCourseComponent, title: 'Action Certification Course | Admin'},
-      {path: 'offshore-course/:course_title', component: ActionOffshoreCourseComponent, title: 'Action Offshore Course | Admin'}
+      {path: 'offshore-course/:course_title', component: ActionOffshoreCourseComponent, title: 'Action Offshore Course | Admin'},
+      {path: 'blog/:heading', component: ActionBlogComponent, title: 'Action Blog | Admin'},
+      {path: 'testimonial/:name', component: ActionTestimonialComponent, title: 'Action Testimonial | Admin'},
+      {path: 'event/:name', component: ActionEventComponent, title: 'Action Event | Admin'}
     ]
   },
 ];

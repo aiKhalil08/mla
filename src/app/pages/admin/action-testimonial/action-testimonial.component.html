@@ -1,0 +1,38 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+    <div class="loader" [class.hidden]="testimonial"></div>
+    <div *ngIf="testimonial" class="relative">
+        <h3>{{testimonial.name}}</h3>
+        <div class="mt-4 flex gap-x-4 sm:absolute top-0 right-0 sm:mt-0">
+            <div (click)="editable = true" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Edit Testimonial</div>
+            <div (click)="deletetTestimonial(testimonial.name)" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Delete Testimonial</div>
+        </div>
+        <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="testimonialGroup" (ngSubmit)="onSubmit(form)" enctype="multipart/form-data">
+            <div class="flex flex-col gap-y-2 w-max">
+                <label for="name" class="text-mainp text-[15px]">Name</label>
+                <input [readonly]="!editable" type="text" name="name" id="name" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="name">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="message" class="text-mainp text-[15px]">Message</label>
+                <textarea [readonly]="!editable" type="text" rows="6" name="message" id="message" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="message"></textarea>
+            </div>
+            <div class="flex flex-col gap-y-2 w-max">
+                <label for="blog-image" class="text-mainp text-[15px]">Blog Image</label>
+                <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="blog-image" class="hidden" formControlName="image">
+                <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
+                    <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
+                        <div class="">
+                            <img src="./assets/svgs/upload.svg" class="gray-icon m-auto" alt="">
+                            <p class="text-gray-400 text-sm m-auto mt-2">Click to upload image</p>
+                            <p class="text-gray-400 text-sm m-auto mt-2 text-center">(.png, .jpg)</p>
+                        </div>
+                    </div>
+                    <img id="imagePreview" class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="edited"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
+                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
+            </div>
+        </form>
+    </div>
+</main>

@@ -8,7 +8,7 @@ import { RedirectButtonComponent } from "../../../partials/buttons/redirect-butt
 import { CertificationCourse, Date, Module, Price } from 'src/app/interfaces/certification-course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionButtonComponent } from "../../../partials/buttons/action-button/action-button.component";
-import { CertificationCourseService } from 'src/app/certification-course.service';
+import { CertificationCourseService } from 'src/app/services/certification-course.service';
 
 @Component({
     selector: 'app-action-certification-course',

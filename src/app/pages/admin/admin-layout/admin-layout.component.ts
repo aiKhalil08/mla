@@ -18,12 +18,9 @@ export class AdminLayoutComponent {
   menu_control!: HTMLImageElement;
   sidebar_items: SidebarItem[] = [
     {text: 'Dashboard', location: '/admin', image: './assets/svgs/dashboard_icon.svg'},
-    // {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
     {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
-    // {text: 'Events', location: '/admin/events', image: './assets/svgs/events_icon.svg'},
-    {text: 'Events', location: '/admin/add-event', image: './assets/svgs/events_icon.svg'},
-    // {text: 'Resources', location: '/admin/resources', image: './assets/svgs/resources_icon.svg'},
-    {text: 'Resources', location: '/admin/add-resource', image: './assets/svgs/resources_icon.svg'},
+    {text: 'Events', location: '/admin/events', image: './assets/svgs/events_icon.svg'},
+    {text: 'Resources', location: '/admin/resources', image: './assets/svgs/resources_icon.svg'},
     {text: 'Users', location: '/admin/users', image: './assets/svgs/users_icon.svg'},
     {text: 'Affiliates', location: '/admin/affiliates', image: './assets/svgs/affiliates_icon.svg'},
     {text: 'Logout', location: '/logout', image: './assets/svgs/logout_icon.svg'},
@@ -40,7 +37,7 @@ export class AdminLayoutComponent {
         top: 0,
         left: 0,
       })
-      if (this.menu_control) this.menu_control.src = '/assets/svgs/hamburger.svg';
+      if (this.menu_control) this.menu_control.src = './assets/svgs/hamburger.svg';
     });
   }
 
@@ -49,10 +46,10 @@ export class AdminLayoutComponent {
     this.menu_control = target;
     if (this.expanded) {
       this.expanded = false;
-      target.src = '/assets/svgs/hamburger.svg';
+      target.src = './assets/svgs/hamburger.svg';
     } else {
       this.expanded = true;
-      target.src = '/assets/svgs/cancel.svg';
+      target.src = './assets/svgs/cancel.svg';
     }
   }
 }

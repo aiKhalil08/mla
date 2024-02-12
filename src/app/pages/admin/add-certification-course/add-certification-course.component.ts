@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
-import { CertificationCourseService } from 'src/app/certification-course.service';
+import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 
 @Component({

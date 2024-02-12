@@ -1,3 +1,3 @@
-<a routerLink="{{location}}" class="group flex gap-x-2 hover:gap-x-4 hover:text-mainp transition-all justify-start items-center">
-    <span [class.text-sm]="smaller_text">{{text}}</span><img *ngIf="!noArrow" [class.w-6]="smaller_text" [class.h-2]="smaller_text" class="h-3 w-7 text-white group-hover:[filter:_invert(100%)_url('/assets/svgs/filters.svg#mainp_filter')] transition-all" src="/assets/svgs/arrow_right.svg" alt="" />
+<a routerLink="{{location}}" class="group flex gap-x-2 hover:gap-x-4 transition-all justify-start items-center" [class.hover:text-mainp]="!remain_white">
+    <span [class.text-sm]="smaller_text">{{text}}</span><img *ngIf="!noArrow" [class.w-6]="smaller_text" [class.h-2]="smaller_text" class="h-3 w-7 text-white transition-all" src="./assets/svgs/arrow_right.svg" alt="" [class.hovPink]="!remain_white" [class.white-icon]="remain_white" />
 </a>

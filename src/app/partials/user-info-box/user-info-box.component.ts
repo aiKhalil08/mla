@@ -10,4 +10,6 @@ import { CommonModule } from '@angular/common';
 })
 export class UserInfoBoxComponent {
   @Input() parent!: 'sidebar' | 'header';
+  @Input() text!: string;
+  @Input() location!: string;
 }

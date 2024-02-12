@@ -1,0 +1,9 @@
+<div class="min-w-[300px] md:min-w-0 border h-full border-black rounded-xl relative overflow-hidden px-4 py-6 flex flex-col">
+    <div class="absolute top-0 left-0 right-0 h-40"><img src="{{blog.image_url}}" class="w-full h-full object-cover" alt=""></div>
+    <div class="font-semibold text-xl mt-[165px]">{{blog.heading}}</div>
+    <div class="mt-4 text-sm flex-grow">{{blog.content.slice(0, 100)}}...</div>
+    <div class="mt-4 flex items-center">
+        <app-expand-item-link text="Read Post" location="/blog/{{blog.heading}}"></app-expand-item-link>
+        <span class="flex-grow"></span>
+    </div>
+</div>

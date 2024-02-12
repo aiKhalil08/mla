@@ -14,4 +14,5 @@ export class ExpandItemLinkComponent {
   @Input() location!: string;
   @Input() noArrow: boolean = false;
   @Input() smaller_text: boolean = false;
+  @Input() remain_white?: boolean = false;
 }

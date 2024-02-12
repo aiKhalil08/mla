@@ -1,45 +1,47 @@
 <main class="landing">
     <div class="h-[250px] relative"> <!-- banner wrapper -->
-        <img src="/assets/images/phoning_girl.png" alt="" class="absolute w-full h-full object-cover">
+        <img src="./assets/images/phoning_girl.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-mainp/50 absolute flex items-center justify-center">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
-                <div class="font-bold text-4xl mb-4 text-center">BLOGS</div>
-                <div class="text-lg text-center">Get in touch with us and let’s get you started today</div>
+                <h2 class="mb-4 text-center">BLOGS</h2>
+                <div class="text-center">Get in touch with us and let’s get you started today</div>
             </div>
         </div>
     </div>
-    <div class="flex flex-col md:flex-row gap-x-6 gap-y-6 max-w-[900px] m-auto p-4 mt-4">
-        <div class="flex flex-col w-full md:flex-grow gap-y-4">
-            <div *ngFor="let blog of blogs" class="relative p-4 border shadow-sm border-gray-400">
-                <img src="{{blog.img_src}}" alt="" class="absolute top-0 left-0 right-0 h-[200px] object-cover w-full">
-                <div class="mt-[216px] py-4">
-                    <div
-                        class="absolute bg-mainp top-[170px] right-4 h-[60px] w-[60px] flex items-center justify-center text-white text-center">
-                        23<br>JAN</div>
-                    <h3 class="font-semibold text-lg">{{blog.title}}</h3>
-                    <div class="text-sm mt-4">{{blog.body}}</div>
-                    <a routerLink="/blog" class="cursor-pointer text-mainp flex justify-start items-center gap-x-2 hover:gap-x-3 transition-all mt-6 "><span>Read More</span><img class="h-3 w-7 pink-icon" src="/assets/svgs/arrow_right.svg" alt=""></a>
-                    <hr class="bg-gray-400 my-4" />
-                    <div class="flex flex-wrap gap-x-6">
-                        <span class="text-gray-400 flex gap-x-2 items-center my-2"><img src="/assets/svgs/calendar.svg" alt=""
-                                class="w-5 h-5 gray-icon"><span>{{blog.date}}</span></span>
-                        <span class="text-gray-400 flex gap-x-2 items-center my-2"><img src="/assets/svgs/avatar.svg" alt=""
-                                class="w-5 h-5 gray-icon"><span>{{blog.author}}</span></span>
+    <div class="max-w-[900px] m-auto p-4 mt-4">
+        <div class="loader" [class.hidden]="loaded"></div>
+        <div *ngIf="blog_posts" class="flex flex-col md:flex-row gap-x-6 gap-y-6 ">
+            <div class="flex flex-col w-full md:flex-grow gap-y-4">
+                <div *ngFor="let blog of blog_posts" class="relative p-4 border shadow-sm border-gray-400">
+                    <img src="{{blog.image_url}}" alt="{{blog.heading}}" class="absolute top-0 left-0 right-0 h-[200px] object-cover w-full">
+                    <div class="mt-[216px] py-4">
+                        <!-- <div
+                            class="absolute bg-mainp top-[170px] right-4 h-[60px] w-[60px] flex items-center justify-center text-white text-center">
+                            23<br>JAN</div> -->
+                        <h3 class="font-semibold text-lg">{{blog.heading}}</h3>
+                        <div class="text-sm mt-4 mb-8">{{blog.content.slice(0,150)}}...</div>
+                        <app-expand-item-link text="Read Post" location="/blog/{{blog.heading}}"></app-expand-item-link>
+                        <!-- <a routerLink="/blog" class="cursor-pointer text-mainp flex justify-start items-center gap-x-2 hover:gap-x-3 transition-all mt-6 "><span>Read More</span><img class="h-3 w-7 pink-icon" src="./assets/svgs/arrow_right.svg" alt=""></a> -->
+                        <hr class="bg-gray-400 my-4" />
+                        <div class="flex flex-wrap gap-x-6">
+                            <span class="text-gray-400 flex gap-x-2 items-center my-2"><img src="./assets/svgs/calendar.svg" alt=""
+                                    class="w-5 h-5 gray-icon"><span>{{blog.created_at}}</span></span>
+                            <span class="text-gray-400 flex gap-x-2 items-center my-2"><img src="./assets/svgs/avatar.svg" alt=""
+                                    class="w-5 h-5 gray-icon"><span>{{blog.author}}</span></span>
+                        </div>
                     </div>
                 </div>
+                <!-- <div class="flex justify-center">
+                    <app-enroll-button [hasArrow]="false" bgColor="primary" location="show_more"
+                        butText='SHOW MORE'></app-enroll-button>
+                </div> -->
             </div>
-            <div class="flex justify-center">
-                <app-enroll-button [hasArrow]="false" bgColor="primary" location="show_more"
-                    butText='SHOW MORE'></app-enroll-button>
+            <div class="w-full md:max-w-[300px]">
+                <ul class="border border-gray-400 p-4">
+                    <h3 class="text-xl font-semibold mb-4">Recent Posts</h3>
+                    <li *ngFor="let recent of recent_posts" class="border-b py-2"><a routerLink="/blog/{{recent.heading}}" class="cursor-pointer">{{recent.heading}}</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="w-full md:max-w-[300px]">
-            <ul class="border border-gray-400 p-4">
-                <h3 class="text-xl font-semibold mb-4">Recent Posts</h3>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Kabelmetal partners Mitiget on Hybrid Surveillance Systems</a></li>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Enhancing Records Mgt. & Compliance Posture at WAEC</a></li>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Mitiget Commence 2023 Cybersecurity Awareness Campaign in Schools</a></li>
-            </ul>
         </div>
     </div>
 </main>

@@ -9,7 +9,7 @@ import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/e
 import moment from 'moment';
 import { CertificationCourseListComponent } from 'src/app/partials/certification-course-list/certification-course-list.component';
 import { CertificationCourse, Module, Date, Price } from 'src/app/interfaces/certification-course';
-import { CertificationCourseService } from 'src/app/certification-course.service';
+import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
 
 

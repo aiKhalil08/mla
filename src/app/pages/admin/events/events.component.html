@@ -1,1 +1,29 @@
-<p>events works!</p>
+<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Blog Posts</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Name</th>
+                            <th class="tc">Start Date</th>
+                            <th class="tc">End Date</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let event of events">
+                            <td class="tc">{{event.name}}</td>
+                            <td class="tc">{{format(parse(event.date).start)}}</td>
+                            <td class="tc">{{format(parse(event.date).end)}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/event/{{event.name}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Event" location="/admin/add-event"></app-redirect-button>
+        </div>
+    </div>
+</main>

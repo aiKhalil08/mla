@@ -9,7 +9,7 @@ import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/e
 import moment from 'moment';
 import { OffshoreCourseListComponent } from 'src/app/partials/offshore-course-list/offshore-course-list.component';
 import { OffshoreCourse, Module, Date, Price } from 'src/app/interfaces/offshore-course';
-import { OffshoreCourseService } from 'src/app/offshore-course.service';
+import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
 
 
@@ -29,7 +29,7 @@ export class OffshoreCourseComponent {
   prerequisites: string[];
   objectives: string[];
   attendees: string[];
-  date: Date;
+  date: Date = null;
   price: Price;
   message_text: string;
   // ms = ['cl', 'cl', 'cl']
@@ -48,15 +48,14 @@ export class OffshoreCourseComponent {
         this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
         this.objectives = <string[]>JSON.parse(this.course.objectives);
         this.attendees = <string[]>JSON.parse(this.course.attendees);
-        // this.date = <Date>JSON.parse(this.course.date);
-        // this.date.start = moment(this.date.start).format('MMMM Do YYYY');
-        // this.date.end = moment(this.date.end).format('MMMM Do YYYY');
+        if (this.course.date != 'null') {
+          this.date = <Date>JSON.parse(this.course.date);
+          // console.log('are you here', this.date, moment(this.date.start).format('MMMM Do YYYY'))
+          this.date.start = moment(this.date.start).format('MMMM Do YYYY');
+          this.date.end = moment(this.date.end).format('MMMM Do YYYY');
+        }
         this.price = <Price>JSON.parse(this.course.price);
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.title.toUpperCase()}. My name is ___`;
-        // console.clear();
-        // console.log(this.course);
-        // console.log(this.course.objectives);
-        // console.log(JSON.parse(<any>this.course.objectives));
       }
     }); 
   }

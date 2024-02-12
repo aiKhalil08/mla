@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         top: 0,
         left: 0,
       })
-      if (this.menu_control) this.menu_control.src = '/assets/svgs/hamburger.svg';
+      if (this.menu_control) this.menu_control.src = './assets/svgs/hamburger.svg';
     });
   }
 
@@ -63,10 +63,10 @@ export class AppComponent implements OnInit {
     this.menu_control = target;
     if (this.expanded) {
       this.expanded = false;
-      target.src = '/assets/svgs/hamburger.svg';
+      target.src = './assets/svgs/hamburger.svg';
     } else {
       this.expanded = true;
-      target.src = '/assets/svgs/cancel.svg';
+      target.src = './assets/svgs/cancel.svg';
     }
   }
 }

@@ -1,0 +1,8 @@
+<div class="w-full flex justify-center" [class.h-auto]="!loaded">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="blog_posts"
+        class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)] items-stretch">
+        <app-blog-item *ngFor="let blog of blog_posts" [blog]="blog"></app-blog-item>
+    </div>
+</div>
+<app-do-more-link *ngIf="count != 'all'" text="View More" location="/blogs"></app-do-more-link>

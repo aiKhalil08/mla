@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 // import { CourseService } from 'src/app/course.service';
-import { CertificateCourseService } from 'src/app/certificate-course.service';
+import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { CertificateCourse, Date, Module, Price } from 'src/app/interfaces/certificate-course';
 import { ActivatedRoute, Router } from '@angular/router';

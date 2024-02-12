@@ -9,7 +9,7 @@ import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/e
 import moment from 'moment';
 import { CertificateCourseListComponent } from 'src/app/partials/certificate-course-list/certificate-course-list.component';
 import { CertificateCourse, Module, Date, Price } from 'src/app/interfaces/certificate-course';
-import { CertificateCourseService } from 'src/app/certificate-course.service';
+import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 
 
 
@@ -53,10 +53,6 @@ export class CertificateCourseComponent {
         this.price = <Price>JSON.parse(this.course.price);
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.code.toUpperCase()}. My name is ___`;
         console.log(this.objectives);
-        // console.clear();
-        // console.log(this.course);
-        // console.log(this.course.objectives);
-        // console.log(JSON.parse(<any>this.course.objectives));
       }
     });
   }

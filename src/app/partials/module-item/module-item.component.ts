@@ -15,13 +15,14 @@ export class ModuleItemComponent implements OnInit {
   expanded: boolean;
   
   ngOnInit(): void {
-    this.expanded = false;
-    console.log('initialized')
+    // this.expanded = false;
+    console.log(module)
   }
   // constructor() {
   //   this.expanded = false;
   // }
   get points() {
+    // console.log(this.module.overview)
     return (<string>this.module.overview).split("\n");
   }
   

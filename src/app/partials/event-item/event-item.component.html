@@ -1,0 +1,9 @@
+<div class="group min-w-[300px] md:min-w-0 h-full rounded-xl relative overflow-hidden hover:cursor-pointer">
+    <div class="absolute bg-mainp/80 top-4 right-4 p-2 rounded-md text-white text-center">{{start}}-{{end}}<br>{{year}}</div>
+    <div class="absolute bg-mainp/80 bottom-0 w-full p-4 text-white flex gap-x-2 group-hover:gap-x-4 transition-all justify-center items-center">
+        <app-expand-item-link [remain_white]="true" text="{{event.name}}" location="/event/{{event.name}}"></app-expand-item-link>
+        <!-- <span>{{event.name}}</span>
+        <img class="h-3 w-7 text-white white-icon" src="./assets/svgs/arrow_right.svg" alt=""/> -->
+    </div>
+    <img src="{{event.image_url}}" alt="{{event.name}}" class="w-full h-full object-cover">
+</div>

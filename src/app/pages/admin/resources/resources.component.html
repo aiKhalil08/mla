@@ -1,1 +1,49 @@
-<p>resources works!</p>
+<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Blog Posts</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Heading</th>
+                            <th class="tc">Date Posted</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let blog of blogs">
+                            <td class="tc">{{blog.heading}}</td>
+                            <td class="tc">{{blog.created_at}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/blog/{{blog.heading}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Blog" location="/admin/add-blog"></app-redirect-button>
+        </div>
+        <div class="relative flex flex-col gap-y-6 mt-12">
+            <h3>Testimonials</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Name</th>
+                            <th class="tc">Message</th>
+                            <th class="tc">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let testimonial of testimonials">
+                            <td class="tc">{{testimonial.name}}</td>
+                            <td class="tc">{{testimonial.sub_message}}...</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/testimonial/{{testimonial.name}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Testimonial" location="/admin/add-testimonial"></app-redirect-button>
+        </div>
+    </div>
+</main>

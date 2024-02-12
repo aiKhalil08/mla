@@ -1,32 +1,33 @@
 <main class="landing">
-    <div class="max-w-[900px] m-auto p-4 mt-4">
-        <figure class="">
-            <img src="/assets/images/blogs/cyber.png" class="object-cover w-full h-full min-h-48" alt="">
-            <figcaption class="flex flex-wrap gap-x-4 mt-4">
-                <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="/assets/svgs/calendar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{blog.date}}</span></span>
-                <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="/assets/svgs/avatar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{blog.author}}</span></span>
-            </figcaption>
-        </figure>
-    </div>
-    <div class="flex flex-col md:flex-row gap-x-6 gap-y-6 max-w-[900px] m-auto p-4 mt-4">
-        <div class="flex flex-col w-full md:flex-grow gap-y-4">
-            <h3 class="font-semibold text-2xl">{{blog.title}}</h3>
-            <div class="text-sm mt-4">{{blog.body}}</div>
-            <hr class="bg-gray-400 my-4" />
-            <div class="text-gray-400 flex gap-x-4">
-                <span>Share Post:</span>
-                <img src="/assets/svgs/facebook.svg" class="gray-icon" alt="">
-                <img src="/assets/svgs/twitter.svg" class="w-[20px] h-[20px] gray-icon" alt="">
-                <img src="/assets/svgs/linkedin.svg" class="gray-icon" alt="">
-            </div>
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="blog">
+        <div class="max-w-[900px] m-auto p-4 mt-4">
+            <figure class="">
+                <img src="{{blog.image_url}}" class="object-cover w-full h-full min-h-48" alt="{{blog.heading}}">
+                <figcaption class="flex flex-wrap gap-x-4 mt-4">
+                    <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="./assets/svgs/calendar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{date}}</span></span>
+                    <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="./assets/svgs/avatar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{blog.author}}</span></span>
+                </figcaption>
+            </figure>
         </div>
-        <div class="w-full md:max-w-[300px]">
-            <ul class="border border-gray-400 p-4">
-                <h3 class="text-xl font-semibold mb-4">Recent Posts</h3>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Kabelmetal partners Mitiget on Hybrid Surveillance Systems</a></li>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Enhancing Records Mgt. & Compliance Posture at WAEC</a></li>
-                <li class="border-b py-2"><a routerLink="/blog" class="cursor-pointer">Mitiget Commence 2023 Cybersecurity Awareness Campaign in Schools</a></li>
-            </ul>
+        <div class="flex flex-col md:flex-row gap-x-6 gap-y-6 max-w-[900px] m-auto p-4 mt-4">
+            <div class="flex flex-col w-full md:flex-grow gap-y-4">
+                <h3 class="font-semibold text-2xl">{{blog.heading}}</h3>
+                <div class="text-sm mt-4">{{blog.content}}</div>
+                <hr class="bg-gray-400 my-4" />
+                <div class="text-gray-400 flex gap-x-4">
+                    <span>Share Post:</span>
+                    <img src="./assets/svgs/facebook.svg" class="gray-icon" alt="">
+                    <img src="./assets/svgs/twitter.svg" class="w-[20px] h-[20px] gray-icon" alt="">
+                    <img src="./assets/svgs/linkedin.svg" class="gray-icon" alt="">
+                </div>
+            </div>
+            <div class="w-full md:max-w-[300px]">
+                <ul class="border border-gray-400 p-4">
+                    <h3 class="text-xl font-semibold mb-4">Recent Posts</h3>
+                    <li class="border-b py-2" *ngFor="let recent of recent_posts"><a routerLink="/blog/{{recent.heading}}" class="cursor-pointer">{{recent.heading}}</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </main>

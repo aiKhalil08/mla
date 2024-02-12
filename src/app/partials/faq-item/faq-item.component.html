@@ -1,6 +1,6 @@
 <div class="p-4 bg-gray-100 hover:cursor-pointer">
     <div (click)="toggleView()" class="flex"><span>{{faq.question}}</span><span class="flex-grow"></span><img
-            src="/assets/svgs/gtd.svg" class="transition-all" [class.rotate-180]="expanded" alt=""></div>
+            src="./assets/svgs/gtd.svg" class="transition-all" [class.rotate-180]="expanded" alt=""></div>
     <div class="h-0 overflow-hidden transition-all" [class.h-auto]="expanded">
         <div class=" pt-2">
             <p class="mt-2">{{faq.answer}}</p>

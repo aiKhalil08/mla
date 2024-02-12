@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DoMoreLinkComponent } from "../links/do-more-link/do-more-link.component";
 import { OffshoreCourseItem } from 'src/app/interfaces/offshore-course';
-import { OffshoreCourseService } from 'src/app/offshore-course.service';
+import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { OffshoreCourseItemComponent } from '../offshore-course-item/offshore-course-item.component';
 
 @Component({

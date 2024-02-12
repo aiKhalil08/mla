@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EnrollButtonComponent } from "../../partials/buttons/enroll-button/enroll-button.component";
 import { RouterLink } from '@angular/router';
+import { BlogItem } from 'src/app/interfaces/blog';
+import { BlogService } from 'src/app/services/blog.service';
+import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
 
 interface Blog {
   title: string,
@@ -15,23 +18,27 @@ interface Blog {
     standalone: true,
     templateUrl: './blogs.component.html',
     styleUrls: ['./blogs.component.css'],
-    imports: [CommonModule, EnrollButtonComponent, RouterLink]
+    imports: [CommonModule, EnrollButtonComponent, RouterLink, ExpandItemLinkComponent]
 })
 export class BlogsComponent {
-  blogs: Blog[] = [
-    {
-      title: "Governance, Risk and Compliance",
-      date: "January 23, 2023",
-      body: "Every organisation’s daily operation is governed by three major factors. These are basically governance, risk management, and compliance. Overtime, various strategies, resources, and ideas have been invested in evaluating the best way to initiate and manage these factors that are responsible for the growth of an organisation. We have seen organisations struggling to link strategies...",
-      author: "Mitiget Learning Academy",
-      img_src: "/assets/images/blogs/cyber.png"
-    },
-    {
-      title: "Governance, Risk and Compliance",
-      date: "January 23, 2023",
-      body: "Every organisation’s daily operation is governed by three major factors. These are basically governance, risk management, and compliance. Overtime, various strategies, resources, and ideas have been invested in evaluating the best way to initiate and manage these factors that are responsible for the growth of an organisation. We have seen organisations struggling to link strategies...",
-      author: "Mitiget Learning Academy",
-      img_src: "/assets/images/blogs/cyber.png"
-    }
-  ];
+  count: 'all' = 'all';
+  blog_posts: BlogItem[];
+  loaded: boolean = false;
+  constructor (private blogService: BlogService) {}
+
+  ngOnInit() {
+    // console.log('we here')
+    this.blogService.getList(this.count).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.loaded = true;
+        this.blog_posts = response;
+        console.log(response);
+      },
+    });
+  }
+
+  get recent_posts() {
+    return this.blog_posts.slice(0,9);
+  }
 }

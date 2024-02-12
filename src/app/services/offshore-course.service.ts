@@ -2,19 +2,19 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { CertificationCourse, CertificationCourseItem } from './interfaces/certification-course';
+import { OffshoreCourse, OffshoreCourseItem } from '../interfaces/offshore-course';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CertificationCourseService {
+export class OffshoreCourseService {
 
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   add(course: FormData) {
     // console.log(course);
     // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certification-course/create`;
+    let url = `${this.domain_name}/offshore-course/create`;
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
@@ -26,14 +26,14 @@ export class CertificationCourseService {
     });
   }
 
-  edit(course: FormData, course_code: string) {
+  edit(course: FormData, course_title: string) {
     // console.log(course);
     // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certification-course/${course_code}/edit`;
+    let url = `${this.domain_name}/offshore-course/${course_title}/edit`;
     // console.log(course.get('image'));
     // console.log(course.get('sch'));
 
-    console.log(course.get('code'))
+    // console.log(course.get('code'))
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
@@ -45,10 +45,10 @@ export class CertificationCourseService {
     });
   }
 
-  delete(course_code: string) {
+  delete(course_title: string) {
     // console.log(course);
     // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certification-course/${course_code}/delete`;
+    let url = `${this.domain_name}/offshore-course/${course_title}/delete`;
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
@@ -60,17 +60,17 @@ export class CertificationCourseService {
     });
   }
   getList(itemsCount: number | 'all') {
-    let url = `${this.domain_name}/certification-courses/${itemsCount}`;
-    return <Observable<CertificationCourseItem[]>> this.http.get(url, {
+    let url = `${this.domain_name}/offshore-courses/${itemsCount}`;
+    return <Observable<OffshoreCourseItem[]>> this.http.get(url, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
         // 'somerandomheader': 'something'
       }),
     });
   }
-  get(course_code: string) {
-    let url = `${this.domain_name}/certification-course/${course_code}`;
-    return <Observable<CertificationCourse>>this.http.get(url, {
+  get(course_title: string) {
+    let url = `${this.domain_name}/offshore-course/${course_title}`;
+    return <Observable<OffshoreCourse>>this.http.get(url, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
         // 'somerandomheader': 'something'

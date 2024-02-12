@@ -1,6 +1,6 @@
 <main class="landing">
     <div class="h-[400px] relative"> <!-- banner wrapper -->
-        <img src="/assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
+        <img src="./assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl">Learn the latest digital skills for tomorrow’s jobs</div>
@@ -12,23 +12,17 @@
     <div class="h-[180px] flex justify-center items-center"> <!-- searchbar wrapper -->
         <div class="w-full max-w-[768px] h-3/5 bg-[#E1E1E1] relative">
             <input type="text" class="outline-0 w-[90%] p-4 pr-40 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 placeholder:text-sm" placeholder="What do you want to learn?" />
-            <button class="border-0 rounded-full bg-mainp py-4 px-8 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span>Search</span><img class="white-icon w-4 h-4" src="/assets/svgs/search_icon.svg" alt=""></button>
+            <button class="border-0 rounded-full bg-mainp py-4 px-8 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span>Search</span><img class="white-icon w-4 h-4" src="./assets/svgs/search_icon.svg" alt=""></button>
         </div>
     </div>
-    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- upcoming wrapper -->
-        <div class="hover:cursor-pointer hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="/assets/svgs/circ_arrow_right.svg" class="w-8 h-8 pink-icon" alt=""></div>
-        <div class="hover:cursor-pointer hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="/assets/svgs/circ_arrow_left.svg" class="w-8 h-8 pink-icon" alt=""></div>
-        <div class="w-full max-w-[768px] relative">
+    
+    <div class="relative p-4 pt-10 flex items-center justify-center"> 
+        <!-- <div class="hover:cursor-pointer hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_right.svg" class="w-8 h-8 pink-icon" alt=""></div>
+        <div class="hover:cursor-pointer hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_left.svg" class="w-8 h-8 pink-icon" alt=""></div> -->
+        <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Upcoming Events</h3>
             <div class="mt-2">Discover events on our calendar</div>
-            <div class="w-full max-w-[768px] flex gap-x-6 mt-8 overflow-x-auto">
-                <div *ngFor="let event of events" class="group min-w-[300px] md:min-w-0 w-[300px] h-[400px] rounded-xl relative overflow-hidden hover:cursor-pointer">
-                    <div class="absolute bg-mainp/70 top-4 right-4 p-2 rounded-md text-white">{{event.date.month}}<br>{{event.date.start}}-{{event.date.end}}</div>
-                    <div class="absolute bg-mainp/70 bottom-0 w-full p-4 text-white flex gap-x-2 group-hover:gap-x-4 transition-all justify-center items-center"><span>{{event.name}}</span><img class="h-3 w-7 text-white white-icon" src="/assets/svgs/arrow_right.svg" alt=""/></div>
-                    <img src="{{event.img_src}}" alt="{{event.name}}" class="w-full h-full object-cover">
-                </div>
-            </div>
-            <app-do-more-link text="View Calendar" location=""></app-do-more-link>
+            <app-event-list [count]="3"></app-event-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- in demand wrapper -->
@@ -80,8 +74,8 @@
         </div>
     </div>
     <!-- <div class="relative p-4 pt-10 flex items-center justify-center"> 
-        <div class="hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="/assets/svgs/circ_arrow_right.svg" class="w-8 h-8" alt=""></div>
-        <div class="hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="/assets/svgs/circ_arrow_left.svg" class="w-8 h-8" alt=""></div>
+        <div class="hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_right.svg" class="w-8 h-8" alt=""></div>
+        <div class="hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_left.svg" class="w-8 h-8" alt=""></div>
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">Discover our certification courses</h3>
             <div class="mt-2 flex gap-x-4 text-xs"><div>Popular Courses</div><div>Cyber Security</div><div>Software Development</div><div>UI/UX Design</div></div>
@@ -91,19 +85,19 @@
                     <div class="mt-4">{{course.description}}</div>
                     <div class="mt-4 flex items-center">
                         <a class="flex gap-x-2 hover:gap-x-4 hover:text-mainp transition-all justify-start items-center">
-                            <span>View course</span><img class="h-3 w-7 text-white" src="/assets/svgs/arrow_right.svg" alt="" />
+                            <span>View course</span><img class="h-3 w-7 text-white" src="./assets/svgs/arrow_right.svg" alt="" />
                         </a>
                         <span class="flex-grow"></span>
-                        <img src="/assets/svgs/cart_pink.svg" class="cursor-pointer" alt="">
+                        <img src="./assets/svgs/cart_pink.svg" class="cursor-pointer" alt="">
                     </div>
                 </a>
             </div>
             <a
-                class="cursor-pointer sm:absolute text-mainp flex items-center justify-start items-center gap-x-2 hover:gap-x-3 mt-6 sm:mt-0 sm:top-0 sm:right-0"><span>View Catalogue</span><img class="h-3 w-7" src="/assets/svgs/arrow_right.svg" alt=""></a>
+                class="cursor-pointer sm:absolute text-mainp flex items-center justify-start items-center gap-x-2 hover:gap-x-3 mt-6 sm:mt-0 sm:top-0 sm:right-0"><span>View Catalogue</span><img class="h-3 w-7" src="./assets/svgs/arrow_right.svg" alt=""></a>
         </div>
     </div> -->
     <div class="h-[250px] relative mt-8"> <!-- banner wrapper -->
-        <img src="/assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+        <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Empower your mind and shape your future</div>
@@ -135,32 +129,44 @@
             </div>
         </div>
     </div>
+    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- testimonials wrapper -->
+        <div class="w-full max-w-[768px] relative">
+            <h3 class="text-2xl">What our customers are saying about us</h3>
+            <!-- <div class="mt-2 flex gap-x-4 text-xs">
+                <div>Popular Courses</div>
+                <div>Cyber Security</div>
+                <div>Software Development</div>
+                <div>UI/UX Design</div>
+            </div> -->
+            <app-testimonial-list type="testimonial"></app-testimonial-list>
+        </div>
+    </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- learning options wrapper -->
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">Learning options</h3>
             <div class="mt-2">Select from a wide range of learning options</div>
             <div class="w-full max-w-[768px] flex flex-col items-center sm:grid sm:grid-cols-2 sm:grid-rows-2 md:flex md:flex-row md:items-stretch gap-x-6 gap-y-6 mt-8 overflow-x-auto">
                 <figure class="w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 flex flex-col gap-y-4 items-center">
-                    <img src="/assets/svgs/live_opt.svg" alt="">
+                    <img src="./assets/svgs/live_opt.svg" alt="">
                     <figcaption>Live Online Classes</figcaption>
                 </figure>
                 <figure class="w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 flex flex-col gap-y-4 items-center">
-                    <img src="/assets/svgs/flexi_opt.svg" alt="">
+                    <img src="./assets/svgs/flexi_opt.svg" alt="">
                     <figcaption>Flexi (Blended Training - Video Recordings of Live Online)</figcaption>
                 </figure>
                 <figure class="w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 flex flex-col gap-y-4 items-center">
-                    <img src="/assets/svgs/classroom_opt.svg" alt="">
+                    <img src="./assets/svgs/classroom_opt.svg" alt="">
                     <figcaption>Classroom Training</figcaption>
                 </figure>
                 <figure class="w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 flex flex-col gap-y-4 items-center">
-                    <img src="/assets/svgs/destination_opt.svg" alt="">
+                    <img src="./assets/svgs/destination_opt.svg" alt="">
                     <figcaption>Destination Training</figcaption>
                 </figure>
             </div>
         </div>
     </div>
     <div class="h-[250px] relative mt-8"> <!-- banner wrapper -->
-        <img src="/assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+        <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Become a tutor and teach the world today</div>
@@ -172,30 +178,14 @@
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- resources wrapper -->
         <!-- <div
             class="hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4">
-            <img src="/assets/svgs/circ_arrow_right.svg" class="w-8 h-8" alt=""></div>
+            <img src="./assets/svgs/circ_arrow_right.svg" class="w-8 h-8" alt=""></div>
         <div
             class="hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4">
-            <img src="/assets/svgs/circ_arrow_left.svg" class="w-8 h-8" alt=""></div> -->
-        <div class="w-full max-w-[768px] relative">
+            <img src="./assets/svgs/circ_arrow_left.svg" class="w-8 h-8" alt=""></div> -->
+        <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Resources</h3>
             <div class="mt-2">Dive into our latest events, news & knowledge resources</div>
-            <div class="w-full max-w-[768px] flex gap-x-6 mt-8 overflow-x-auto">
-                <div *ngFor="let resource of resources"
-                    class="min-w-[300px] md:min-w-0 w-[300px] border border-black rounded-xl relative overflow-hidden hover:cursor-pointer px-4 py-6">
-                    <div class="absolute top-0 left-0 right-0 h-40"><img src="{{resource.img_src}}" class="w-full h-full object-cover" alt=""></div>
-                    <div class="font-semibold text-xl mt-[165px]">{{resource.topic}}</div>
-                    <div class="mt-4 text-sm">{{resource.description}}</div>
-                    <div class="mt-4 flex items-center">
-                        <a
-                            class="group flex gap-x-2 hover:gap-x-4 hover:text-mainp transition-all justify-start items-center">
-                            <span>Read Post</span><img class="h-3 w-7 text-white group-hover:[filter:_invert(100%)_url('/assets/svgs/filters.svg#mainp_filter')] transition-all" src="/assets/svgs/arrow_right.svg"
-                                alt="" />
-                        </a>
-                        <span class="flex-grow"></span>
-                    </div>
-                </div>
-            </div>
-            <app-do-more-link text="View More" location=""></app-do-more-link>
+            <app-blog-list [count]="3"></app-blog-list>
         </div>
     </div>
 </main>
