@@ -12,24 +12,15 @@ export class CertificateCourseService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   add(course: FormData) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certificate-course/create`;
+    let url = `${this.domain_name}/admin/certificate-course/create`;
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
-    return this.http.post(url, course, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return this.http.post(url, course,);
   }
 
   edit(course: FormData, course_code: string) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certificate-course/${course_code}/edit`;
+    let url = `${this.domain_name}/admin/certificate-course/${course_code}/edit`;
     // console.log(course.get('image'));
     // console.log(course.get('sch'));
 
@@ -37,27 +28,12 @@ export class CertificateCourseService {
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
-    return this.http.post(url, course, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return this.http.post(url, course,);
   }
 
   delete(course_code: string) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/certificate-course/${course_code}/delete`;
-    // this.http.get(init_url).subscribe((res) => {
-    //   console.log(res);
-    // });
-    return <Observable<{status: string}>>this.http.delete(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    let url = `${this.domain_name}/admin/certificate-course/${course_code}/delete`;
+    return <Observable<{status: string}>>this.http.delete(url, {});
   }
   getList(itemsCount: number | 'all') {
     let url = `${this.domain_name}/certificate-courses/${itemsCount}`;

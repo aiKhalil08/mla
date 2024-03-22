@@ -1,4 +1,4 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !testimonial, 'place-items-center': !testimonial}">
     <div class="loader" [class.hidden]="testimonial"></div>
     <div *ngIf="testimonial" class="relative">
         <h3>{{testimonial.name}}</h3>
@@ -16,7 +16,7 @@
                 <textarea [readonly]="!editable" type="text" rows="6" name="message" id="message" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="message"></textarea>
             </div>
             <div class="flex flex-col gap-y-2 w-max">
-                <label for="blog-image" class="text-mainp text-[15px]">Blog Image</label>
+                <label for="blog-image" (click)="editable || false" class="text-mainp text-[15px]">Image</label>
                 <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="blog-image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
                     <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-                <button type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="edited"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
+                <button [disabled]="!editable || edited" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
                 <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
             </div>
         </form>

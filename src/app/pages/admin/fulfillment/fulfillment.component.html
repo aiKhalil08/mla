@@ -1,0 +1,31 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded" class="overflow-hidden">
+            <div class="max-w-[768px] m-auto bg-white shadow-lg flex flex-col p-4 gap-y-4">
+                <div *ngIf="error" class="my-4 text-red-500 text-sm">{{error}}</div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate name:</div><div class="grow min-w-max">{{fulfillment.name}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate email:</div><div class="grow whitespace-break-spaces">{{fulfillment.email}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Amount:</div><div class="grow">{{formatCurrency(fulfillment.amount)}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Date:</div><div class="grow">{{formatDate(fulfillment.date)}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Type:</div><div class="grow">{{fulfillment.type}}</div></div>
+                <div *ngIf="account_details" class="border-b border-mainp pb-2 flex flex-col lg:flex-row">
+                    <!-- <div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Account details:</div> -->
+                    <div class="grow flex gap-4 flex-col">
+                        <div class="flex gap-x-6 gap-y-2 flex-wrap"><div>Account number:</div> <div>{{account_details.account_number}}</div></div>
+                        <div class="flex gap-x-6 gap-y-2 flex-wrap"><div>Account name:</div> <div>{{account_details.account_name}}</div></div>
+                        <div class="flex gap-x-6 gap-y-2 flex-wrap"><div>Bank name:</div> <div>{{account_details.bank_name}}</div></div>
+                    </div>
+                </div>
+                <div class="flex justify-center gap-x-4 text-sm">
+                    <button class="py-2 px-6 border bg-green-500 border-transparent text-white disabled:bg-white disabled:text-mainp disabled:border-mainp rounded flex gap-x-4 items-center justify-center" (click)="fulfill('1')" [disabled]="fulfilled">
+                        <div class="submit-loader" [class.block]="submitted_approve" [class.hidden]="!submitted_approve"></div><div>Approve</div>
+                    </button>
+                    <button class="py-2 px-6 border bg-red-500 border-transparent text-white disabled:bg-white disabled:text-mainp disabled:border-mainp rounded flex gap-x-4 items-center justify-center" (click)="fulfill('2')" [disabled]="fulfilled">
+                        <div class="submit-loader" [class.block]="submitted_reject" [class.hidden]="!submitted_reject"></div><div>Reject</div>
+                    </button>
+                </div>
+            </div>
+        
+    </div>
+    
+</main>

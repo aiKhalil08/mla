@@ -165,7 +165,7 @@ export class ActionEventComponent implements OnInit {
   }
 
   onSubmit(form) {
-    if (this.editable) {
+    if (this.editable || !this.submitted) {
       this.submitted = true;
       let formData = new FormData(form);
       this.eventService.edit(formData, this.event.name).subscribe({

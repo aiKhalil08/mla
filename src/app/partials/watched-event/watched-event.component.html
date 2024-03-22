@@ -1,0 +1,70 @@
+<div class="flex flex-col gap-y-4">
+    <div class="rounded-md h-[300px]">
+        <img src="{{event.image_url}}" alt="{{event.name}}" class="w-full h-full cover">
+    </div>
+    <!-- <div class="hidden sm:block">
+        <div class="flex items-stretch gap-x-6 pb-4 border-b-[3px] border-slate-300">
+            <div class="grid place-items-center relative cursor-pointer" [ngClass]="{'selected': present_tab == 0}" (click)="show_tab(0)">Overview</div>
+            <div class="grid place-items-center relative cursor-pointer" [ngClass]="{'selected': present_tab == 1}" (click)="show_tab(1)">Objectives</div>
+            <div class="grid place-items-center relative cursor-pointer" [ngClass]="{'selected': present_tab == 2}" (click)="show_tab(2)">Modules</div>
+            <div class="grow"></div>
+            <a target="_blank" href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp borders border-transparent rounded">
+                Enroll
+            </a>
+        </div>
+        <div class="overflow-hidden pt-4 text-sm">
+            <div [ngClass]="{'hidden': present_tab != 0}" class="basis-full grow-0 shrink-0">
+                {{event.overview}}
+            </div>
+            <div [ngClass]="{'hidden': present_tab != 1}" class="basis-full grow-0 shrink-0">
+                <ul >
+                    <ng-container *ngFor="let objective of objectives">
+                        <li class="my-3" *ngIf="objective">
+                            <img src="./assets/svgs/gt.svg" class="pink-icon w-2 h-2 inline" alt="">
+                            <span class="ml-2">{{objective}}</span>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+            <div [ngClass]="{'hidden': present_tab != 2}" class="basis-full grow-0 shrink-0">
+                <div class="mt-4 flex flex-col gap-y-4">
+                    <ng-container *ngFor="let module of modules; index as i">
+                        <ng-container *ngIf="module.objective != null && module.overview != null">
+                            <app-module-item [index]="i+1" [module]="module" class="border-b-[3px] border-slate-300"></app-module-item>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="block"> <!-- screen width < 640px -->
+        <div class="pt-4 flex flex-col gap-y-4"><!-- content -->
+            <div><!-- event description -->
+                <div class="mb-4 font-semibold">Description</div>
+                <div class="text-sm">{{event.description}}</div>
+            </div>
+            <div><!-- event description -->
+                <div class="mb-4 font-semibold">Date</div>
+                <div class="text-sm">Start date: {{start}}</div>
+                <div class="text-sm">End date: {{end}}</div>
+            </div>
+            <div><!-- event type -->
+                <div class="mb-4 font-semibold">Type</div>
+                <div class="text-sm">{{event.type}}</div>
+            </div>
+            <div class="grid place-items-center mt-4">
+                <app-contact-us-button theme="pink" message="{{message_text}}" text="Register"></app-contact-us-button>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col gap-y-8 mt-4">
+        <div>
+            <div class="font-bold">Who can attend this course</div>
+            <ul class="list-none mt-4 flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8 text-sm">
+                <li class="flex gap-x-2 items-center" *ngFor="let attendee of attendees">
+                    <img src="./assets/svgs/tick_circle.svg" alt="" class="w-4 h-4"><span>{{attendee}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

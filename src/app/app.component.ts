@@ -6,6 +6,7 @@ import { EnrollButtonComponent } from "./partials/buttons/enroll-button/enroll-b
 import { DoMoreLinkComponent } from "./partials/links/do-more-link/do-more-link.component";
 import { ExpandItemLinkComponent } from "./partials/links/expand-item-link/expand-item-link.component";
 import { NavItemDropdownComponent } from "./partials/nav-item-dropdown/nav-item-dropdown.component";
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -13,13 +14,14 @@ import { NavItemDropdownComponent } from "./partials/nav-item-dropdown/nav-item-
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
     standalone: true,
-    imports: [RouterOutlet, EnrollButtonComponent, RouterLink, DoMoreLinkComponent, ExpandItemLinkComponent, NavItemDropdownComponent]
+    imports: [RouterOutlet, EnrollButtonComponent, RouterLink, DoMoreLinkComponent, ExpandItemLinkComponent, NavItemDropdownComponent, CommonModule]
 })
 export class AppComponent implements OnInit {
   // title = 'Mitiget Learning Academy';
   expanded: boolean = false;
   menu_control!: HTMLImageElement;
   landing_page: boolean = true;
+  page_type: string;
 
   // dropdown_items: any[] = [1,2,3,];
 
@@ -41,7 +43,19 @@ export class AppComponent implements OnInit {
   ]
 
   constructor(private router: Router, private route: ActivatedRoute) {
-    if ((<string>document.location.pathname).match('/admin*')) this.landing_page = false;
+    if ((<string>document.location.pathname).match('/admin*')) this.page_type = 'portal';
+    else if ((<string>document.location.pathname).match('/enroll*')) this.page_type = 'enroll';
+    else if ((<string>document.location.pathname).match('/login*')) this.page_type = 'login';
+    else if ((<string>document.location.pathname).match('/home*')) this.page_type = 'student';
+    else if ((<string>document.location.pathname).match('/reset-password')) this.page_type = 'login';
+    else if ((<string>document.location.pathname).match('/contact-for-course')) this.page_type = 'contact';
+
+    // alert(document.location.pathname)
+
+    if (Array('portal', 'enroll', 'login', 'student', 'contact').includes(this.page_type)) {
+      this.landing_page = false;
+    }
+
     this.route.url.subscribe((url) => console.log(url));
   }
 

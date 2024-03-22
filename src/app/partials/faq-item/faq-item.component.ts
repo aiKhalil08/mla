@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+
 @Component({
   selector: 'app-faq-item',
   standalone: true,
@@ -10,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class FaqItemComponent {
   @Input() faq!: any;
+  @Input() darker: boolean = false;
   expanded: boolean = false;
 
   toggleView() {

@@ -1,0 +1,7 @@
+<div class="bg-white w-full max-w-[350px] h-full p-4 flex flex-col gap-4 shadow-md cursor-pointer" (click)="onClick()">
+    <img src="{{event.image_url}}" class="w-full h-[200px] cover" alt="{{event.name}}">
+    <div class="font-semibold text-sm grow">{{event.name}}</div>
+    <div class="flex flex-wrap text-sm text-gray-400 gap-4">
+        <div>{{event.type}}</div>
+    </div>
+</div>

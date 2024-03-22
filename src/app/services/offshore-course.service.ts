@@ -12,9 +12,7 @@ export class OffshoreCourseService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   add(course: FormData) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/offshore-course/create`;
+    let url = `${this.domain_name}/admin/offshore-course/create`;
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });
@@ -27,9 +25,7 @@ export class OffshoreCourseService {
   }
 
   edit(course: FormData, course_title: string) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/offshore-course/${course_title}/edit`;
+    let url = `${this.domain_name}/admin/offshore-course/${course_title}/edit`;
     // console.log(course.get('image'));
     // console.log(course.get('sch'));
 
@@ -46,9 +42,7 @@ export class OffshoreCourseService {
   }
 
   delete(course_title: string) {
-    // console.log(course);
-    // let init_url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `${this.domain_name}/offshore-course/${course_title}/delete`;
+    let url = `${this.domain_name}/admin/offshore-course/${course_title}/delete`;
     // this.http.get(init_url).subscribe((res) => {
     //   console.log(res);
     // });

@@ -1,0 +1,15 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Requests</h3>
+            <div class="overflow-auto flex flex-col gap-4 justify-evenly sm:grid grid-cols-2">
+                <div *ngFor="let request of requests" class="flex flex-col gap-y-4 text-sm cursor-pointer bg-white p-4 shadow-md" [class.text-blue-300]="!request.viewed" (click)="navigate(request.last_name, request.created_at)">
+                    <div>{{request.first_name}} {{request.last_name}}</div>
+                    <div>{{request.sub_message}}...</div>
+                    <div>{{date(request.created_at)}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -4,12 +4,7 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
 
 
-interface Course {
-    name: string,
-    description: string
-}
 
-type possible_types = 'cc' | 'ctc' | 'oc';
 
 @Component({
     selector: 'app-course-catalogue',
@@ -19,77 +14,29 @@ type possible_types = 'cc' | 'ctc' | 'oc';
     imports: [CommonModule, RouterLink, ExpandItemLinkComponent, RouterOutlet]
 })
 export class CourseCatalogueComponent implements OnInit {
-    section_header: string = 'Our Certificate Courses';
-    selected: possible_types = 'cc';
+    section_header: string;
+    course_type: string;
 
     constructor (private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        if (RegExp('certificate-course').test(location.href)) {
-            this.selected = 'cc';
-            this.section_header = 'Our Certificate Courses';
-        } else if (RegExp('certification-course').test(location.href)) {
-            this.selected = 'ctc';
-            this.section_header = 'Our Certification Training Courses';
-        } else if (RegExp('offshore-course').test(location.href)) {
-            this.selected = 'oc';
-            this.section_header = 'Our Offshore Courses';
-        }
-        // this.route.url.subscribe((url) => {
-        //     console.log(url);
-        // });
+        this.route.url.subscribe((url) => {
+            this.course_type = /.*\/(.+)$/.exec(location.href)[1];
+            this.setHeader(this.course_type);
+        })
     }
 
-    select(type: possible_types) {
-        this.selected = type;
-        switch (type) {
-            case 'cc':
+    setHeader(course_type: string) {
+        switch (course_type) {
+            case 'certificate-courses':
                 this.section_header = 'Our Certificate Courses';
                 break;
-            case 'ctc':
+            case 'certification-courses':
                 this.section_header = 'Our Certification Training Courses';
                 break;
-            case 'oc':
+            case 'offshore-courses':
                 this.section_header = 'Our Offshore Courses';
                 break;
         }
     }
-//   courses: Course[] = [
-//     {
-//         "name": "Cybersecurity 101",
-//         "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-//     },
-//     {
-//         "name": "Python Programming",
-//         "description": "Learn the foundational principles of pyrhon programming. Here, you’ll be exposed to developing dynamic applications for business"
-//     },
-//     {
-//         "name": "Microsoft Excel",
-//         "description": "Learn how to create spreadsheeets in Excel, format and print workbooks, create basic calculation formulas and visualize data and draw charts."
-//     },
-//     {
-//         "name": "Cybersecurity 101",
-//         "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-//     },
-//     {
-//         "name": "Python Programming",
-//         "description": "Learn the foundational principles of pyrhon programming. Here, you’ll be exposed to developing dynamic applications for business"
-//     },
-//     {
-//         "name": "Microsoft Excel",
-//         "description": "Learn how to create spreadsheeets in Excel, format and print workbooks, create basic calculation formulas and visualize data and draw charts."
-//     },
-//     {
-//         "name": "Cybersecurity 101",
-//         "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-//     },
-//     {
-//         "name": "Python Programming",
-//         "description": "Learn the foundational principles of pyrhon programming. Here, you’ll be exposed to developing dynamic applications for business"
-//     },
-//     {
-//         "name": "Microsoft Excel",
-//         "description": "Learn how to create spreadsheeets in Excel, format and print workbooks, create basic calculation formulas and visualize data and draw charts."
-//     }
-//     ];
 }

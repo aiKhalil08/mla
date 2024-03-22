@@ -11,6 +11,13 @@ import { CertificationCourseListComponent } from 'src/app/partials/certification
 import { CertificationCourse, Module, Date, Price } from 'src/app/interfaces/certification-course';
 import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CartButtonComponent } from "../../partials/cart-button/cart-button.component";
+import { AuthService } from 'src/app/services/auth.service';
+import { CartService } from 'src/app/services/cart.service';
+import { FaqListComponent } from "../../partials/faq-list/faq-list.component";
+import { ContactUsFormComponent } from "../../partials/contact-us-form/contact-us-form.component";
+import { ContactUsButtonComponent } from "../../partials/contact-us-button/contact-us-button.component";
 
 
 
@@ -19,7 +26,7 @@ import { CertificateCourseListComponent } from "../../partials/certificate-cours
     standalone: true,
     templateUrl: './certification-course.component.html',
     styleUrls: ['./certification-course.component.css'],
-    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, CertificationCourseListComponent, CertificateCourseListComponent]
+    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, CertificationCourseListComponent, CertificateCourseListComponent, ReactiveFormsModule, CartButtonComponent, FaqListComponent, ContactUsFormComponent, ContactUsButtonComponent]
 })
 export class CertificationCourseComponent {
   // private course_name!: any;
@@ -32,18 +39,29 @@ export class CertificationCourseComponent {
   date: Date;
   price: Price;
   message_text: string;
-  // ms = ['cl', 'cl', 'cl']
-  constructor (private certificationCourseService: CertificationCourseService, private route: ActivatedRoute) {}
+  submitted: boolean = false;
+  posted: boolean = false;
+  requestGroup: FormGroup;
+  course_code: string;
+  carted: boolean = false;
+  
+  constructor (private certificationCourseService: CertificationCourseService, private route: ActivatedRoute,  private auth: AuthService, private cart: CartService) {}
 
   ngOnInit() {
-    let course_code;
-    console.log('before', this.course);
+    // console.log('before', this.course);
     let paramObservable = this.route.paramMap;
-    paramObservable.subscribe((param) => {course_code = param.get('course_code')});
-    this.certificationCourseService.get(course_code).subscribe({
+    paramObservable.subscribe((param) => {
+      this.course_code = param.get('course_code');
+      this.getCourse();
+    }); 
+  }
+
+  getCourse() {
+    this.certificationCourseService.get(this.course_code).subscribe({
       next: (response) => {
         this.loaded = true;
         this.course = response;
+        if (this.auth.isLoggedIn('student') && this.cart.has('certification_courses', this.course.code)) this.carted = true;
         this.modules = <Module[]>JSON.parse(this.course.modules);
         this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
         this.objectives = <string[]>JSON.parse(this.course.objectives);
@@ -51,13 +69,11 @@ export class CertificationCourseComponent {
         // this.date = <Date>JSON.parse(this.course.date);
         // this.date.start = moment(this.date.start).format('MMMM Do YYYY');
         // this.date.end = moment(this.date.end).format('MMMM Do YYYY');
-        this.price = <Price>JSON.parse(this.course.price);
+        // this.price = <Price>JSON.parse(this.course.price);
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.code.toUpperCase()}. My name is ___`;
-        // console.clear();
-        // console.log(this.course);
-        // console.log(this.course.objectives);
-        // console.log(JSON.parse(<any>this.course.objectives));
+        // this.setRequestFormGroup();
       }
-    }); 
+    });
   }
+
 }

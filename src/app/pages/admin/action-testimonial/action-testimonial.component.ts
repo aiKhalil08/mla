@@ -71,7 +71,7 @@ export class ActionTestimonialComponent implements OnInit {
   }
 
   onSubmit(form) {
-    if (this.editable) {
+    if (this.editable || !this.submitted) {
       this.submitted = true;
       let formData = new FormData(form);
       this.testimonialService.edit(formData, this.testimonial.name).subscribe({

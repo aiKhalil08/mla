@@ -251,7 +251,7 @@ export class ActionCertificateCourseComponent implements OnInit {
   }
 
   onSubmit(form) {
-    if (this.editable) {
+    if (this.editable || !this.submitted) {
       this.submitted = true;
       let formData = new FormData(form);
       this.certificateCourseService.edit(formData, this.course.code).subscribe({

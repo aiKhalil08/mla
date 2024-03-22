@@ -16,11 +16,9 @@ export class ModuleItemComponent implements OnInit {
   
   ngOnInit(): void {
     // this.expanded = false;
-    console.log(module)
+    // console.log(module)
   }
-  // constructor() {
-  //   this.expanded = false;
-  // }
+  
   get points() {
     // console.log(this.module.overview)
     return (<string>this.module.overview).split("\n");

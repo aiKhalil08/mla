@@ -1,0 +1,15 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !event, 'place-items-center': !event, 'h-[500px]': !event}">
+    <div class="loader" *ngIf="!event"></div>
+    <div id="ran" *ngIf="event" class="max-w-[750px] mx-auto">
+        <h3 class="lg:ml-4">{{event_name}}</h3>
+        <div id="container" class="flex flex-col gap-y-8 mt-6 lg:ml-4"><!-- container -->
+            
+            <app-watched-event [event]="event"></app-watched-event>
+
+            <div id="divider" class="w-full h-[1px] bg-slate-400"></div><!-- divider -->
+    
+            <app-trending-courses></app-trending-courses><!-- aside -->
+            
+        </div>
+    </div>
+</main>

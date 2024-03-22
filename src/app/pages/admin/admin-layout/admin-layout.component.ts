@@ -5,25 +5,29 @@ import { SidebarNavLinkComponent } from "../../../partials/links/sidebar-nav-lin
 import { UserInfoBoxComponent } from "../../../partials/user-info-box/user-info-box.component";
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { LogoutModalComponent } from "../../../partials/logout-modal/logout-modal.component";
 
 @Component({
     selector: 'app-admin-layout',
     standalone: true,
     templateUrl: './admin-layout.component.html',
     styleUrls: ['./admin-layout.component.css'],
-    imports: [CommonModule, SidebarNavLinkComponent, UserInfoBoxComponent, RouterOutlet]
+    imports: [CommonModule, SidebarNavLinkComponent, UserInfoBoxComponent, RouterOutlet, LogoutModalComponent]
 })
 export class AdminLayoutComponent {
   expanded: boolean = false;
   menu_control!: HTMLImageElement;
+  logout_confirmation: boolean = false;
   sidebar_items: SidebarItem[] = [
     {text: 'Dashboard', location: '/admin', image: './assets/svgs/dashboard_icon.svg'},
     {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
     {text: 'Events', location: '/admin/events', image: './assets/svgs/events_icon.svg'},
     {text: 'Resources', location: '/admin/resources', image: './assets/svgs/resources_icon.svg'},
+    {text: 'Requests', location: '/admin/requests', image: './assets/svgs/request.svg'},
     {text: 'Users', location: '/admin/users', image: './assets/svgs/users_icon.svg'},
+    {text: 'Sales', location: '/admin/sales', image: './assets/svgs/sales.svg'},
     {text: 'Affiliates', location: '/admin/affiliates', image: './assets/svgs/affiliates_icon.svg'},
-    {text: 'Logout', location: '/logout', image: './assets/svgs/logout_icon.svg'},
+    {text: 'Fulfillments', location: '/admin/fulfillments', image: './assets/svgs/fulfillment.svg'},
   ];
 
   constructor(private router: Router) {}
@@ -52,4 +56,13 @@ export class AdminLayoutComponent {
       target.src = './assets/svgs/cancel.svg';
     }
   }
+
+  confirm_logout() {
+    this.logout_confirmation = true;
+  }
+
+  cancel_logout() {
+    this.logout_confirmation = false;
+  }
+
 }

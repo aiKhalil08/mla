@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DoMoreLinkComponent } from "../links/do-more-link/do-more-link.component";
@@ -16,18 +16,18 @@ import { EventService } from 'src/app/services/event.service';
 export class EventListComponent implements OnInit {
   // @Input() type!: string;
   @Input() count: number | 'all' = 'all';
+  @Output() no_events = new EventEmitter();
   events: EventItem[];
   loaded: boolean = false;
   constructor (private eventService: EventService) {}
 
   ngOnInit() {
-    console.log('we here', )
     this.eventService.getList(this.count).subscribe({
       next: (response) => {
-        console.log(response)
         this.loaded = true;
         this.events = response;
-        console.log(response);
+        // this.events = [];
+        if (this.events.length == 0) this.no_events.emit();
       },
     });
   }

@@ -1,0 +1,95 @@
+<main class="login bg-[#FFF] min-h-dvh flex items-center justify-center">
+    <div class="w-full lg:w-1/2 m-auto lg:mr-[50%] grid place-items-center">
+        <div class="overflow-hidden w-full max-w-[500px]">
+            <div class="w-[200%] flex">
+                <form #form (ngSubmit)="!submitted_one && onSubmitOne(form)" [formGroup]="studentGroup" [ngClass]="{'translate-x-full': showConfirmForm}" class="p-4 w-full transition-all duration-500 bg-white">
+                    <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+                    <h2 class="mt-8">Get Started</h2>
+                    <div>Already have a student account? <a routerLink="/login" class="text-mainp underline">Login</a></div>
+                    <div class="flex flex-col gap-y-4 mt-8 bg-white"> <!-- fields -->
+                        <div *ngIf="formOneError" class="text-red-500">{{formOneError}}</div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="first_name">First Name</label>
+                            <input formControlName="first_name" id="first_name" name="first_name" type="text" placeholder="Enter your first name" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['first_name']" class="text-red-500">{{errors['first_name'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="last_name">Last Name</label>
+                            <input formControlName="last_name" type="text" id="last_name" name="last_name" placeholder="Enter your last name" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['last_name']" class="text-red-500">{{errors['last_name'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="email">Email</label>
+                            <input formControlName="email" type="text" id="email" name="email" placeholder="Enter your email address" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['email']" class="text-red-500">{{errors['email'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="phone_number">Phone Number</label>
+                            <input formControlName="phone_number" type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['phone_number']" class="text-red-500">{{errors['phone_number'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="password">Password</label>
+                            <input formControlName="password" type="password" id="password" name="password" placeholder="Enter password" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['password']" class="text-red-500">{{errors['password'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input formControlName="password_confirmation" type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['password_confirmation']" class="text-red-500">{{errors['password_confirmation'][0]}}</div>
+                        </div>
+                    </div>
+                    <div class="text-xs mt-4">
+                        By registering, you agree to our <a routerLink="/terms-and-conditions" class="text-mainp">Terms and Conditions</a> and <a routerLink="/privacy-policy" class="text-mainp">Privacy Policy</a>
+                    </div>
+                    <div class="mt-6">
+                        <button [disabled]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" [class.cursor-not-allowed]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_one" [class.hidden]="!submitted_one"></div><div>{{(backWithErrors_one && (errorsRectified_one == errorneousFields_one.length)) ? 'Register' : backWithErrors_one ? 'Rectify all errors' : studentGroup.invalid ? 'Fill all fields' : 'Register'}}</div></button>
+                    </div>
+                </form>
+                <form #confirm_form (ngSubmit)="!submitted_two && onSubmitTwo(confirm_form)" [formGroup]="otpGroup"  [ngClass]="{'-translate-x-full': showConfirmForm}" [formGroup]="otpGroup" class="p-4 w-full h-max mt-[50vh] -translate-y-1/2 transition-all duration-500 bg-white">
+                    <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+                    <!-- <h2 class="mt-8">Get Started</h2> -->
+                    <div>An otp has been sent to {{email}}. Please enter the code below to complete your registration.</div>
+                    <div class="flex flex-col gap-y-4 mt-8 bg-white"> <!-- fields -->
+                        <div *ngIf="confirmFormError" class="text-red-500">{{confirmFormError}}</div>
+                        <input formControlName="email" name="email" type="hidden" value="{{email}}">
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="otp">Your verification Code</label>
+                            <input [autofocus]="showConfirmForm" formControlName="otp" type="password" id="otp" name="otp" placeholder="Enter 6 digit code" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['otp']" class="text-red-500">{{errors['otp'][0]}}</div>
+                        </div>
+                    </div>
+                    <div class="text-xs mt-4">
+                        <ng-container *ngIf="!canReqeustOTP">Didn't receive OTP? Request for new a new one in {{countdown}}. <a class="text-mainp" routerLink="/">Cancel</a></ng-container>
+                        <ng-container *ngIf="canReqeustOTP"><a (click)="resendOTP()" class="text-mainp cursor-pointer">Request for new OTP.</a></ng-container>
+                    </div>
+                    <div class="mt-6">
+                        <button [disabled]="otpGroup.invalid || (backWithErrors_two && (errorsRectified_two < errorneousFields_two.length))" [class.cursor-not-allowed]="otpGroup.invalid || (backWithErrors_two && (errorsRectified_two < errorneousFields_two.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_two" [class.hidden]="!submitted_two"></div><div>{{logged_in ? 'Redirecting...' : (backWithErrors_two && (errorsRectified_two == errorneousFields_two.length)) ? 'Verify Email' : backWithErrors_two ? 'Rectify all errors' : otpGroup.invalid ? 'Fill all fields' : 'Verify Email'}}</div></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:block fixed top-0 right-0 bottom-0 w-1/2 overflow-clip">
+        <div class="w-[200%] h-full flex">
+            <div class="w-1/2 h-full first-state" id="left-slide">
+                <div class="absolute w-full h-full bg-gradient-to-t from-mainp/90 to-transparent">
+                    <div class="text-white absolute bottom-24 left-14">
+                        <div class="font-bold text-4xl" id="first-paragraph">Unlock your full potential</div>
+                        <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
+                    </div>
+                </div>
+                <img src="./assets/images/typing_girl.png" class="w-full h-full object-cover" alt="">
+            </div>
+            <div class="w-1/2 h-full custom-hidden" id="right-slide">
+                <div class="absolute w-full h-full bg-gradient-to-t from-mainp/90 to-transparent">
+                    <div class="text-white absolute bottom-24 left-14">
+                        <div class="font-bold text-4xl" id="first-paragraph">Unlock your full potential</div>
+                        <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
+                    </div>
+                </div>
+                <img src="./assets/images/waving_girl.png" class="w-full h-full object-cover" alt="">
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,4 +1,4 @@
-<main class="landing">
+<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
     <div class="loader" [class.hidden]="loaded"></div>
     <div *ngIf="blog">
         <div class="max-w-[900px] m-auto p-4 mt-4">
@@ -17,9 +17,9 @@
                 <hr class="bg-gray-400 my-4" />
                 <div class="text-gray-400 flex gap-x-4">
                     <span>Share Post:</span>
-                    <img src="./assets/svgs/facebook.svg" class="gray-icon" alt="">
-                    <img src="./assets/svgs/twitter.svg" class="w-[20px] h-[20px] gray-icon" alt="">
-                    <img src="./assets/svgs/linkedin.svg" class="gray-icon" alt="">
+                    <a href="{{facebookLink}}" target="_blank"><img src="./assets/svgs/facebook.svg" class="gray-icon" alt=""></a>
+                    <a href="{{twitterLink}}" target="_blank"><img src="./assets/svgs/twitter.svg" class="w-[20px] h-[20px] gray-icon" alt=""></a>
+                    <a href="{{linkedInLink}}" target="_blank"><img src="./assets/svgs/linkedin.svg" class="gray-icon" alt=""></a>
                 </div>
             </div>
             <div class="w-full md:max-w-[300px]">

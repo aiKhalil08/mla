@@ -1,0 +1,18 @@
+<ng-container *ngIf="type == 'rounded'">
+    <div class="w-[40px] h-[40px] grid place-items-center rounded-full" [ngClass]="{'bg-mainp': !carted, 'cursor-pointer': !carted, 'bg-gray-400': carted}">
+        <img src="./assets/svgs/cart.svg" class="white-icon select-none" alt="" *ngIf="!processing">
+        <div class="submit-loader" *ngIf="processing"></div>
+    </div>
+</ng-container>
+<ng-container *ngIf="type == 'button'">
+    <div [ngClass]="{'bg-mainp': !carted, 'cursor-pointer': !carted, 'bg-gray-400': carted, 'select-none': carted}" class="text-mainp px-6 py-2 font-[500] flex justify-center items-center gap-x-2 bg-white border border-mainp rounded">
+        <ng-container *ngIf="!carted">
+            <img src="./assets/svgs/cart.svg" class="pink-icon select-none" alt="" *ngIf="!processing">
+            <div class="submit-loader pink" *ngIf="processing"></div>
+            Add to Cart
+        </ng-container>
+        <ng-container *ngIf="carted">
+            Carted
+        </ng-container>
+    </div>
+</ng-container>

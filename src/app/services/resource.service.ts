@@ -11,7 +11,7 @@ export class ResourcesService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   get() {
-    let url = `${this.domain_name}/resources`;
+    let url = `${this.domain_name}/admin/resources`;
     return <Observable<{'blogs': BlogItem[], "testimonials"?: TestimonialItem[]}>>this.http.get(url, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',

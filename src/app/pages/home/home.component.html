@@ -1,28 +1,41 @@
 <main class="landing">
-    <div class="h-[400px] relative"> <!-- banner wrapper -->
-        <img src="./assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
-        <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
-            <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
-                <div class="font-bold text-4xl">Learn the latest digital skills for tomorrow’s jobs</div>
-                <div class="font-medium text-lg my-4">The fastest, most effective training to get future-ready</div>
-                <app-enroll-button location="/course-catalogue" butText='Explore Courses' [hasArrow]="true" bgColor="white" radius="slight"></app-enroll-button>
+    <div class="h-[400px] relative w-full overflow-clip"> <!-- banner wrapper -->
+        <div class="w-[200%] h-full flex">
+            <div class="w-1/2 h-full first-state" id="left-slide">
+                <img src="./assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
+                <div class="w-full h-full bg-gradient-to-r from-mainp/90 to-transparent absolute flex items-center md:pl-20">
+                    <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
+                        <div class="font-bold text-2xl" id="first-paragraph">Learn the latest digital skills for tomorrow’s jobs</div>
+                        <div class="font-medium text-lg my-4" id="second-paragraph">The fastest, most effective training to get future-ready</div>
+                        <app-enroll-button id="button" location="/course-catalogue" butText='Explore Courses' [hasArrow]="true" bgColor="white" radius="slight"></app-enroll-button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 h-full custom-hidden" id="right-slide">
+                <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+                <div class="w-full h-full bg-gradient-to-r from-mainp/90 to-transparent absolute flex items-center md:pl-20">
+                    <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
+                        <div class="font-bold text-2xl" id="first-paragraph">Stay relevant in the fast evolving world</div>
+                        <div class="font-medium text-lg my-4" id="second-paragraph">The fastest, most effective training to get future-ready</div>
+                        <app-enroll-button id="button" location="/course-catalogue" butText='Explore Courses' [hasArrow]="true" bgColor="white" radius="slight"></app-enroll-button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="h-[180px] flex justify-center items-center"> <!-- searchbar wrapper -->
+    <!-- searchbar wrapper -->
+    <!-- <div class="h-[180px] flex justify-center items-center"> 
         <div class="w-full max-w-[768px] h-3/5 bg-[#E1E1E1] relative">
-            <input type="text" class="outline-0 w-[90%] p-4 pr-40 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 placeholder:text-sm" placeholder="What do you want to learn?" />
-            <button class="border-0 rounded-full bg-mainp py-4 px-8 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span>Search</span><img class="white-icon w-4 h-4" src="./assets/svgs/search_icon.svg" alt=""></button>
+            <input type="text" class="outline-0 w-[90%] p-4 pr-14 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm" placeholder="What do you want to learn?" />
+            <button class="border-0 rounded-full bg-mainp p-4 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span class="hidden sm:block">Search</span><img class="white-icon w-4 h-4" src="./assets/svgs/search_icon.svg" alt=""></button>
         </div>
-    </div>
+    </div> -->
     
-    <div class="relative p-4 pt-10 flex items-center justify-center"> 
-        <!-- <div class="hover:cursor-pointer hidden md:block absolute top-1/2 right-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_right.svg" class="w-8 h-8 pink-icon" alt=""></div>
-        <div class="hover:cursor-pointer hidden md:block absolute top-1/2 left-[10%] z-10 -translate-y-3 bg-white/70 border border-mainp xl:bg-transparent p-4"><img src="./assets/svgs/circ_arrow_left.svg" class="w-8 h-8 pink-icon" alt=""></div> -->
+    <div class="relative p-4 pt-10 items-center justify-center" [class.flex]="!no_events" [class.hidden]="no_events"> 
         <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Upcoming Events</h3>
             <div class="mt-2">Discover events on our calendar</div>
-            <app-event-list [count]="3"></app-event-list>
+            <app-event-list (no_events)="handle_no_events()" [count]="3" ></app-event-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- in demand wrapper -->
@@ -101,7 +114,7 @@
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Empower your mind and shape your future</div>
-                <app-enroll-button link="https://wa.link/zdxh1a" butText='Enroll Now' [hasArrow]="true" bgColor="white"
+                <app-enroll-button link="enroll" butText='Enroll Now' [hasArrow]="true" bgColor="white"
                     radius="curved"></app-enroll-button>
             </div>
         </div>
@@ -129,18 +142,13 @@
             </div>
         </div>
     </div>
-    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- testimonials wrapper -->
+    <!-- testimonials wrapper -->
+    <!-- <div class="relative p-4 pt-10 flex items-center justify-center"> 
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">What our customers are saying about us</h3>
-            <!-- <div class="mt-2 flex gap-x-4 text-xs">
-                <div>Popular Courses</div>
-                <div>Cyber Security</div>
-                <div>Software Development</div>
-                <div>UI/UX Design</div>
-            </div> -->
             <app-testimonial-list type="testimonial"></app-testimonial-list>
         </div>
-    </div>
+    </div> -->
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- learning options wrapper -->
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">Learning options</h3>
@@ -170,7 +178,7 @@
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Become a tutor and teach the world today</div>
-                <app-enroll-button link="https://wa.link/zdxh1a" butText='Enroll Now' [hasArrow]="true" bgColor="white"
+                <app-enroll-button link="enroll" butText='Enroll Now' [hasArrow]="true" bgColor="white"
                     radius="curved"></app-enroll-button>
             </div>
         </div>

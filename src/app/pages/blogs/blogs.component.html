@@ -1,4 +1,4 @@
-<main class="landing">
+<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
     <div class="h-[250px] relative"> <!-- banner wrapper -->
         <img src="./assets/images/phoning_girl.png" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-mainp/50 absolute flex items-center justify-center">
@@ -31,10 +31,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="flex justify-center">
-                    <app-enroll-button [hasArrow]="false" bgColor="primary" location="show_more"
-                        butText='SHOW MORE'></app-enroll-button>
-                </div> -->
             </div>
             <div class="w-full md:max-w-[300px]">
                 <ul class="border border-gray-400 p-4">

@@ -1,21 +1,29 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventItem } from 'src/app/interfaces/event';
 import moment from 'moment';
 import { Date } from 'src/app/interfaces/certificate-course';
 import { ExpandItemLinkComponent } from "../links/expand-item-link/expand-item-link.component";
+import { WatchlistButtonComponent } from "../watchlist-button/watchlist-button.component";
+import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-event-item',
     standalone: true,
     templateUrl: './event-item.component.html',
     styleUrls: ['./event-item.component.css'],
-    imports: [CommonModule, ExpandItemLinkComponent]
+    imports: [CommonModule, ExpandItemLinkComponent, WatchlistButtonComponent]
 })
-export class EventItemComponent {
+export class EventItemComponent implements OnInit {
   @Input() event!: EventItem;
-  constructor() {
-    console.log(this.event)
+  watched: boolean;
+
+  constructor(private watchlist: EventWatchlistService, private auth: AuthService) {}
+  
+
+  ngOnInit(): void {
+    if (this.auth.isLoggedIn('student') && this.watchlist.has(this.event.name)) this.watched = true;
   }
 
   get start() {

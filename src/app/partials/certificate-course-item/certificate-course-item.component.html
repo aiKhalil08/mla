@@ -4,6 +4,6 @@
     <div class="mt-4 flex items-center">
         <app-expand-item-link text="View course" location="/certificate-course/{{course.code}}"></app-expand-item-link>
         <span class="flex-grow"></span>
-        <a href=""><img src="./assets/svgs/cart_pink.svg" class="cursor-pointer" alt=""></a>
+        <app-cart-button [carted]="carted" [course]="{'identity': course.code, 'type':'certificate-course'}"></app-cart-button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !event, 'place-items-center': !event}">
     <div class="loader" [class.hidden]="event"></div>
     <div *ngIf="event" class="relative">
         <h3>{{event.name}}</h3>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
                     <label for="end" class="text-gray text-sm min-w-[100px]">End Date: </label>
-                    <input [readonly]='!editable' placeholder="End date" type="date" name="date[end]" id="end" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="end" readonly>
+                    <input readonly placeholder="End date" type="date" name="date[end]" id="end" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="end" readonly>
                 </div>
             </div>
             <div class="flex flex-col gap-y-2 w-max">
@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="flex flex-col gap-y-2 w-max">
-                <label for="event-image" class="text-mainp text-[15px]">Event Image</label>
+                <label for="event-image" (click)="editable || false" class="text-mainp text-[15px]">Event Image</label>
                 <input [readonly]='!editable' [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="course-image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
                     <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
@@ -113,7 +113,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-                <button type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="edited"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
+                <button [disabled]="!editable || edited" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
                 <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/events"></app-redirect-button>
             </div>
         </form>

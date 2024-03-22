@@ -11,7 +11,7 @@ export class TestimonialService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   add(testimonial: FormData) {
-    let url = `${this.domain_name}/testimonial/create`;
+    let url = `${this.domain_name}/admin/testimonial/create`;
     return this.http.post(url, testimonial, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
@@ -21,7 +21,7 @@ export class TestimonialService {
   }
 
   edit(testimonial: FormData, name: string) {
-    let url = `${this.domain_name}/testimonial/${name}/edit`;
+    let url = `${this.domain_name}/admin/testimonial/${name}/edit`;
     return this.http.post(url, testimonial, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
@@ -31,7 +31,7 @@ export class TestimonialService {
   }
 
   delete(name: string) {
-    let url = `${this.domain_name}/testimonial/${name}/delete`;
+    let url = `${this.domain_name}/admin/testimonial/${name}/delete`;
     return <Observable<{status: string}>>this.http.delete(url, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',

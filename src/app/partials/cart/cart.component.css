@@ -1,0 +1,22 @@
+@media screen and (min-width: 600px) {
+    #container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #container {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media screen and (min-width: 930px) {
+    #container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}

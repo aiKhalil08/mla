@@ -11,6 +11,13 @@ import { OffshoreCourseListComponent } from 'src/app/partials/offshore-course-li
 import { OffshoreCourse, Module, Date, Price } from 'src/app/interfaces/offshore-course';
 import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CartButtonComponent } from "../../partials/cart-button/cart-button.component";
+import { AuthService } from 'src/app/services/auth.service';
+import { CartService } from 'src/app/services/cart.service';
+import { FaqListComponent } from "../../partials/faq-list/faq-list.component";
+import { ContactUsFormComponent } from "../../partials/contact-us-form/contact-us-form.component";
+import { ContactUsButtonComponent } from "../../partials/contact-us-button/contact-us-button.component";
 
 
 
@@ -19,7 +26,7 @@ import { CertificateCourseListComponent } from "../../partials/certificate-cours
     standalone: true,
     templateUrl: './offshore-course.component.html',
     styleUrls: ['./offshore-course.component.css'],
-    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, OffshoreCourseListComponent, CertificateCourseListComponent]
+    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, OffshoreCourseListComponent, CertificateCourseListComponent, ReactiveFormsModule, CartButtonComponent, FaqListComponent, ContactUsFormComponent, ContactUsButtonComponent]
 })
 export class OffshoreCourseComponent {
   // private course_name!: any;
@@ -32,18 +39,30 @@ export class OffshoreCourseComponent {
   date: Date = null;
   price: Price;
   message_text: string;
-  // ms = ['cl', 'cl', 'cl']
-  constructor (private offshoreCourseService: OffshoreCourseService, private route: ActivatedRoute) {}
+  requestGroup: FormGroup;
+  submitted: boolean = false;
+  posted: boolean = false;
+  course_title: string;
+  carted: boolean = false;
+  
+
+  constructor (private offshoreCourseService: OffshoreCourseService, private route: ActivatedRoute, private auth: AuthService, private cart: CartService) {}
 
   ngOnInit() {
-    let course_title;
     console.log('before', this.course);
     let paramObservable = this.route.paramMap;
-    paramObservable.subscribe((param) => {course_title = param.get('course_title')});
-    this.offshoreCourseService.get(course_title).subscribe({
+    paramObservable.subscribe((param) => {
+      this.course_title = param.get('course_title');
+      this.getCourse();
+    }); 
+  }
+
+  getCourse() {
+    this.offshoreCourseService.get(this.course_title).subscribe({
       next: (response) => {
         this.loaded = true;
         this.course = response;
+        if (this.auth.isLoggedIn('student') && this.cart.has('offshore_courses', this.course.title)) this.carted = true;
         this.modules = <Module[]>JSON.parse(this.course.modules);
         this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
         this.objectives = <string[]>JSON.parse(this.course.objectives);
@@ -56,7 +75,9 @@ export class OffshoreCourseComponent {
         }
         this.price = <Price>JSON.parse(this.course.price);
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.title.toUpperCase()}. My name is ___`;
+        // this.setRequestFormGroup();
       }
-    }); 
+    });
   }
+
 }

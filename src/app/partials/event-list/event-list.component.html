@@ -1,7 +1,8 @@
-<div class="w-full flex mt-8 overflow-x-auto justify-center">
-    <div class="loader" [class.hidden]="loaded"></div>
-    <div *ngIf="events" class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)] items-stretch auto-rows-fr">
-        <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
+<div class="w-full flex justify-center items-center" [ngClass]="{'h-[300px]': !events}">
+    <div class="list-loader" *ngIf="!events"></div>
+    <div *ngIf="events" class="max-w-[900px] flex flex-col gap-4 sm:grid sm:grid-cols-[repeat(2,_300px)] mt-8 lg:grid-cols-[repeat(3,_1fr)] items-stretch auto-rows-[minmax(300px,_1fr)]">
+        <app-event-item  *ngFor="let event of events" [event]="event"></app-event-item>
     </div>
 </div>
+<app-do-more-link *ngIf="count != 'all'" text="View All" location="/events"></app-do-more-link>
 <!-- <app-do-more-link text="View Calendar" location=""></app-do-more-link> -->

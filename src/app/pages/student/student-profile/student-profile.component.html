@@ -1,0 +1,48 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !profile, 'place-items-center': !profile}">
+    <div class="loader" [class.hidden]="profile"></div>
+    <div *ngIf="profile" class="relative ml-4">
+        <div class="flex flex-wrap gap-4">
+            <h3 >Profile</h3>
+            <div class="grow shrink-0 basis-[150px]"></div>
+            <div (click)="editable = true" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Edit</div>
+        </div>
+        <form #form action="" class="mt-6 flex flex-col gap-y-6  max-w-[500px]" [formGroup]="profileGroup" (ngSubmit)="onSubmit(form)" enctype="multipart/form-data">
+            <div *ngIf="formError">{{formError}}</div>
+            <div class="flex gap-x-4 w-full items-center">
+                <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="image" class="hidden" formControlName="image">
+                <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[150px] h-[150px] text-sm border rounded-full overflow-hidden border-slate-200 bg-white">
+                    <img id="imagePreview" class="w-full h-full object-cover"  alt="" #imagePreview>
+                </div>
+                <label for="image" (click)="editable || false" class="text-mainp text-sm cursor-pointer">Select Profile Image</label>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="first_name" class="text-mainp text-sm">First Name</label>
+                <input [readonly]="!editable" type="text" name="first_name" id="first_name" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="first_name">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="last_name" class="text-mainp text-sm">Last Name</label>
+                <input [readonly]="!editable" type="text" name="last_name" id="last_name" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="last_name">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="email" class="text-mainp text-sm">Email</label>
+                <input [readonly]="!editable" type="text" name="email" id="email" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="email">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="phone_number" class="text-mainp text-sm">Mobile Number</label>
+                <input [readonly]="!editable" type="text" name="phone_number" id="phone_number" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="phone_number">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="home_address" class="text-mainp text-sm">Home Address</label>
+                <input [readonly]="!editable" type="text" name="home_address" id="home_address" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="home_address">
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="bio" class="text-mainp text-sm">Bio</label>
+                <textarea [readonly]="!editable" type="text" rows="6" name="bio" id="bio" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="bio"></textarea>
+            </div>
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button [disabled]="!editable || edited" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Updated' : 'Update'}}</div></button>
+                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
+            </div>
+        </form>
+    </div>
+</main>

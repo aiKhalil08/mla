@@ -1,10 +1,11 @@
 <!-- <header class="relative"> -->
   <div>
-  <div [class.hidden]="!landing_page" class="flex bg-mainp h-[65px] text-white items-center px-4 fixed top-0 z-50 w-full lg:relative">
+    <!-- <div id="declaration">{{page_type == 'landing_page'}}</div> -->
+  <div [ngClass]="{flex: landing_page, hidden: !landing_page}" class="bg-mainp h-[65px] text-white items-center px-4 fixed top-0 z-50 w-full lg:relative">
     <img (click)="toggleMenu($event)" class="transition-all mr-3 lg:hidden h-8 w-8 white-icon" src="./assets/svgs/hamburger.svg">
-    <span class="hidden md:block">Already have an account? <a href="#" class="underline">Login</a></span>
+    <span class="hidden md:block">Already have an account? <a href="/login" class="underline">Login</a></span>
     <span class="flex-grow"></span>
-    <span class="mr-10 hidden lg:block">+(234)-806-719-1062</span>
+    <span class="mr-10 hidden lg:block">+(234)-916-264-4779</span>
     <span class="flex gap-x-3">
       <a href="https://instagram.com/mitigetacademy" target="_blank">
         <img src="./assets/svgs/instagram.svg" alt="" class="h-8 w-8 white-icon hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#black_filter')]">
@@ -20,7 +21,7 @@
       </a>
     </span>
   </div>
-  <div [class.hidden]="!landing_page" class="py-8 px-4 fixed top-[65px] overflow-y-auto h-[calc(100dvh-80px)] bg-white m-2 flex flex-col text-black z-40 min-w-80 transition-all rounded-lg lg:overflow-y-visible lg:sticky lg:top-0 lg:h-[120px] lg:m-0 lg:left-0 lg:w-full lg:flex-row lg:rounded-none lg:py-0 lg:items-center ring-mainp ring-1 lg:ring-0 lg:border-b lg:border-b-mainp" [class.left-[0px]]="expanded" [class.left-[-440px]]="!expanded">
+  <div [ngClass]="{flex: landing_page, hidden: !landing_page}" class="py-8 px-4 fixed top-[65px] overflow-y-auto h-[calc(100dvh-80px)] bg-white m-2 flex-col text-black z-40 min-w-80 transition-all rounded-lg lg:overflow-y-visible lg:sticky lg:top-0 lg:h-[120px] lg:m-0 lg:left-0 lg:w-full lg:flex-row lg:rounded-none lg:py-0 lg:items-center ring-mainp ring-1 lg:ring-0 lg:border-b lg:border-b-mainp" [class.left-[0px]]="expanded" [class.left-[-440px]]="!expanded">
     <a href="/">
       <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
     </a>
@@ -30,26 +31,25 @@
 
         <li class="text-center"><a routerLink="/about-us" class="hover:text-mainp cursor-pointer font-medium transition-all">About Us</a></li>
 
-        <li class="text-center"><a class="hover:text-mainp cursor-pointer font-medium transition-all">Events</a></li>
+        <li class="text-center"><a routerLink="/events" class="hover:text-mainp cursor-pointer font-medium transition-all">Events</a></li>
         <app-nav-item-dropdown [item]="dropdown_items[0]"></app-nav-item-dropdown>
         <app-nav-item-dropdown [item]="dropdown_items[1]"></app-nav-item-dropdown>
 
-        <!-- <li class=" text-center"><a routerLink="/blogs" class="group flex gap-x-1 transition-all items-center hover:text-mainp cursor-pointer font-medium"><span>Resources</span><img class="group-hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#mainp_filter')] transition-all" src="./assets/svgs/chevron_down.svg" alt=""></a></li> <img class="group-hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#mainp_filter')] transition-all"
-          src="./assets/svgs/chevron_down.svg" alt=""> -->
 
         <li class="text-center"><a routerLink="/connect-with-us" class="hover:text-mainp cursor-pointer font-medium transition-all">Help</a></li>
 
-        <li class="text-center"><a class="group flex gap-x-1 items-center hover:text-mainp cursor-pointer font-medium transition-all"><span>Cart</span><img class="group-hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#mainp_filter')] transition-all" src="./assets/svgs/cart.svg" alt=""></a></li>
+        <li class="text-center"><a href="/home/courses" class="group flex gap-x-1 items-center hover:text-mainp cursor-pointer font-medium transition-all"><span>Cart</span><img class="group-hover:[filter:_invert(100%)_url('./assets/svgs/filters.svg#mainp_filter')] transition-all" src="./assets/svgs/cart.svg" alt=""></a></li>
       </ul>
     </nav>
-    <app-enroll-button link="https://wa.link/zdxh1a" [hasArrow]="false" bgColor="primary" radius="slight" butText='Enroll' ></app-enroll-button>
+    <app-enroll-button link="/enroll" [hasArrow]="false" bgColor="primary" radius="slight" butText='Enroll' ></app-enroll-button>
   </div>
 <!-- </header> -->
 <!-- <div class="bg-red-200 sticky top-0">some content</div> -->
 <router-outlet></router-outlet>
 </div>
-<a href="https://wa.link/zdxh1a" target="_blank" class="fixed bottom-12 left-12 w-12 h-12 z-10"><img src="./assets/whatsapp_icon.png" class="w-full h-full" alt="Whatsapp icon"></a>
+<a href="https://wa.link/zdxh1a" target="_blank" [class.hidden]="page_type == 'enroll'" class="fixed bottom-12 left-12 w-12 h-12 z-10"><img src="./assets/whatsapp_icon.png" class="w-full h-full" alt="Whatsapp icon"></a>
 <footer [class.hidden]="!landing_page" class="px-8 lg:px-28 bg-mainp py-8 lg:py-10 text-white z-50">
+  <!-- <div>{{page_type}}</div> -->
   <div class="flex flex-col lg:flex-row">
     <div class="lg:w-[400px] lg:flex-grow mb-6">
       <h2 class="font-semibold text-xl">About Mitiget Learning Academy</h2>
@@ -63,7 +63,7 @@
         </li>
         <li class="flex gap-x-4 items-center my-4">
           <img src="./assets/svgs/call.svg" alt="envelope image" class="w-8 h-8 white-icon">
-          <span>+234 916 264 4779 <br/> +234 705 249 0998 <br/> +234 806 719 1062</span>
+          <span>+234 916 264 4779 <br/> +234 808 174 6461 <br/> +234 806 719 1062</span>
         </li>
         <li class="flex gap-x-4 items-center">
           <img src="./assets/svgs/location.svg" alt="envelope image" class="w-8 h-8 white-icon">
@@ -76,23 +76,24 @@
         <ul class="mt-10 list-none">
           <li class="my-5"><a routerLink="/" class="hover:underline cursor-pointer">Home</a></li>
           <li class="my-5"><a routerLink="/about-us" class="hover:underline cursor-pointer">About Us</a></li>
+          <li class="my-5"><a routerLink="/events" class="hover:underline cursor-pointer">Events</a></li>
           <li class="my-5"><a routerLink="/course-catalogue" class="hover:underline cursor-pointer">Course Catalogue</a></li>
           <li class="my-5"><a routerLink="/blogs" class="hover:underline cursor-pointer">Resources</a></li>
           <li class="my-5"><a routerLink="/connect-with-us" class="hover:underline cursor-pointer">Help</a></li>
-          <li class="my-5"><a class="hover:underline cursor-pointer">Cart</a></li>
+          <li class="my-5"><a routerLink="/home/courses" class="hover:underline cursor-pointer">Cart</a></li>
         </ul>
     </div>
-    <!-- <div class="lg:w-[350px] ">
+    <div class="lg:w-[350px] ">
         <h2 class="font-semibold text-xl">Quick Links</h2>
       <ul class="mt-10 list-none">
-        <li class="my-5"><a class="hover:underline cursor-pointer">Enroll</a></li>
-        <li class="my-5"><a class="hover:underline cursor-pointer">Login</a></li>
-        <li class="my-5"><a class="hover:underline cursor-pointer">FAQ</a></li>
-        <li class="my-5"><a class="hover:underline cursor-pointer">Calender</a></li>
-        <li class="my-5"><a class="hover:underline cursor-pointer">Privacy Policy</a></li>
-        <li class="my-5"><a class="hover:underline cursor-pointer">Terms of Service</a></li>
+        <li class="my-5"><a href="enroll" class="hover:underline cursor-pointer">Enroll</a></li>
+        <li class="my-5"><a href="login" class="hover:underline cursor-pointer">Login</a></li>
+        <li class="my-5"><a routerLink="frequently-asked-questions" class="hover:underline cursor-pointer">FAQs</a></li>
+        <li class="my-5"><a href="./assets/Mitiget Training Courses - 2024 Calendar.potx" download class="hover:underline cursor-pointer">Calender</a></li>
+        <li class="my-5"><a routerLink="privacy-policy" class="hover:underline cursor-pointer">Privacy Policy</a></li>
+        <li class="my-5"><a routerLink="terms-and-conditions" class="hover:underline cursor-pointer">Terms of Service</a></li>
       </ul>
-    </div> -->
+    </div>
   </div>
   <hr class="my-6"/>
   <div class="flex flex-wrap gap-x-6">

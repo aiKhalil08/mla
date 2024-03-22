@@ -141,10 +141,7 @@ export class AddCertificateCourseComponent implements OnInit {
 
   setCurrency(currency: string) {
     let input = <HTMLInputElement> document.querySelector('[name="price[currency]"]');
-    // input.value = unit;
-    // this.unit.setValue(currency)
     this.currency.setValue(currency);
-    // input.dispatchEvent(new Event('change', {bubbles: true}));
     this.curFolded = !this.curFolded;
   }
 

@@ -1,5 +1,4 @@
 interface OffshoreCourseItem {
-    code: string,
     title: string,
     sub_overview: string
 };

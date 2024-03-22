@@ -5,6 +5,7 @@ import { DoMoreLinkComponent } from "../links/do-more-link/do-more-link.componen
 import { CertificateCourseItem } from 'src/app/interfaces/certificate-course';
 import { CertificateCourseItemComponent } from '../certificate-course-item/certificate-course-item.component';
 import { CertificateCourseService } from 'src/app/services/certificate-course.service';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
     selector: 'app-certificate-course-list',
@@ -18,15 +19,16 @@ export class CertificateCourseListComponent implements OnInit {
   @Input() count: number | 'all' = 'all';
   course_items: CertificateCourseItem[];
   loaded: boolean = false;
-  constructor (private courseService: CertificateCourseService) {}
+  constructor (private courseService: CertificateCourseService, private cartService: CartService) {}
 
   ngOnInit() {
-    this.courseService.getList(this.count).subscribe({
-      next: (response) => {
-        this.loaded = true;
-        this.course_items = response;
-        console.log(response);
-      },
-    });
-  }
+    // console.log(this.cartService.get_cart());
+      this.courseService.getList(this.count).subscribe({
+        next: (response) => {
+          this.loaded = true;
+          this.course_items = response;
+        },
+      });
+  
+ }
 }

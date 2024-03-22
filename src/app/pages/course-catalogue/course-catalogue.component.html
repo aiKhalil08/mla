@@ -8,55 +8,22 @@
             </div>
         </div>
     </div>
-    <div class="h-[180px] flex justify-center items-center"> <!-- searchbar wrapper -->
+    <!-- searchbar wrapper -->
+    <!-- <div class="h-[180px] flex justify-center items-center"> 
         <div class="w-full max-w-[768px] h-3/5 bg-[#E1E1E1] relative">
-            <input type="text"
-                class="outline-0 w-[90%] p-4 pr-40 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 placeholder:text-sm" placeholder="What do you want to learn?" />
-            <button
-                class="border-0 rounded-full bg-mainp py-4 px-8 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span>Search</span><img class="white-icon w-4 h-4" src="./assets/svgs/search_icon.svg" alt=""></button>
-        </div>
-    </div>
-    <!-- <div class="flex justify-center items-center">
-        <div class="max-w-[900px] p-4">
-            <h3 class="text-2xl font-semibold">Mitiget Learning Academy</h3>
-            <p class="mt-4">
-                Mitiget Learning Academy (MLA) is an arm of Mitiget that provides cutting edge learning interventions and capacity
-                building endeavours for small, medium and large scale enterprises both in public and private sectors in Nigeria and
-                beyond. We provide targeted contents that impact learner’s culture in order to stimulate performance in your
-                organization. Our exceptional approach to learning is innovative, convenient and tailored to help organizations achieve
-                strategic goals. We deliver learning using multi-channels alongside support mechanisms involving our team of experienced
-                trainers and counselors.
-            </p>
+            <input type="text" class="outline-0 w-[90%] p-4 pr-14 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm" placeholder="What do you want to learn?" />
+            <button class="border-0 rounded-full bg-mainp p-4 absolute top-1/2 -translate-y-1/2 right-[5%] text-white flex gap-x-2 items-center"><span class="hidden sm:block">Search</span><img class="white-icon w-4 h-4" src="./assets/svgs/search_icon.svg" alt=""></button>
         </div>
     </div> -->
     <div class="relative p-4 flex items-center justify-center"> <!-- our training courses section -->
         <div class="w-full max-w-[900px] relative">
-            <ul class="flex gap-4 flex-wrap">
-                <li><a [class.border-b-2]="selected == 'cc'" [class.border-mainp]="selected == 'cc'" (click)="select('cc')" routerLink="/course-catalogue/certificate-courses">Certificate Courses</a></li>
-                <li><a [class.border-b-2]="selected == 'ctc'" [class.border-mainp]="selected == 'ctc'" (click)="select('ctc')" routerLink="/course-catalogue/certification-courses">Certification Courses</a></li>
-                <li><a [class.border-b-2]="selected == 'oc'" [class.border-mainp]="selected == 'oc'" (click)="select('oc')" routerLink="/course-catalogue/offshore-courses">Offshore Courses</a></li>
+            <ul class="flex flex-col gap-4 sm:flex-row">
+                <li><a [ngClass]="{'border-b-2': course_type == 'certificate-courses', 'border-mainp': course_type == 'certificate-courses'}" routerLink="/course-catalogue/certificate-courses">Certificate Courses</a></li>
+                <li><a [ngClass]="{'border-b-2': course_type == 'certification-courses', 'border-mainp': course_type == 'certification-courses'}" routerLink="/course-catalogue/certification-courses">Certification Courses</a></li>
+                <li><a [ngClass]="{'border-b-2': course_type == 'offshore-courses', 'border-mainp': course_type == 'offshore-courses'}" routerLink="/course-catalogue/offshore-courses">Offshore Courses</a></li>
             </ul>
-            <h3 class="text-2xl mt-4">{{section_header}}</h3>
+            <h3 class="text-xl mt-4">{{section_header}}</h3>
             <router-outlet></router-outlet>
-            <!-- <div class="w-full flex justify-center">
-                <div class="max-w-[900px] flex gap-4 md:grid md:grid-cols-[repeat(2,_300px)] mt-8 overflow-x-auto lg:grid-cols-[repeat(3,_1fr)]">
-                    <a routerLink="/course/{{course.name}}" routerLinkActive="" *ngFor="let course of courses"
-                        class="min-w-[300px] lg:min-w-0 auto-rows-[1fr] border border-black rounded-xl relative overflow-hidden hover:cursor-pointer px-4 py-6 flex flex-col">
-                        <div class="text-xl">{{course.name}}</div>
-                        <div class="mt-4 flex-grow">{{course.description}}</div>
-                        <div class="mt-4 flex items-center">
-                            <a
-                                class="flex gap-x-2 hover:gap-x-4 hover:text-mainp hover:underline transition-all justify-start items-center">
-                                <span>View course</span><img class="h-3 w-7 text-white" src="./assets/svgs/arrow_right_black.svg"
-                                    alt="" />
-                            </a>
-                            <span class="flex-grow"></span>
-                            <img src="./assets/svgs/cart_pink.svg" class="cursor-pointer" alt="">
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <app-expand-item-link text="View Calender" location=""></app-expand-item-link> -->
         </div>
     </div>
 </main>

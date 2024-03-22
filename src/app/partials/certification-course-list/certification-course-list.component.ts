@@ -25,7 +25,6 @@ export class CertificationCourseListComponent implements OnInit {
       next: (response) => {
         this.loaded = true;
         this.course_items = response;
-        console.log(response);
       },
     });
   }

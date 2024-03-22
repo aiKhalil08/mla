@@ -59,11 +59,11 @@ export class ActionCertificationCourseComponent implements OnInit {
           //   durationUnit: [(<Date>JSON.parse(this.course.date))['duration-unit']],
           //   end: [(<Date>JSON.parse(this.course.date)).end]
           // }),
-          price: this.formBuilder.group({
-            amount: [(<Price>JSON.parse(this.course.price)).amount],
-            currency: [(<Price>JSON.parse(this.course.price)).currency]
-          }),
-          discount: [this.course.discount],
+          // price: this.formBuilder.group({
+          //   amount: [(<Price>JSON.parse(this.course.price)).amount],
+          //   currency: [(<Price>JSON.parse(this.course.price)).currency]
+          // }),
+          // discount: [this.course.discount],
           image: [null],
           // schedule: [null],
         });
@@ -127,9 +127,9 @@ export class ActionCertificationCourseComponent implements OnInit {
     return <FormControl>this.courseGroup.get('date').get('durationUnit');
   }
 
-  get currency() {
-    return <FormControl>this.courseGroup.get('price').get('currency');
-  }
+  // get currency() {
+  //   return <FormControl>this.courseGroup.get('price').get('currency');
+  // }
 
   addObjective() {
     if (this.editable) this.objectives.push(this.formBuilder.control(''));
@@ -161,16 +161,16 @@ export class ActionCertificationCourseComponent implements OnInit {
     }
   }
 
-  setCurrency(currency: string) {
-    if (this.editable) {
-      let input = <HTMLInputElement> document.querySelector('[name="price[currency]"]');
-      // input.value = unit;
-      // this.unit.setValue(currency)
-      this.currency.setValue(currency);
-      // input.dispatchEvent(new Event('change', {bubbles: true}));
-      this.curFolded = !this.curFolded;
-    }
-  }
+  // setCurrency(currency: string) {
+  //   if (this.editable) {
+  //     let input = <HTMLInputElement> document.querySelector('[name="price[currency]"]');
+  //     // input.value = unit;
+  //     // this.unit.setValue(currency)
+  //     this.currency.setValue(currency);
+  //     // input.dispatchEvent(new Event('change', {bubbles: true}));
+  //     this.curFolded = !this.curFolded;
+  //   }
+  // }
 
   handleImageSelect(event: Event, img: HTMLImageElement) {
     if (this.editable) {
@@ -251,7 +251,7 @@ export class ActionCertificationCourseComponent implements OnInit {
   }
 
   onSubmit(form) {
-    if (this.editable) {
+    if (this.editable || !this.submitted) {
       this.submitted = true;
       let formData = new FormData(form);
       this.certificationCourseService.edit(formData, this.course.code).subscribe({

@@ -1,0 +1,12 @@
+<div class="max-w-[500px]">
+
+    <h3 class="mb-6">Trending Courses</h3>
+    <ul class="flex flex-col gap-y-4 justify-evenly">
+        <li *ngFor="let course of courses">
+            <a href="{{get_url(course)}}" class="flex flex-col gap-y-4">
+                <div class="text-mainp">{{course.name.title}} {{course.name.code ? ' - '+course.name.code : ''}}</div>
+                <div class="text-gray-400 text-sm text-right">{{course.type}}</div>
+            </a>
+        </li>
+    </ul>
+</div>

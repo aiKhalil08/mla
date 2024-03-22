@@ -78,7 +78,7 @@ h2 {
 }
 
 h3 {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1.17rem;
 }
 
@@ -87,26 +87,29 @@ h3 {
     margin-bottom: 0px;
 } */
 
-main {
-    /* background-color: red; */
-}
+/* main {
+    
+} */
 
 main.landing {
     /* position: relative; */
     /* top: 65px; */
     margin-top: 65px;
+    min-height: calc(100vh - 65px);
 }
 
 main.portal {
     /* position: relative; */
     margin-top: 103px;
+    min-height: calc(100vh - 103px);
+    /* */
 }
 
 main.portal > form {
     max-width: 500px;
 }
 
-.loader {
+/* .loader {
     margin: 24px 0;
   width: 50px;
   --b: 8px; 
@@ -120,10 +123,97 @@ main.portal > form {
   -webkit-mask-composite: destination-in;
           mask-composite: intersect;
   animation:l4 1s infinite steps(10);
-}
+} */
 
 /* HTML: <div class="loader"></div> */
-.submit-loader {
+.loader {
+    width: 40px;
+    aspect-ratio: 1.154;
+    --_g: no-repeat radial-gradient(farthest-side,#DD127B 90%,#0000);
+    background: 
+      var(--_g) 50%  0,
+      var(--_g) 0    100%,
+      var(--_g) 100% 100%;
+    background-size: 35% calc(35%*1.154);
+    animation: l16 1s infinite;
+  }
+  @keyframes l16{ 
+      50%,100% {background-position: 100% 100%,50% 0,0 100%} 
+  }
+
+
+  /* HTML: <div class="loader"></div> */
+/* .list-loader {
+    width: 30px;
+    aspect-ratio: 1;
+    --c: linear-gradient(#DD127B 0 0);
+    --r1: radial-gradient(farthest-side at bottom,#DD127B 93%,#0000);
+    --r2: radial-gradient(farthest-side at top   ,#DD127B 93%,#0000);
+    background: 
+      var(--c) ,var(--r1),var(--r2),
+      var(--c) ,var(--r1),var(--r2),
+      var(--c) ,var(--r1),var(--r2);
+    background-repeat: no-repeat;
+    animation: l1 1s infinite alternate;
+  }
+  @keyframes l1 {
+    0%,10% {
+      background-size: 8px 0,8px 4px,8px 4px;
+      background-position: 0 50%,0 calc(50% - 2px),0 calc(50% + 2px),50% 50%,50% calc(50% - 2px),50% calc(50% + 2px),100% 50%,100% calc(50% - 2px),100% calc(50% + 2px);
+   }
+   90%,100% {
+      background-size: 8px 100%,8px 4px, 8px 4px;
+      background-position: 0 50%,0 -2px,0 calc(100% + 2px),50% 50%,50% -2px,50% calc(100% + 2px),100% 50%,100% -2px,100% calc(100% + 2px);
+   }
+  } */
+
+
+  .list-loader {
+    width: 3px;
+    height: 3px;
+    display: inline-block;
+    margin: 10px auto;
+    position: relative;
+    border-radius: 4px;
+    color: #DD127B;
+    background: currentColor;
+    box-sizing: border-box;
+    animation: animloader 0.3s 0.3s linear infinite alternate;
+  }
+  .list-loader::after,
+  .list-loader::before {
+    content: '';  
+    box-sizing: border-box;
+    width: 3px;
+    height: 3px;
+    border-radius: 4px;
+    background: currentColor;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10px;
+    animation: animloader 0.3s 0.45s linear infinite alternate;
+  }
+  .list-loader::after {
+      top: -10px;
+      animation-delay: 0s;
+  }
+  
+  @keyframes animloader {
+      0% { width: 3px }
+      100% { width: 30px}
+  }
+
+
+  /* input, label {font-size: 14px;} */
+
+  /* .list-loader.small {
+    width: 20px;
+  } */
+
+
+/* HTML: <div class="loader"></div> */
+/* .submit-loader {
     width: 16px;
     padding: 8px;
     aspect-ratio: 1;
@@ -137,7 +227,30 @@ main.portal > form {
     -webkit-mask-composite: source-out;
     mask-composite: subtract;
     animation: l3 1s infinite linear;
-}
+} */
+
+.submit-loader {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border-top: 3px solid #FFF;
+    border-right: 3px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  .submit-loader.pink {
+    border-top: 3px solid #DD127B;
+  }
+  
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
 
 @keyframes l3 {
     to {
@@ -157,9 +270,9 @@ main.portal > form {
 @media screen and (min-width: 1024px) {
     main.landing {
         margin-top: 0;
+        min-height: calc(100vh - 185px);
         /* background-color: yellow; */
         /* margin-top: 0px; */
-        /* min-height: calc(100vh - 185px); */
     }
 }
 
@@ -181,4 +294,102 @@ main.portal > form {
 
 .white-icon {
     filter: invert(100%);
+}
+
+
+
+[id*='slide'] {
+    /* padding: 400px; */
+    transition: 2s;
+}
+
+#left-slide.first-state [id*='paragraph'], #left-slide.first-state #button {
+    transition: 2s;
+    opacity: 0;
+}
+#left-slide.first-state [id*='paragraph'] {transform: translateY(1000%);}
+
+#left-slide.first-state.first-visible [id*='paragraph'], #left-slide.first-state.first-visible #button {
+    transform: translateY(0);
+    opacity: 1;
+}
+/* #left-slide.first-state.first-visible #first-paragraph {
+    transition-delay: 1s;
+} */
+#left-slide.first-state.first-visible #second-paragraph {
+    transition-delay: 1s;
+}
+#left-slide.first-state.first-visible #button {
+    transition-delay: 2.5s;
+}
+
+.custom-hidden {
+    transition-delay: 4.5s;
+}
+.custom-visible {
+    transition-delay: 4.5s;
+}
+
+
+#left-slide.custom-hidden {
+    transform: translateX(-100%);
+}
+#left-slide.custom-visible {
+    transform: translateX(0);
+}
+#right-slide.custom-hidden {
+    transform: translateX(0);
+}
+#right-slide.custom-visible {
+    transform: translateX(-100%);
+}
+
+
+
+.custom-hidden [id*='paragraph'], .custom-hidden #button {
+    transition: 2s;
+    opacity: 0;
+    pointer-events: none;
+}
+.custom-hidden [id*='paragraph'] {
+    transform: translateY(1000%);
+}
+
+.custom-hidden #first-paragraph {
+    transition-delay: 3.5s;
+}
+.custom-hidden #second-paragraph {
+    transition-delay: 2.5s;
+}
+.custom-hidden #button {
+    transition-delay: 1s;
+}
+
+
+
+
+.custom-visible [id*='paragraph'], .custom-visible #button {
+    transition: 2s;
+    opacity: 1;
+}
+.custom-visible [id*='paragraph'] {transform: translateY(0);}
+
+.custom-visible #first-paragraph {
+    transition-delay: 6s;
+}
+.custom-visible #second-paragraph {
+    transition-delay: 7s;
+}
+.custom-visible #button {
+    transition-delay: 8.5s;
+}
+
+.bubble::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: calc(50% - 8px);
+    border-width: 8px;
+    border-style: solid;
+    border-color: rgb(221 18 123 / 0.8) transparent transparent transparent;
 }

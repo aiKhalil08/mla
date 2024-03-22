@@ -1,4 +1,4 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !blog, 'place-items-center': !blog}">
     <div class="loader" [class.hidden]="blog"></div>
     <div *ngIf="blog" class="relative">
         <h3 >{{blog.heading}}</h3>
@@ -16,7 +16,7 @@
                 <textarea [readonly]="!editable" type="text" rows="6" name="content" id="blog-content" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="content"></textarea>
             </div>
             <div class="flex flex-col gap-y-2 w-max">
-                <label for="blog-image" class="text-mainp text-[15px]">Blog Image</label>
+                <label for="blog-image" (click)="editable || false" class="text-mainp text-[15px]">Blog Image</label>
                 <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="blog-image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
                     <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">

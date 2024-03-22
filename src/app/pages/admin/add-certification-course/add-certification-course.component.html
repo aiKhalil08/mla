@@ -1,6 +1,6 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
     <h3>New Certification Training Course</h3>
-    <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="courseGroup" (ngSubmit)="onSubmit(form)" enctype="multipart/form-data">
+    <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="courseGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
         <div class="flex flex-col gap-y-2 w-max">
             <label for="course-code" class="text-mainp text-[15px]">Course Code</label>
             <input type="text" name="code" id="course-code" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="code">
@@ -79,9 +79,9 @@
                 <input type="date" name="course-duration" id="course-duration" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="Duration">
             </div>
         </div> -->
-        <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
+        <!-- <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
             <label for="course-price" class="text-mainp text-[15px]">Course Price</label>
-            <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
+            <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
                 <input type="text" name="price[amount]" id="course-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
                 <div class="relative w-[120px] h-[38px] self-stretch">
                     <div (click)="curFolded = !curFolded"
@@ -104,7 +104,7 @@
                 <input type="text" name="discount" id="course-discount" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="discount">
                 <span class="min-w-6">%</span>
             </div>
-        </div>
+        </div> -->
         <!-- <div class="flex flex-col gap-y-2 w-max">
             <label for="course-schedule" class="text-mainp text-[15px]">Course Schedule</label>
             <input #schedulePicker accept=".pdf" (change)="handleScheduleSelect($event, coursePreview)" type="file" name="schedule" id="course-schedule" class="hidden" formControlName="schedule">

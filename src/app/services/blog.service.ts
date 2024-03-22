@@ -8,63 +8,33 @@ import { BlogItem, Blog, BlogPost } from '../interfaces/blog';
 })
 export class BlogService {
 
-  constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
+  constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) {}
 
   add(blog: FormData) {
-    let url = `${this.domain_name}/blog/create`;
-    return this.http.post(url, blog, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    let url = `${this.domain_name}/admin/blog/create`;
+    return this.http.post(url, blog);
   }
 
   edit(blog: FormData, heading: string) {
-    let url = `${this.domain_name}/blog/${heading}/edit`;
-    return this.http.post(url, blog, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    let url = `${this.domain_name}/admin/blog/${heading}/edit`;
+    return this.http.post(url, blog);
   }
 
   delete(heading: string) {
-    let url = `${this.domain_name}/blog/${heading}/delete`;
-    return <Observable<{status: string}>>this.http.delete(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    let url = `${this.domain_name}/admin/blog/${heading}/delete`;
+    return <Observable<{status: string}>>this.http.delete(url);
   }
   getList(itemsCount: number | 'all') {
     let url = `${this.domain_name}/blogs/${itemsCount}`;
-    return <Observable<BlogItem[]>> this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<BlogItem[]>> this.http.get(url);
   }
   get(heading: string) {
     let url = `${this.domain_name}/blog/${heading}`;
-    return <Observable<Blog>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<Blog>>this.http.get(url);
   }
 
   getPost(heading: string) {
     let url = `${this.domain_name}/blog/${heading}/post`;
-    return <Observable<BlogPost>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<BlogPost>>this.http.get(url);
   }
 }

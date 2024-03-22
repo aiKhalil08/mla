@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EnrollButtonComponent } from "../../partials/buttons/enroll-button/enroll-button.component";
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -33,57 +33,38 @@ interface Resource {
     styleUrls: ['./home.component.css'],
     imports: [CommonModule, EnrollButtonComponent, RouterLink, RouterLinkActive, ExpandItemLinkComponent, DoMoreLinkComponent, CertificateCourseListComponent, CertificationCourseListComponent, OffshoreCourseListComponent, BlogListComponent, EventListComponent, TestimonialListComponent]
 })
-export class HomeComponent {
-    events: Event[] = [
-    {
-        "name": "Cybersecurity 101",
-        "date": {"month": "JAN", "start": 9, "end": 10},
-        "img_src": "./assets/images/events/cybersecurity_101.png"
-    },
-    {
-        "name": "Cybersecurity 102",
-        "date": {"month": "JAN", "start": 9, "end": 10},
-        "img_src": "./assets/images/events/cybersecurity_102.png"
-    },
-    {
-        "name": "Cybersecurity 103",
-        "date": {"month": "JAN", "start": 9, "end": 10},
-        "img_src": "./assets/images/events/cybersecurity_103.png"
+export class HomeComponent implements OnInit {
+    no_events: boolean = false;
+
+
+    
+    ngOnInit(): void {
+        let left_slide = document.querySelector('#left-slide');
+        let right_slide = document.querySelector('#right-slide');
+        setTimeout(()=> {
+            left_slide.classList.add('first-visible');
+        }, 0);
+        setTimeout(() => {
+            left_slide.classList.remove('first-state');
+            left_slide.classList.remove('first-visible');
+            left_slide.classList.add('custom-hidden');
+            right_slide.classList.remove('custom-hidden');
+            right_slide.classList.add('custom-visible');
+            setInterval(() => {
+                left_slide.classList.toggle('custom-hidden');
+                left_slide.classList.toggle('custom-visible');
+                right_slide.classList.toggle('custom-hidden');
+                right_slide.classList.toggle('custom-visible');
+            }, 19000);
+        }, 11000);
+    }   
+
+    // alert(p) {
+    //     window.alert(p)
+    // }
+
+    handle_no_events() {
+        console.log('no evetns emitted')
+        this.no_events = true;
     }
-    ];
-    courses: Course[] = [
-    {
-        "name": "Cybersecurity 101",
-        "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-    },
-    {
-        "name": "Python Programming",
-        "description": "Learn the foundational principles of pyrhon programming. Here, you’ll be exposed to developing dynamic applications for business"
-    },
-    {
-        "name": "Microsoft Excel",
-        "description": "Learn how to create spreadsheeets in Excel, format and print workbooks, create basic calculation formulas and visualize data and draw charts."
-    },
-    {
-        "name": "Microsoft Excel",
-        "description": "Learn how to create spreadsheeets in Excel, format and print workbooks, create basic calculation formulas and visualize data and draw charts."
-    }
-    ];
-    resources: Resource[] = [
-    {
-        "topic": "Mitiget Learning Academy Set To Empower 1000 Youths",
-        "img_src": "./assets/images/resources/resource_1.png",
-        "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-    },
-    {
-        "topic": "Mitiget Learning Academy Set To Empower 1000 Youths",
-        "img_src": "./assets/images/resources/resource_1.png",
-        "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-    },
-    {
-        "topic": "Mitiget Learning Academy Set To Empower 1000 Youths",
-        "img_src": "./assets/images/resources/resource_1.png",
-        "description": "Learn the working components of hardware, software, operating systems, and computer networks, and different types of malware."
-    }
-    ];
 }

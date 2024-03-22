@@ -12,12 +12,17 @@ export class CoursesService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   get() {
-    let url = `${this.domain_name}/courses`;
-    return <Observable<{'certificate-courses': CertificateCourseItem[], "certification-courses": CertificationCourseItem[], "offshore-courses": OffshoreCourseItem[]}>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    let url = `${this.domain_name}/admin/courses`;
+    return <Observable<{'certificate-courses': CertificateCourseItem[], "certification-courses": CertificationCourseItem[], "offshore-courses": OffshoreCourseItem[]}>>this.http.get(url);
+  }
+
+  get_course_names(type: string) {
+    let url = `${this.domain_name}/${type.replace(' ', '-').toLowerCase()}/names`;
+    return <Observable<{name: string}[]>>this.http.get(url);
+  }
+
+  get_trending_courses() {
+    let url = `${this.domain_name}/student/trending-courses`;
+    return <Observable<{courses: {name: {title: string, code?: string}, type: string}[]}>>this.http.get(url);
   }
 }

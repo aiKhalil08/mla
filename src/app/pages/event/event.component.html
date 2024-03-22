@@ -1,4 +1,4 @@
-<main class="landing">
+<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
     <div class="loader" [class.hidden]="loaded"></div>
     <div *ngIf="event">
         <div class="max-w-[900px] m-auto p-4 mt-4">
@@ -19,14 +19,9 @@
                     <div>Start Date: {{start}}</div>
                     <div>End Date: {{end}}</div>
                     <div>Event Type: <span class="capitalize">{{event.type}}</span></div>
-                    <div class="bg-mainp p-4 flex md:flex-row flex-col gap-4">
-                        <p class="text-white md:grow">Would you like to be a part of this event or make an enquiry?</p>
-                        <!-- <div class="flex-grow"></div> -->
-                        <a target="_blank" href="https://wa.me/2349162644779/?text={{message_text}}" class="text-mainp max-w-max px-6 py-2 font-[500] flex justify-center items-center bg-white borders border-mainp rounded">
-                            Contact us
-                        </a>
-                        <!-- <app-enroll-button [hasArrow]="false" bgColor="white" location="download_brochure"
-                            butText='Download Brochure'></app-enroll-button> -->
+                    <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
+                        <app-contact-us-button text="Contact Us" [message]="message_text" theme="pink"></app-contact-us-button>
+                        <app-watchlist-button type="button" [watched]="watched" [event]="{name: event.name}"></app-watchlist-button>
                     </div>
                     <!-- <div>Event Price: {{event.pr}}</div> -->
                     <!-- <span>Share Post:</span>

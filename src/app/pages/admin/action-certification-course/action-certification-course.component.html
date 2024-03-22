@@ -1,4 +1,4 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !course, 'place-items-center': !course}">
     <div class="loader" [class.hidden]="course"></div>
     <div *ngIf="course" class="relative">
         <h3 >{{course.code}}</h3>
@@ -85,9 +85,9 @@
                     <input [readonly]="!editable" type="date" name="course-duration" id="course-duration" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="Duration">
                 </div>
             </div> -->
-            <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
+            <!-- <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
                 <label for="course-price" class="text-mainp text-[15px]">Course Price</label>
-                <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
+                <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
                     <input [readonly]="!editable" type="text" name="price[amount]" id="course-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
                     <div class="relative w-[120px] h-[38px] self-stretch">
                         <div (click)="editable && curFolded = !curFolded"
@@ -110,7 +110,7 @@
                     <input [readonly]="!editable" type="text" name="discount" id="course-discount" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="discount">
                     <span class="min-w-6">%</span>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="flex flex-col gap-y-2 w-max">
                 <label for="course-schedule" class="text-mainp text-[15px]">Course Schedule</label>
                 <input [readonly]="!editable" #schedulePicker accept=".pdf" (change)="handleScheduleSelect($event, schedulePreview)" type="file" name="schedule" id="course-schedule" class="hidden" formControlName="schedule">
@@ -126,7 +126,7 @@
                 </div>
             </div> -->
             <div class="flex flex-col gap-y-2 w-max">
-                <label for="course-image" class="text-mainp text-[15px]">Course Image</label>
+                <label for="course-image" (click)="editable || false" class="text-mainp text-[15px]">Course Image</label>
                 <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="course-image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
                     <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-                <button [disabled]="!editable" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="edited"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
+                <button [disabled]="!editable || edited" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Edited' : 'Edit'}}</div></button>
                 <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/courses"></app-redirect-button>
             </div>
         </form>

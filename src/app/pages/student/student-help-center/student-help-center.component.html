@@ -1,0 +1,30 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
+    <div id="ran" class="max-w-[750px] mx-auto">
+        <h3 class="lg:ml-4">Frequently Asked Questions</h3>
+        <div id="container" class="flex flex-col gap-y-8 mt-6 lg:ml-4"><!-- container -->
+            <div>
+                <app-faq-list [darker]="true" class="mt-4 flex flex-col gap-y-4"></app-faq-list><!-- main -->
+                <ul class="mt-8 flex flex-wrap gap-6"><!-- contact info -->
+                    <li class="flex gap-x-4 items-center my-4">
+                        <img src="./assets/svgs/call.svg" alt="envelope image" class="w-5 h-5">
+                        <span>+234 916 264 4779, +234 808 174 6461, +234 806 719 1062</span>
+                    </li>
+                    <li class="flex gap-x-4 items-center">
+                        <img src="./assets/svgs/sms.svg" alt="envelope image" class="w-5 h-5">
+                        <span><a href="" class="hover:underline cursor-pointer">mla@mitiget.com.ng</a></span>
+                    </li>
+                    <li class="flex gap-x-4 items-center">
+                        <img src="./assets/svgs/location.svg" alt="envelope image" class="w-5 h-5">
+                        <span>Oluwatobi House, 5th floor Front Wing, 73 Allen Avenue, Ikeja, Lagos</span>
+                    </li>
+                    </ul>
+                    <app-contact-us-form></app-contact-us-form>
+            </div>
+    
+            <div id="divider" class="w-full h-[1px] bg-slate-400"></div><!-- divider -->
+    
+            <app-trending-courses></app-trending-courses><!-- aside -->
+            
+        </div>
+    </div>
+</main>

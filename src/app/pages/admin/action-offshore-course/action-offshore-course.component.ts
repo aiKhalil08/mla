@@ -263,7 +263,7 @@ export class ActionOffshoreCourseComponent implements OnInit {
   }
 
   onSubmit(form) {
-    if (this.editable) {
+    if (this.editable || !this.submitted) {
       this.submitted = true;
       let formData = new FormData(form);
       this.offshoreCourseService.edit(formData, this.course.title).subscribe({

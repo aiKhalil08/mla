@@ -21,13 +21,10 @@ export class BlogListComponent implements OnInit {
   constructor (private blogService: BlogService) {}
 
   ngOnInit() {
-    // console.log('we here')
     this.blogService.getList(this.count).subscribe({
       next: (response) => {
-        console.log(response)
         this.loaded = true;
         this.blog_posts = response;
-        console.log(response);
       },
     });
   }

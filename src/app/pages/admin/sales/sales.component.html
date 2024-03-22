@@ -1,0 +1,31 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <div class="flex gap-x-4 items-center"><h3>Sales</h3> <div>Total Sales: {{formatCurrency(total_sales)}}</div></div>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">S/N</th>
+                            <th class="tc">Student</th>
+                            <th class="tc">Price</th>
+                            <th class="tc">Date</th>
+                            <th class="tc">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let sale of sales; index as i">
+                            <td class="tc">{{i + 1}}</td>
+                            <td class="tc">{{sale.student}}</td>
+                            <td class="tc">{{formatCurrency(sale.price)}}</td>
+                            <td class="tc">{{formatDate(sale.date)}}</td>
+                            <td class="tc"><app-redirect-button theme="pink" text="View" location="/admin/sale/{{encryptId(sale.id)}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add Sale" location="/admin/add-sale"></app-redirect-button>
+        </div>
+    </div>
+</main>

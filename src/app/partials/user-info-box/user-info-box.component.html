@@ -1,5 +1,14 @@
-<div class="cursor-pointer flex rounded-md min p-2 mx-auto items-center border-2 w-max" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header', 'text-white': parent == 'sidebar', 'text-mainp': parent == 'header'}">
-    <div class="rounded-full border-2 overflow-clip w-8 h-8 grid place-items-center" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header'}"><img src="./assets/svgs/avatar.svg" [ngClass]="{'white-icon': parent == 'sidebar', 'pink-icon': parent == 'header'}" alt=""></div>
-    <div class="ml-2">{{text}}</div>
-    <div class="ml-4"><img class="pink-icon" src="./assets/svgs/chevron_down.svg" alt=""></div>
+<div class="relative w-max mx-auto">
+    <div (click)="toggle_dropdown()" class="cursor-pointer flex rounded-md min p-2 mx-auto items-center border w-max" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header', 'text-white': parent == 'sidebar', 'text-mainp': parent == 'header', 'rounded-b-none': dropdown_shown && parent == 'header',}">
+        <!-- <div class="rounded-full border overflow-clip w-8 h-8 grid place-items-center" [ngClass]="{'border-white': parent == 'sidebar', 'border-mainp': parent == 'header'}"><img src="{{user.image_url ? user.image_url : './assets/svgs/avatar.svg'}}" [ngClass]="{'white-icon': !user.image_url && parent == 'sidebar', 'pink-icon': !user.image_url && parent == 'header'}" class="object-cover" alt=""></div> -->
+        <img src="{{user.image_url ? user.image_url : './assets/images/avatar.jpg'}}"  class="w-8 h-8 rounded-full object-cover" alt="">
+        <div class="ml-2 text-sm">{{name}}</div>
+        <div class="ml-2 h-3 w-3"><img [ngClass]="{'pink-icon': parent == 'header', 'white-icon': parent == 'sidebar'}" src="./assets/svgs/chevron_down.svg" alt=""></div>
+    </div>
+    <div class="absolute w-full z-20 text-sm overflow-hidden ease-out duration-150" [ngClass]="{'border-x': dropdown_shown, 'border-mainp': parent == 'header', 'border-white': parent == 'sidebar', 'bg-white': parent == 'header', 'bg-mainp': parent == 'sidebar', 'top-[92%]': dropdown_shown && parent == 'header', 'top-[98%]': !dropdown_shown && parent == 'header', 'bottom-[92%]': dropdown_shown && parent == 'sidebar', 'bottom-[98%]': !dropdown_shown && parent == 'sidebar', 'rounded-b-md': parent == 'header', 'rounded-t-md': parent == 'sidebar', 'max-h-0': !dropdown_shown, 'max-h-[80px]': dropdown_shown, 'border-b': dropdown_shown && parent == 'header', 'border-t': dropdown_shown && parent == 'sidebar'}">
+        <ul class="list-none flex flex-col gap-y-2 p-4">
+            <li *ngIf="user.type == 'student'"><a routerLink="/home/profile" class="cursor-pointer">Profile</a></li>
+            <li><span class="cursor-pointer" (click)="onClick()">Logout</span></li>
+        </ul>
+    </div>
 </div>

@@ -1,0 +1,4 @@
+a:not(li:last-child a) {
+    border-bottom: 1px solid rgb(148, 163, 184);
+    padding-bottom: 1rem;
+}

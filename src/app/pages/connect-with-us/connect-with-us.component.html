@@ -15,7 +15,7 @@
                     <img src="./assets/svgs/chat.svg" class="pink-icon" alt="">
                 </div>
                 <p class="font-semibold text-lg text-center mt-4">Quick Chat</p>
-                <p class="text-sm text-center mt-4">+234 806 719 1062</p>
+                <p class="text-sm text-center mt-4">+234 916 264 4779</p>
                 <div class="absolute bg-mainp bottom-0 w-full p-4 text-white flex gap-x-2 group-hover:gap-x-4 transition-all justify-center items-center">
                     <span>Start chat</span><img class="h-3 w-7 text-white" src="./assets/svgs/arrow_right_white.svg" alt="" />
                 </div>
@@ -25,7 +25,7 @@
                     <img src="./assets/svgs/chat.svg" class="pink-icon" alt="">
                 </div>
                 <p class="font-semibold text-lg text-center mt-4">Help & Support</p>
-                <p class="text-sm text-center mt-4">info@mitiget.com</p>
+                <p class="text-sm text-center mt-4">mla@mitiget.com.ng</p>
                 <div class="absolute bg-mainp bottom-0 w-full p-4 text-white flex gap-x-2 group-hover:gap-x-4 transition-all justify-center items-center">
                     <span>Contact support</span><img class="h-3 w-7 text-white" src="./assets/svgs/arrow_right_white.svg" alt="" />
                 </div>
@@ -35,31 +35,15 @@
                     <img src="./assets/svgs/chat.svg" class="pink-icon" alt="">
                 </div>
                 <p class="font-semibold text-lg text-center mt-4">Corporate Services</p>
-                <p class="text-sm text-center mt-4">info@mitiget.com</p>
+                <p class="text-sm text-center mt-4">+234 808 174 6461</p>
                 <div class="absolute bg-mainp bottom-0 w-full p-4 text-white flex gap-x-2 group-hover:gap-x-4 transition-all justify-center items-center">
                     <span class="">Contact corporate services</span><img class="h-3 w-7 text-white" src="./assets/svgs/arrow_right_white.svg" alt="" />
                 </div>
             </div>
         </div>
     </div>
-    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- send your request wrapper -->
-        <div class="w-full max-w-[768px] flex flex-col items-center">
-            <h3 class="text-2xl">Send Us Your Request</h3>
-            <form action="" class="w-full max-w-[768px] flex flex-col mt-4 gap-y-4">
-                <div class="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-x-4">
-                    <input type="text" class="p-4 outline-none border w-full" placeholder="First Name">
-                    <input type="text" class="p-4 outline-none border w-full" placeholder="Last Name">
-                    <input type="text" class="p-4 outline-none border w-full" placeholder="Phone Number">
-                    <input type="text" class="p-4 outline-none border w-full" placeholder="Email Address">
-                </div>
-                <textarea name="" id="" cols="30" rows="10"
-                    class="resize-none border outline-none p-4">Your message</textarea>
-                <div class="flex justify-center">
-                    <app-enroll-button [hasArrow]="false" bgColor="primary" location="submit_talk"
-                        butText='SEND NOW'></app-enroll-button>
-                </div>
-            </form>
-        </div>
+    <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- talk to advisor wrapper -->
+        <app-contact-us-form></app-contact-us-form>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- our locations wrapper -->
         <div class="w-full max-w-[950px] relative">

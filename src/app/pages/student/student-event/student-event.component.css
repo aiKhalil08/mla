@@ -1,0 +1,15 @@
+@media screen and (min-width: 1450px) {
+    #container {
+        display: grid;
+        grid-template-columns: minmax(auto, 720px) auto 1fr;   
+    }
+
+    #divider {
+        height: 100%;
+        width: 1px;
+        margin: 0 2rem;
+    }
+    #ran {
+        max-width: 1300px;
+    }
+}

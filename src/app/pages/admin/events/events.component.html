@@ -1,8 +1,8 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] min-h-[calc(100vh-103px)] p-4">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
     <div class="loader" [class.hidden]="loaded"></div>
     <div *ngIf="loaded">
         <div class="relative flex flex-col gap-y-6">
-            <h3>Blog Posts</h3>
+            <h3>Events</h3>
             <div class="max-w-full overflow-auto">
                 <table class="text-sm text-center border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">

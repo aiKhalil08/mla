@@ -1,0 +1,96 @@
+<main class=" bg-[#F2F2F2] min-h-dvh flex items-center justify-center p-4">
+    <div *ngIf="loading_affiliate_portal" class="loader"></div>
+    <form *ngIf="!loading_affiliate_portal" #form action="" (ngSubmit)="onSubmit(form)" [formGroup]="contactGroup" class="bg-white shadow-xl max-w-[500px] m-auto w-full p-4">
+        <!-- <div>
+            <label for="referral_code">Do you have a referral code?</label>
+            <input type="text" name="referral_code" placeholder="Input referral code">
+            <button>Apply</button>
+        </div> -->
+
+        <div *ngIf="formError" class="text-red-500 text-sm mb-4">{{formError}}</div>
+
+        <div class="flex flex-col gap-y-4">
+            <div class="flex flex-col gap-y-1">
+                <div class="text-sm text-mainp">Name</div>
+                <div>{{user.name}}</div>
+            </div>
+            <div class="flex flex-col gap-y-1">
+                <div class="text-sm text-mainp">Email</div>
+                <div>{{user.email}}</div>
+            </div>
+            <div class="flex flex-col gap-y-1">
+                <div class="text-sm text-mainp">Course Name</div>
+                <div>{{course_name}}</div>
+            </div>
+            <div class="flex flex-col gap-y-1">
+                <div class="text-sm text-mainp">Course Type</div>
+                <div>{{course_type}}</div>
+            </div>
+        </div>
+
+        <hr class="h-[2px] my-4 bg-slate-500">
+
+        <div class="bg-white mt-4"><!-- referral -->
+            <div class="bg-white shadow-lg p-4 border border-mainp rounded-md">
+                <label for="has_referral" class="flex cursor-pointer items-center">
+                    Do you have a referral code?
+                    <span class="flex-grow"></span>
+                    <input (change)="referral_expanded = !referral_expanded; affiliate_expanded = false" type="radio" name="ref_or_affiliate" value="referral" id="has_referral" formControlName="ref_or_affiliate">
+                </label>
+                <div class="max-h-0 overflow-hidden transition-all" [class.max-h-[800px]]="referral_expanded">
+                    <div class="p-4">
+                        <div>
+                            <div class="flex gap-x-2 w-max items-center">
+                                <input type="text" name="referral_code" id="referral_code" class="p-2 outline-none border border-slate-200 rounded" formControlName="referral_code" placeholder="Enter the referral code">
+                                <button [disabled]="affiliate || !referral_code.value" (click)="referral_code.value && fetch_affiliate(); false;" class="p-2 rounded grid place-items-center border" [ngClass]="{'cursor-not-allowed': !referral_code.value, 'bg-mainp/70': !referral_code.value, 'bg-white': affiliate, 'text-mainp': affiliate, 'border-mainp': affiliate, 'bg-mainp': !affiliate, 'text-white': !affiliate, 'border-transparent': !affiliate}">
+                                    <ng-container *ngIf="fetching_affiliate"><div class="submit-loader"></div></ng-container>
+                                    <ng-container *ngIf="!fetching_affiliate">Apply</ng-container>
+                                </button>
+                            </div>
+                            <div *ngIf="fetch_affiliate_error" class="text-red-500 text-sm mt-2">{{fetch_affiliate_error}}</div>
+                        </div>
+                        <div *ngIf="affiliate" class="text-sm p-4 flex flex-col gap-y-2">
+                            <p>Affiliate name: {{affiliate.name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="h-[2px] my-4 bg-slate-500">
+
+        <div class="bg-white mt-4"><!-- affiliate commission -->
+            <div class="bg-white shadow-lg p-4 border border-mainp rounded-md">
+                <label for="use_affiliate_commission" class="flex cursor-pointer items-center">
+                    Purchase with affiliate commission
+                    <span class="flex-grow"></span>
+                    <input (change)="affiliate_expanded = !affiliate_expanded; referral_expanded = false" type="radio" name="ref_or_affiliate" value="affiliate" id="use_affiliate_commission" formControlName="ref_or_affiliate">
+                </label>
+                <div class="max-h-0 overflow-hidden transition-all" [class.max-h-[800px]]="affiliate_expanded">
+                    <div class="p-4 text-sm">
+                        <div *ngIf="not_affiliate">Become an affiliate and start earning commission!</div>
+                        <div *ngIf="affiliate_portal">
+                            Buy course with your earned commission. If your earned commission is not enough to buy the course, you will have to balance up.
+                            <div class="mt-4">Your withdrawable commission is: {{formatCurrency(withdrawable_amount)}}</div>
+                            <div class="mt-4 w-full relative flex items-center gap-x-2">
+                                <span>₦</span>
+                                <input (blur)="validatePayoutAmount()" type="text" name="payout_amount" id="payout_amount" class="p-2 outline-none border border-slate-200 rounded h-full grow w-full pr-14" formControlName="payout_amount" placeholder="Enter amount">
+                                <span class="cursor-pointer absolute right-4 text-mainp text-sm" (click)="payout_amount.setValue(withdrawable_amount)">Max</span>
+                            </div>
+                            <div *ngIf="payout_amount_error" class="text-red-500">{{payout_amount_error}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end gap-x-4 mt-4 items-center">
+            <a id="proceed_link" target="_blank" href="https://wa.me/2349162644779/?text={{message}}" class="hidden">
+                Proceed
+            </a>
+            <button (click)="no_errors || false" class="text-white px-6 py-2 font-[500] gap-x-2 flex justify-center items-center bg-mainp border text-sm border-transparent rounded cursor-pointer">
+                <div class="submit-loader" *ngIf="submitted"></div>
+                Proceed
+            </button>
+            <app-redirect-button theme="white" text="Back" location="/home"></app-redirect-button>
+        </div>
+    </form>
+</main>

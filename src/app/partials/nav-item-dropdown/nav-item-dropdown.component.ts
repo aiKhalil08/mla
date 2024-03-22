@@ -21,7 +21,7 @@ export class NavItemDropdownComponent implements OnInit {
 
     ngOnInit() {
       // console.clear();
-      console.log('navbar instantiated');
+      // console.log('navbar instantiated');
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {
@@ -34,12 +34,12 @@ export class NavItemDropdownComponent implements OnInit {
     }
 
     fold($event : MouseEvent) {
-      console.log('dropdown folded');
+      // console.log('dropdown folded');
       this.folded = true;
     }
 
     unfold($event : MouseEvent) {
-      console.log('dropdown unfolded');
+      // console.log('dropdown unfolded');
       this.folded = false;
     }
 }

@@ -5,6 +5,10 @@ export interface AdminDashboard {
     'events_count': number;
     'blogs_count': number;
     'testimonials_count': number;
+    'requests_count': {
+      'all': number;
+      'unread': number;
+    };
     'students': number;
     'affiliates': number;
     'tutors': number;

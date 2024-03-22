@@ -1,0 +1,7 @@
+<div [ngClass]="{'grid': !cart || cart.length == 0, 'place-items-center': !cart || cart.length == 0, 'h-[500px]': !cart || cart.length == 0}">
+    <div class="loader" [class.hidden]="cart"></div>
+    <div *ngIf="cart && cart.length > 0" id="container" class="max-w-max mx-auto flex flex-col gap-4 md:gap-8 md:grid grid-cols-[repeat(2,_minmax(300px,_1fr))] auto-rows-[minmax(max-content,_1fr)]">
+        <app-cart-item *ngFor="let course of cart" [course]="course"></app-cart-item>
+    </div>
+    <app-empty-content message="Your cart is empty" *ngIf="cart && cart.length == 0"></app-empty-content>
+</div>

@@ -17,23 +17,17 @@ export class EnrollButtonComponent implements OnInit {
   @Input() location!: string;
   @Input() link!: string;
   @Input() butText!: string;
+  @Input() id: string | '' = '';
+
   
 
   constructor(private router: Router){}
 
   ngOnInit(): void {
-    // console.log(this.butText, this.link);
-    // if (this.link) {
-    //   console.log(this.butText, 'inside link setter')
-    //   let a = document.querySelector('a');
-    //   console.log('present link', a.href)
-    //   a.href = this.link;
-    //   console.log('after setting link', a.href)
-    // }
   }
 
   navigate() {
-    if (this.link) window.open(this.link, '_blank')
+    if (this.link) window.location.href = this.link;
     else this.router.navigate([this.location]);
   }
 }

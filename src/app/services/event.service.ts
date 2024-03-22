@@ -11,7 +11,7 @@ export class EventService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private http: HttpClient) { }
 
   add(event: FormData) {
-    let url = `${this.domain_name}/event/create`;
+    let url = `${this.domain_name}/admin/event/create`;
     return this.http.post(url, event, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
@@ -21,7 +21,7 @@ export class EventService {
   }
 
   edit(event: FormData, heading: string) {
-    let url = `${this.domain_name}/event/${heading}/edit`;
+    let url = `${this.domain_name}/admin/event/${heading}/edit`;
     return this.http.post(url, event, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',
@@ -31,7 +31,7 @@ export class EventService {
   }
 
   delete(heading: string) {
-    let url = `${this.domain_name}/event/${heading}/delete`;
+    let url = `${this.domain_name}/admin/event/${heading}/delete`;
     return <Observable<{status: string}>>this.http.delete(url, {
       headers: new HttpHeaders({
         // 'Origin': 'http://localhost:4200',

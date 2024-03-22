@@ -1,0 +1,10 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded" class="flex flex-col gap-y-4 text-sm cursor-pointer bg-white p-4 shadow-md">
+        <div><b>Sender:</b><br>{{name}}</div>
+        <div><b>Message:</b><br>{{request.message}}...</div>
+        <div><b>Date sent:</b><br>{{date(request.created_at)}}</div>
+        <div><b>Sender's email address:</b><br>{{request.email_address}}</div>
+        <div><b>Sender's phone number:</b><br>{{request.phone_number}}</div>
+    </div>
+</main>
