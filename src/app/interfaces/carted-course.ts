@@ -1,14 +1,14 @@
-interface CartedCourse {
-    code?: string;
-    title: string;
-    image_url: string;
-    modules: string;
-    overview: string;
-    objectives: string;
-    prerequisites: string;
-    attendees: string;
-}
+// interface Course {
+//     code?: string;
+//     title: string;
+//     image_url: string;
+//     modules: string;
+//     overview: string;
+//     objectives: string;
+//     prerequisites: string;
+//     attendees: string;
+// }
 
-interface CartedCourseResponse {status: string, message?: string, course?: CartedCourse}
+// interface FetchCourseResponse {status: string, message?: string, course?: CartedCourse}
 
-export {CartedCourse, CartedCourseResponse};
+// export {CartedCourse, CartedCourseResponse};

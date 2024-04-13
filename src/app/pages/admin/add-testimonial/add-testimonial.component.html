@@ -1,30 +1,48 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
     <h3>New Testimonial</h3>
+
+    <app-report-bar *ngIf="created" message="Testimonial has been added" type="success"></app-report-bar>
+
     <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="testimonialGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="name" class="text-mainp text-[15px]">Name</label>
-            <input type="text" name="name" id="name" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="name">
+        <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+        <div class="flex flex-col gap-y-2">
+            <label for="name" class="text-mainp required">Name</label>
+            <input type="text" name="name" id="name" class="p-2 outline-none border border-slate-200 rounded" formControlName="name">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && name.invalid">{{get_error_message(name)}}</div>
+        </div>
+        <div class="flex flex-col gap-y-2">
+            <label for="company" class="text-mainp optional">Company</label>
+            <input type="text" name="company" id="company" class="p-2 outline-none border border-slate-200 rounded" formControlName="company">
+        </div>
+        <div class="flex flex-col gap-y-2">
+            <label for="designation" class="text-mainp optional">Designation</label>
+            <input type="text" name="designation" id="designation" class="p-2 outline-none border border-slate-200 rounded" formControlName="designation">
         </div>
         <div class="flex flex-col gap-y-2 w-full">
-            <label for="message" class="text-mainp text-[15px]">Message</label>
-            <textarea type="text" rows="6" name="message" id="message" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="message"></textarea>
+            <label for="message" class="text-mainp required">Message</label>
+            <textarea type="text" placeholder="max length 255" maxlength="255" rows="6" name="message" id="message" class="p-2 outline-none border border-slate-200 rounded resize-none placeholder:italic" formControlName="message"></textarea>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && message.invalid">{{get_error_message(message)}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="image" class="text-mainp text-[15px]">Image</label>
+        <div class="flex flex-col gap-y-2">
+            <label for="image" class="text-mainp optional">Image</label>
             <input #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="image" class="hidden" formControlName="image">
-            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
+            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
                 <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
                     <div class="">
                         <img src="./assets/svgs/upload.svg" class="gray-icon m-auto" alt="">
-                        <p class="text-gray-400 text-sm m-auto mt-2">Click to upload image</p>
-                        <p class="text-gray-400 text-sm m-auto mt-2 text-center">(.png, .jpg)</p>
+                        <p class="text-gray-400 m-auto mt-2">Click to upload image</p>
+                        <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
                     </div>
                 </div>
                 <img class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
             </div>
         </div>
         <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-            <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Created' : 'Create'}}</div></button>
+            <button [disabled]="created || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{created ? 'Created' : 'Create'}}</div>
+            </button>
             <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
         </div>
     </form>

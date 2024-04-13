@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-import { Cart } from '../interfaces/cart';
-import { CartedCourseResponse } from '../interfaces/carted-course';
+// import { Cart } from '../interfaces/cart';
+// import { CartedCourseResponse } from '../interfaces/carted-course';
+import { Courses, FetchCourseResponse } from '../interfaces/courses';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,28 @@ export class CartService {
   constructor(private http: HttpClient, @Inject('DOMAIN_NAME') private domain_name, private storageService: StorageService) { }
 
 
-  cart_course(course: {identity: string, type: string}) {
+  cart_course(course: {identity: string, category: string}) {
     let url = `${this.domain_name}/student/cart`;
     let form = new FormData();
-    form.append('type', course.type);
+    form.append('category', course.category);
 
-    if (course.type == 'certificate-course' || course.type == 'certification-course') {
+    if (course.category == 'certificate-course' || course.category == 'certification-course') {
       form.append('course_code', course.identity);
-    } else if (course.type == 'offshore-course') {
+    } else if (course.category == 'offshore-course') {
+      form.append('course_title', course.identity);
+    }
+
+    return <Observable<{status: string, message: string, cart: string[]}>>this.http.post(url, form);
+  }
+
+  remove_course(course: {identity: string, category: string}) {
+    let url = `${this.domain_name}/student/remove-from-cart`;
+    let form = new FormData();
+    form.append('category', course.category);
+
+    if (course.category == 'Certificate course' || course.category == 'Certification course') {
+      form.append('course_code', course.identity);
+    } else if (course.category == 'Offshore course') {
       form.append('course_title', course.identity);
     }
 
@@ -30,17 +45,18 @@ export class CartService {
   fetch_cart() {
     let url = `${this.domain_name}/student/cart`;
 
-    return <Observable<{cart: Cart}>>this.http.get(url);
+    return <Observable<{courses: Courses}>>this.http.get(url);
   }
 
-  fetch_carted_course(course: {identity: string, type: string}) {
+  fetch_carted_course(course: {identity: string, category: string}) {
     let url = `${this.domain_name}/student/get_carted_course`;
     let form = new FormData();
-    form.append('type', course.type);
-    form.append('identity', course.identity)
+    form.append('category', course.category);
+    form.append('identity', course.identity);
+    form.append('carted_or_enrolled', 'carted')
 
 
-    return <Observable<CartedCourseResponse>>this.http.post(url, form);
+    return <Observable<FetchCourseResponse>>this.http.post(url, form);
   }
 
   set_cart(cart: any) {
@@ -62,10 +78,10 @@ export class CartService {
     if (this.storageService.exists('cart')) this.storageService.remove('cart');
   }
 
-  has(type: string, identity: string) {
+  has(category: string, identity: string) {
     if (this.storageService.exists('cart')) {
-      let category_array = <object[]>(this.get_cart())[type];
-      if (type == 'certificate_courses' || type == 'certification_courses') {
+      let category_array = <object[]>(this.get_cart())[category];
+      if (category == 'certificate_courses' || category == 'certification_courses') {
         return category_array.some((course: {code: string}) => course.code == identity);
       } else return category_array.some((course: {title: string}) => course.title == identity);
     }

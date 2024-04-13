@@ -1,6 +1,7 @@
-<div class="w-full flex justify-center" [class.h-auto]="!loaded">
-    <div class="loader" [class.hidden]="loaded"></div>
-    <div *ngIf="testimonials" class="p-4 mt-8 max-w-[768px] bg-gray-200 flex overflow-auto md:overflow-hidden gap-4 md:grid md:grid-cols-[repeat(2,_300px)] lg:grid-cols-[repeat(3,_1fr)] ">
-        <app-testimonial-item *ngFor="let testimonial of testimonials" [testimonial]="testimonial" ></app-testimonial-item>
-    </div>
+<div class="mt-8 p-4 bg-slate-100" *ngIf="testimonials">
+    <swiper-container init="false">
+        <swiper-slide *ngFor="let testimonial of testimonials" [testimonial]="testimonial">
+            <app-testimonial-item [testimonial]="testimonial"></app-testimonial-item>
+        </swiper-slide>
+    </swiper-container>
 </div>

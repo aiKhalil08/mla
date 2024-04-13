@@ -35,6 +35,7 @@ interface Resource {
 })
 export class HomeComponent implements OnInit {
     no_events: boolean = false;
+    no_testimonials: boolean = false;
 
 
     
@@ -66,5 +67,10 @@ export class HomeComponent implements OnInit {
     handle_no_events() {
         console.log('no evetns emitted')
         this.no_events = true;
+    }
+
+    handle_no_testimonials() {
+        // console.log('no evetns emitted')
+        this.no_testimonials = true;
     }
 }

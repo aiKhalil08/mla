@@ -12,8 +12,8 @@ export class AffiliateService {
   constructor(private http: HttpClient, @Inject('DOMAIN_NAME') private domain_name, private storageService: StorageService) { }
 
 
-  fetch_affiliate(code: string) {
-    let url = `${this.domain_name}/admin/fetch-affiliate/${code}`;
+  fetch_affiliate_details(code: string) {
+    let url = `${this.domain_name}/fetch-affiliate/${code}`;
 
     return <Observable<{status: string, message?: string, affiliate: {name: string, percentage: string, email: string}}>>this.http.get(url);
   }
@@ -45,6 +45,12 @@ export class AffiliateService {
     return <Observable<{status: string, message?:string, affiliate?: string}>> this.http.get(url);
   }
 
+  renew_referral_code() {
+    let url = `${this.domain_name}/student/renew-referral-code`;
+
+    return <Observable<{status: string, message?:string, referral_code?: string}>> this.http.get(url);
+  }
+
 
   load_affiliate_portal() {
     let url = `${this.domain_name}/student/load-affiliate-portal`;
@@ -53,7 +59,19 @@ export class AffiliateService {
 
   }
 
+  get_affiliate_portal(email: string) {
+    let url = `${this.domain_name}/admin/affiliate/${email}`;
+
+    return <Observable<{status: string, message?:string, affiliate_portal: AffiliatePortal}>> this.http.get(url);
+
+  }
+
   remove() {
     if (this.storageService.exists('affiliate')) this.storageService.remove('affiliate');
+  }
+
+  get_all() {
+    let url = `${this.domain_name}/admin/affiliates`;
+    return <Observable<{affiliates: {first_name: string; last_name: string; email: string, referral_code: string}[]}>>this.http.get(url);
   }
 }

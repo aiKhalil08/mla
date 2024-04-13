@@ -105,9 +105,49 @@ main.portal {
     /* */
 }
 
-main.portal > form {
+/* main.portal > form {
     max-width: 500px;
+} */
+
+
+.no-scrollbar::-webkit-scrollbar {
+display: none;
 }
+
+.no-scrollbar {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+/* box-shadow: inset; */
+}
+
+
+.clear-fix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+    max-height: 300px;
+}
+
+label.required::after {
+    content: '*';
+    margin-left: 2px;
+    color: red;
+    font-size: large;
+}
+
+label.optional::after {
+    content: '(optional)';
+    margin-left: 4px;
+    color: gray;
+    font-size: small;
+}
+
+input, textarea {min-width: 0;}
 
 /* .loader {
     margin: 24px 0;

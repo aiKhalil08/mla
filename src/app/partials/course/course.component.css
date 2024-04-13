@@ -1,0 +1,8 @@
+.selected::after {
+    content: '';
+    width: 110%;
+    position: absolute;
+    top: calc(100% + 1rem);
+    height: 2.5px;
+    background-color: #DD127B;
+}

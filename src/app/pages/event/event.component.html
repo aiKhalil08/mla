@@ -1,5 +1,5 @@
-<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
-    <div class="loader" [class.hidden]="loaded"></div>
+<main class="landing" [ngClass]="{'grid': fetching || no_event, 'place-items-center': fetching || no_event}">
+    <div class="loader" [class.hidden]="!fetching"></div>
     <div *ngIf="event">
         <div class="max-w-[900px] m-auto p-4 mt-4">
             <figure class="">
@@ -18,9 +18,11 @@
                 <div class="flex flex-col gap-4">
                     <div>Start Date: {{start}}</div>
                     <div>End Date: {{end}}</div>
-                    <div>Event Type: <span class="capitalize">{{event.type}}</span></div>
+                    <div>Event Type: <span class="capitalize">{{event.type ? event.type : 'Not set'}}</span></div>
                     <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
-                        <app-contact-us-button text="Contact Us" [message]="message_text" theme="pink"></app-contact-us-button>
+                        <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded">
+                            Contact Us
+                        </a>
                         <app-watchlist-button type="button" [watched]="watched" [event]="{name: event.name}"></app-watchlist-button>
                     </div>
                     <!-- <div>Event Price: {{event.pr}}</div> -->
@@ -38,5 +40,6 @@
             </div> -->
         </div>
     </div>
+    <app-empty-content [message]="no_event" *ngIf="no_event"></app-empty-content>
 </main>
 

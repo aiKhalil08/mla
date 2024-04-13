@@ -36,4 +36,11 @@ interface CertificationCourse {
     schedule_url: string
 }
 
-export { CertificationCourseItem, CertificationCourse, Module, Date, Price }
+
+interface GetCertificationCourseResponse {
+    status: string;
+    message?: string;
+    course: CertificationCourse;
+}
+
+export { CertificationCourseItem, CertificationCourse, Module, Date, Price, GetCertificationCourseResponse }

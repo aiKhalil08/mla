@@ -19,7 +19,7 @@
                             class="absolute bg-mainp top-[170px] right-4 h-[60px] w-[60px] flex items-center justify-center text-white text-center">
                             23<br>JAN</div> -->
                         <h3 class="font-semibold text-lg">{{blog.heading}}</h3>
-                        <div class="text-sm mt-4 mb-8">{{blog.content.slice(0,150)}}...</div>
+                        <div class="mt-4 mb-8" [innerHTML]="blog.content.slice(0,150)+'...'"></div>
                         <app-expand-item-link text="Read Post" location="/blog/{{blog.heading}}"></app-expand-item-link>
                         <!-- <a routerLink="/blog" class="cursor-pointer text-mainp flex justify-start items-center gap-x-2 hover:gap-x-3 transition-all mt-6 "><span>Read More</span><img class="h-3 w-7 pink-icon" src="./assets/svgs/arrow_right.svg" alt=""></a> -->
                         <hr class="bg-gray-400 my-4" />

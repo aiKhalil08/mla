@@ -18,6 +18,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { FaqListComponent } from "../../partials/faq-list/faq-list.component";
 import { ContactUsFormComponent } from "../../partials/contact-us-form/contact-us-form.component";
 import { ContactUsButtonComponent } from "../../partials/contact-us-button/contact-us-button.component";
+import { EmptyContentComponent } from "../../partials/empty-content/empty-content.component";
 
 
 
@@ -26,12 +27,12 @@ import { ContactUsButtonComponent } from "../../partials/contact-us-button/conta
     standalone: true,
     templateUrl: './certification-course.component.html',
     styleUrls: ['./certification-course.component.css'],
-    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, CertificationCourseListComponent, CertificateCourseListComponent, ReactiveFormsModule, CartButtonComponent, FaqListComponent, ContactUsFormComponent, ContactUsButtonComponent]
+    imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, CertificationCourseListComponent, CertificateCourseListComponent, ReactiveFormsModule, CartButtonComponent, FaqListComponent, ContactUsFormComponent, ContactUsButtonComponent, EmptyContentComponent]
 })
 export class CertificationCourseComponent {
   // private course_name!: any;
   public course: CertificationCourse | null = null;
-  loaded: boolean = false;
+  fetching_course: boolean = false;
   modules: Module[];
   prerequisites: string[];
   objectives: string[];
@@ -44,6 +45,7 @@ export class CertificationCourseComponent {
   requestGroup: FormGroup;
   course_code: string;
   carted: boolean = false;
+  no_course: string = null;
   
   constructor (private certificationCourseService: CertificationCourseService, private route: ActivatedRoute,  private auth: AuthService, private cart: CartService) {}
 
@@ -57,10 +59,15 @@ export class CertificationCourseComponent {
   }
 
   getCourse() {
+    this.fetching_course = true;
     this.certificationCourseService.get(this.course_code).subscribe({
       next: (response) => {
-        this.loaded = true;
-        this.course = response;
+        this.fetching_course = false;
+        if (response.status == 'failed') {
+          this.no_course = response.message;
+          return;
+        }
+        this.course = response.course;
         if (this.auth.isLoggedIn('student') && this.cart.has('certification_courses', this.course.code)) this.carted = true;
         this.modules = <Module[]>JSON.parse(this.course.modules);
         this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);

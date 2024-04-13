@@ -1,6 +1,7 @@
 interface OffshoreCourseItem {
     title: string,
-    sub_overview: string
+    sub_overview: string;
+    location: string;
 };
 
 type Module = {
@@ -35,4 +36,11 @@ interface OffshoreCourse {
     schedule_url: string
 }
 
-export { OffshoreCourseItem, OffshoreCourse, Module, Date, Price }
+
+interface GetOffshoreCourseResponse {
+    status: string;
+    message?: string;
+    course: OffshoreCourse;
+}
+
+export { OffshoreCourseItem, OffshoreCourse, Module, Date, Price, GetOffshoreCourseResponse }

@@ -1,0 +1,151 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
+    <h3>Certificates</h3>
+
+    <app-view-certificate *ngIf="!modalClosed && certificate" path="{{certificate}}" (remove)="close_modal()"></app-view-certificate>
+
+
+    <app-report-bar *ngIf="uploaded" message="Certificates have been uploaded" type="success"></app-report-bar>
+
+
+    <form #form action="" class="mt-6 flex flex-col gap-y-6 text-sm" [formGroup]="certificatesGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+        <div *ngIf="formError" class="text-red-500 text-sm">{{formError}}</div>
+        <div>
+            <label for="certificate_type" class="text-mainp required">Certificate Type</label>
+            <div class="flex flex-wrap gap-8 mt-4"><!-- self-stretch -->
+                <div class="flex items-center">
+                    <input (change)="fetch_cohorts($event)" type="radio" name="certificate_type" value="cohort_certificates" id="cohort_certificates" formControlName="certificate_type" class="cursor-pointer">
+                    <label for="cohort_certificates" class="pl-2 cursor-pointer">Cohort</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" name="certificate_type" value="individual_course_certificates" id="individual_course_certificates"formControlName="certificate_type" class="cursor-pointer">
+                    <label for="individual_course_certificates" class="pl-2 cursor-pointer">Individual course</label>
+                </div>
+            </div>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && certificate_type.invalid">{{get_error_message(certificate_type)}}</div>
+            <!-- <div *ngIf="errors['certificate_type']" class="text-red-500 text-sm">{{errors['certificate_type'][0]}}</div> -->
+        </div>
+        <div class="flex flex-col gap-y-2 w-full">
+            <ng-container *ngIf="certificate_type.value == 'cohort_certificates'">
+                <div class="list-loader small" *ngIf="fetching_cohorts"></div>
+                <ng-container *ngIf="!fetching_cohorts && cohorts_fetched">
+                    <label for="cohort_name" class="text-mainp required">Cohort Name</label>
+                    <div class="relative h-[38px]"><!-- self-stretch -->
+                        <input autocomplete="off" id="cohort_name" placeholder="e.g. Ms Excel April 2023 Cohort" type="text" name="cohort_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none placeholder:italic" formControlName="cohort_name">
+                        <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_cohorts.length > 0" [class.hidden]="matched_cohorts.length == 0">
+                            <div *ngFor="let cohort of matched_cohorts" (click)="setCohortName(cohort.name)" class="p-2 cursor-pointer hover:bg-slate-200">
+                                {{cohort.name}} <span class="text-sm text-gray-400 ml-2">({{cohort.status_id == 0 ? 'Pending' : 'In progress'}})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-red-500 text-sm" *ngIf="tried_to_submit && cohort_name.invalid">{{get_error_message(cohort_name)}}</div>
+                    <!-- <div *ngIf="errors['cohort_name']" class="text-red-500 text-sm">{{errors['cohort_name'][0]}}</div> -->
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="certificate_type.value == 'individual_course_certificates'">
+                <label for="course_type" class="text-mainp required">Course Type</label>
+                <div class="relative h-[38px]"><!-- self-stretch -->
+                    <div (click)="type_folded = !type_folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': type_folded, 'rotate-[-225deg]': !type_folded, 'top-3': type_folded, 'top-4': !type_folded}"></div>
+                    <input (click)="type_folded = !type_folded" placeholder="course type" type="text" name="course_type" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_type" readonly>
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-md z-50" [class.hidden]="type_folded" [class.block]="!type_folded">
+                        <div (click)="setCourseType('Certificate Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certificate Course</div>
+                        <div (click)="setCourseType('Certification Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certification Course</div>
+                        <div (click)="setCourseType('Offshore Course')" class="p-2 cursor-pointer hover:bg-slate-200">Offshore Course</div>
+                    </div>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_type.invalid">{{get_error_message(course_type)}}</div>
+                <!-- <div *ngIf="errors['course_type']" class="text-red-500 text-sm">{{errors['course_type'][0]}}</div> -->
+            </ng-container>
+        </div>
+        <div *ngIf="certificate_type.value == 'individual_course_certificates'" class="flex flex-col gap-y-2 w-full" [ngClass]="{'grid': fetching_courses, 'place-items-center': fetching_courses}">
+            <div class="list-loader small" *ngIf="fetching_courses"></div>
+            <ng-container *ngIf="!fetching_courses && courses_fetched">
+                <label for="course_name" class="text-mainp required">Course Name</label>
+                <div class="relative h-[38px]"><!-- self-stretch -->
+                    
+                    
+                    <input type="hidden" name="course_identity" formControlName="course_identity"><!-- contains the actual identity of the course, either title for offshore courses or code for certificate or certification -->
+
+                    <input autocomplete="off" id="course_name" placeholder="course name" type="text" name="course_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_name">
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_courses.length > 0" [class.hidden]="matched_courses.length == 0">
+                        <div *ngFor="let course of matched_courses" (click)="setCourseName(course)" class="p-2 cursor-pointer hover:bg-slate-200">
+                            {{course.title}}{{course.code ? ' - '+course.code : ''}} 
+                        </div>
+                    </div>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_name.invalid">{{get_error_message(course_name)}}</div>
+                <!-- <div *ngIf="errors['course_name']" class="text-red-500">{{errors['course_name'][0]}}</div> -->
+            </ng-container>
+        </div>
+
+        <div *ngIf="(certificate_type.value == 'cohort_certificates' && cohort_name_set) || (certificate_type.value == 'individual_course_certificates' && course_name_set)"> <!-- fetch students -->
+            <button (click)="fetch_students();" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-transparent rounded gap-x-4">
+                <div class="submit-loader" [class.block]="fetch_students" [class.hidden]="!fetching_students"></div>
+                Fetch students
+            </button>
+        </div>
+
+        <div *ngIf="fetching_students" class="list-loader"></div>
+
+        <div *ngIf="!fetching_students && students">
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">Student's name</th>
+                            <th class="font-normal tc">Student's email</th>
+                            <th class="font-normal tc">Select</th>
+                            <th class="font-normal tc">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let student of pages[present_page]; index as i">
+                            <tr>
+                                <td class="tc">{{student.first_name}} {{student.last_name}}</td>
+                                <td class="tc">{{student.email}}</td>
+                                <td class="tc">
+                                    <ng-container *ngIf="!student.certificate || (student.certificate && editable(student.email))">
+                                        <input #filePicker (change)="check_if_file_selected(); files_selected = true;" class="hidden" type="file" name="certificates[{{student.email}}]">
+                                        <div (click)="filePicker.click();" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-transparent rounded cursor-pointer">
+                                            <ng-container *ngIf="file_selected(filePicker)">Selected</ng-container>
+                                            <ng-container *ngIf="!file_selected(filePicker)">Select</ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="student.certificate">
+                                        <ng-container *ngIf="!editable(student.email)">
+                                            <div class="flex gap-2 items-center justify-center">
+                                                Uploaded
+                                                <span class="group inline-grid cursor-pointer w-4 h-4 place-items-center rounded border border-mainp relative" (click)="edit(student.email)">
+                                                    <app-tooltip  message="Edit" class="hidden group-hover:block"></app-tooltip>
+                                                    <img src="./assets/svgs/edit.svg" class="pink-icon w-3 h-3" alt="">
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </td>
+                                <td class="tc">
+                                    <div (click)="student.certificate && show_certificate(student.certificate)" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-transparent rounded cursor-pointer" [ngClass]="{'cursor-not-allowed': !student.certificate, 'bg-mainp/70': !student.certificate}">View</div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex items-center justify-center mt-4">
+                <div class="bg-white max-w-full w-max flex flex-wrap items-center p-2 gap-2 shadow">
+                    <div class="text-sm w-10 h-10 grid place-items-center cursor-pointer p-2 border border-mainp text-mainp rounded"  (click)="set_present_page(present_page - 1)">&lt;</div>
+                    <div class="text-sm w-10 h-10 grid place-items-center cursor-pointer p-2 border border-mainp text-mainp rounded" [ngClass]="{'bg-mainp': present_page == i, 'text-white': present_page == i}" (click)="set_present_page(i)" *ngFor="let page of pages; index as i">{{i + 1}}</div>
+                    <div class="text-sm w-10 h-10 grid place-items-center cursor-pointer p-2 border border-mainp text-mainp rounded"  (click)="set_present_page(present_page + 1)">&gt;</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+            <button [disabled]="(tried_to_submit && form_invalid) || uploaded || submitted" type="submit" [ngClass]="{'bg-mainp': !uploaded, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': uploaded, 'text-white': !uploaded, 'text-mainp': uploaded}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{uploaded ? 'Uploaded' : 'Upload'}}</div>
+            </button>
+            <app-redirect-button theme="white" text="{{!uploaded ? 'Cancel' : 'Back'}}" location="/admin"></app-redirect-button>
+        </div>
+    </form>
+</main>

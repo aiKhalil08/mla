@@ -1,32 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
-import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
-// import { CourseService } from 'src/app/course.service';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionButtonComponent } from "../../../partials/buttons/action-button/action-button.component";
 import { Blog } from 'src/app/interfaces/blog';
 import { BlogService } from 'src/app/services/blog.service';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import PostResponse from 'src/app/interfaces/post-response';
+import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
+import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
+import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
 
 @Component({
     selector: 'app-action-blog',
     standalone: true,
     templateUrl: './action-blog.component.html',
     styleUrls: ['./action-blog.component.css'],
-    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, ActionButtonComponent]
+    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, ActionButtonComponent, CKEditorModule, ReportBarComponent, TooltipComponent, EmptyContentComponent]
 })
 export class ActionBlogComponent implements OnInit {
   blog!: Blog;
   // course_code!: string;
   blogGroup!: FormGroup;
-  pictureSelected: boolean = true;
+  pictureSelected: boolean = false;
   imageFile: any = null;
   submitted: boolean = false;
   edited: boolean = false;
   editable: boolean = false;
+  no_blog: string = null;
+  formError: string = null;
+  deleting: boolean = false;
+  error_in_deleting: string = null;
+  tried_to_submit: boolean = false;
+
+  fetching: boolean = false;
+
+
+  editor = ClassicEditor;
 
   constructor(private formBuilder: FormBuilder, private blogService: BlogService, private route: ActivatedRoute, private navigator: Router) {}
 
@@ -34,19 +47,31 @@ export class ActionBlogComponent implements OnInit {
     let heading;
     let paramObservable = this.route.paramMap;
     paramObservable.subscribe((param) => {heading = param.get('heading')});
+    
+    this.fetch_blog(heading);
+  }
+
+  fetch_blog(heading: string) {
+    this.fetching = true;
     this.blogService.get(heading).subscribe({
       next: (response) => {
-        this.blog = response;
-        console.log(this.blog);
+        this.fetching = false;
+        if (response.status == 'failed') {
+          this.no_blog = response.message;
+          return;
+        }
+        this.blog = response.blog;
         this.blogGroup = this.formBuilder.group({
-          heading: [this.blog.heading],
-          content: [this.blog.content],
+          heading: [this.blog.heading, Validators.required],
+          content: [this.blog.content, Validators.required],
           image: [null],
         });
-        setTimeout(()=>{
-          (<HTMLImageElement>document.querySelector('#imagePreview')).src = this.blog.image_url;
-          
-        }, 0);
+        if (this.blog.image_url) {
+          this.pictureSelected = true;
+          setTimeout(()=>{
+            (<HTMLImageElement>document.querySelector('#imagePreview')).src = this.blog.image_url;
+          }, 0);
+        }
       },
     });
   }
@@ -64,27 +89,67 @@ export class ActionBlogComponent implements OnInit {
     }
   }
 
-  deleteBlog(heading: string) {
-    this.blogService.delete(heading).subscribe({
+
+  get content() {
+    return this.blogGroup.get('content');
+  }
+
+  get heading() {
+    return this.blogGroup.get('heading');
+  }
+
+  get form_invalid() {
+    
+    return this.blogGroup.invalid;
+  }
+
+  get_error_message(control: AbstractControl): string {
+
+    if ('required' in control.errors) return 'This field is required.';
+    else if ('pattern' in control.errors) return 'Please input the right data format for this field.';
+
+    return ''
+    
+  }
+
+
+  deleteBlog(course_code: string) {
+    this.deleting = true;
+    this.blogService.delete(course_code).subscribe({
       next: (response) => {
+        this.deleting = false;
         if (response.status == 'success') {
+          this.error_in_deleting = null;
           this.navigator.navigate(['/admin/resources']);
-        }
+        } else this.error_in_deleting = response.message;
       },
     });
   }
 
-  onSubmit(form) {
-    if (this.editable || !this.submitted) {
+  onSubmit(form: HTMLFormElement) {
+    this.tried_to_submit = true;
+    
+    if (this.blogGroup.invalid) return;
+
       this.submitted = true;
       let formData = new FormData(form);
+
+      formData.append('content', this.content.value);
+
       this.blogService.edit(formData, this.blog.heading).subscribe({
         next: (response) => {
-          // console.log(response);
-          this.edited = true;
           this.submitted = false;
+          if (response.status == 'failed') {
+            this.formError = response.message;
+            return;
+          }
+          this.handleResponse(response);
         },
       });
-    }
+  }
+
+  handleResponse(response: PostResponse) {
+    this.formError = null;
+    this.edited = true;
   }
 }

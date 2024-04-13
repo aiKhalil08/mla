@@ -42,6 +42,10 @@
                     <div class="text-xs mt-4">
                         By registering, you agree to our <a routerLink="/terms-and-conditions" class="text-mainp">Terms and Conditions</a> and <a routerLink="/privacy-policy" class="text-mainp">Privacy Policy</a>
                     </div>
+                    <div class="mt-4">
+                        <re-captcha *ngIf="showRecaptcha" (resolved)="handleResolved($event)" [siteKey]="siteKey"></re-captcha>
+                        <div *ngIf="!showRecaptcha">Verify reCAPTCHA</div>
+                    </div>
                     <div class="mt-6">
                         <button [disabled]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" [class.cursor-not-allowed]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_one" [class.hidden]="!submitted_one"></div><div>{{(backWithErrors_one && (errorsRectified_one == errorneousFields_one.length)) ? 'Register' : backWithErrors_one ? 'Rectify all errors' : studentGroup.invalid ? 'Fill all fields' : 'Register'}}</div></button>
                     </div>

@@ -1,0 +1,127 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && cohort" class="relative max-w-[750px] m-auto">
+        <app-password-confirmation-modal (canceled)="cancel_confirmation('delete')" (confirmed)="confirm_delete()" *ngIf="delete_confirmation"></app-password-confirmation-modal>
+        <app-password-confirmation-modal (canceled)="cancel_confirmation('conclude')" (confirmed)="confirm_conclude()" *ngIf="conclude_confirmation"></app-password-confirmation-modal>
+        <app-password-confirmation-modal (canceled)="cancel_confirmation('start')" (confirmed)="confirm_start()" *ngIf="start_confirmation"></app-password-confirmation-modal>
+        <app-password-confirmation-modal (canceled)="cancel_confirmation('abort')" (confirmed)="confirm_abort()" *ngIf="abort_confirmation"></app-password-confirmation-modal>
+        <div class="flex flex-wrap justify-between gap-4 items-center">
+            <h3>{{cohort.name}}</h3>
+
+            <div class="relative w-40 text-sm shadow-2xl">
+                <!-- <div *ngIf="cohort.status == 'Concluded'" class="bg-mainp py-2 px-4 text-white flex items-center justify-center">Concluded</div>
+                <ng-container *ngIf="cohort.status != 'Concluded'"> -->
+                    <div (click)="actions_folded = !actions_folded" class="bg-mainp cursor-pointer py-2 px-4 text-white flex items-center justify-between">
+                        Actions
+                        <span class="inline-block w-2 h-2 border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': actions_folded, 'rotate-[135deg]': !actions_folded}"></span>
+                    </div>
+                    <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
+                        <ul class="w-full border border-mainp">
+                            <li *ngIf="cohort.status == 'Pending' || cohort.status == 'In progress'"><a [routerLink]="['/admin/cohort/populate']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Update Students</a></li>
+                            <li><a [routerLink]="['/admin/cohort/notify-students']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Notify Students</a></li>
+                            <li *ngIf="cohort.status == 'Concluded' || cohort.status == 'Pending' || cohort.status == 'Aborted'"><a [routerLink]="['/admin/cohort/edit']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Edit</a></li>
+                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('start')" *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'">Start</li>
+                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('abort')" *ngIf="cohort.status == 'In progress'">Abort</li>
+                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('conclude')" *ngIf="cohort.status == 'In progress'">Conclude</li>
+                            <li *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'" class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('delete')">Delete</li>    
+                        </ul>
+                    </div>
+                <!-- </ng-container> -->
+            </div>
+        </div>
+
+        <app-report-bar *ngIf="action_in_progress" [message]="action_in_progress" type="progress"></app-report-bar>
+        <app-report-bar *ngIf="action_done" [message]="action_done" type="success"></app-report-bar>
+        <app-report-bar *ngIf="error_in_action" [message]="error_in_action" type="error"></app-report-bar>
+        
+        <div class="bg-white mt-6 p-4">
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Cohort name:</span><span>{{cohort.name}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Course type:</span><span>{{course_type}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Course name:</span><span>{{course_name}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Status:</span><span>{{cohort.status}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Created at:</span><span>{{created_at}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Duration:</span><span>{{duration}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Start date:</span><span>{{start_date}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">End date:</span><span>{{end_date}}</span>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-2 justify-between">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Enrolled students:</span>
+                <div class="flex items-center justify-evenly gap-4">
+                    <span *ngIf="students.length == 0">{{students.length}}</span>
+                    <div *ngIf="students.length > 0" (click)="students_folded = !students_folded" class="border border-mainp cursor-pointer flex items-center justify-evenly gap-4 px-2 rounded">
+                        <span>{{students.length}}</span>
+                        <span class="inline-block w-2 h-2 border-mainp border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': students_folded, 'rotate-[135deg]': !students_folded, '-translate-y-[2px]': students_folded, 'translate-y-[2px]': !students_folded}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full overflow-y-hidden duration-150 ease-linear max-w-full overflow-x-auto" [ngClass]="{'max-h-0': students_folded, 'max-h-[10000px]': !students_folded}">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">S/N</th>
+                            <th class="font-normal tc">Student's name</th>
+                            <th class="font-normal tc">Student's email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let student of students; index as i">
+                            <td class="tc">{{i + 1}}</td>
+                            <td class="tc">{{student.first_name}} {{student.last_name}}</td>
+                            <td class="tc">{{student.email}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white mt-6 shadow-lg rounded-md">
+            <a href="{{link}}" class="p-4 block">
+                <div class="text-lg">Course Details</div>
+                <div class="mt-4 clear-fix">
+                    <figure class="sm:float-right m-auto max-w-[300px] sm:m-0 sm:ml-2 sm:mb-2">
+                        <img src="{{course.image}}" class="w-full" alt="{{course_name}}">
+                    </figure>
+                    <div class="">
+                        <div class="my-2">
+                            <span class="text-sm text-gray-400">Type:</span>
+                            <div>{{course_type}}</div>
+                        </div>
+                        <div class="" *ngIf="course_type != 'Offshore course'">
+                            <span class="text-sm text-gray-400">Code:</span>
+                            <div>{{course.code}}</div>
+                        </div>
+                        <div class="my-2">
+                            <span class="text-sm text-gray-400">Title:</span>
+                            <div>{{course.title}}</div>
+                        </div>
+                        <div class="my-2">
+                            <span class="text-sm text-gray-400">Overview:</span>
+                            <div>{{course.overview}}</div>
+                        </div>
+                        <div class="my-2">
+                            <span class="text-sm text-gray-400">Price:</span>
+                            <div>{{price}}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

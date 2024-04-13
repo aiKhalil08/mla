@@ -1,9 +1,10 @@
 <div class="min-w-[250px] max-w-[300px] sm:max-w-none lg:min-w-0 h-full auto-rows-[1fr] border border-black rounded-xl relative overflow-hidden  px-4 py-6 flex flex-col">
     <div class="text-lg capitalize">{{course.title}}</div>
+    <div class="text-gray-400 flex gap-1 items-center mt-2"><img src="./assets/svgs/location.svg" class="pink-icon w-4 h-4" alt=""> {{course.location}}</div>
     <div class="mt-4 flex-grow">{{course.sub_overview}}...</div>
     <div class="mt-4 flex items-center">
         <app-expand-item-link text="View course" location="/offshore-course/{{course.title}}"></app-expand-item-link>
         <span class="flex-grow"></span>
-        <app-cart-button [carted]="carted" [course]="{'identity': course.title, 'type':'offshore-course'}"></app-cart-button>
+        <app-cart-button [carted]="carted" [course]="{'identity': course.title, 'category':'offshore-course'}"></app-cart-button>
     </div>
 </div>

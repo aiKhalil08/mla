@@ -1,54 +1,99 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
     <h3>New Sale</h3>
+
+    <app-report-bar *ngIf="created" message="Sale has been added" type="success"></app-report-bar>
+
+
     <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px] text-sm" [formGroup]="saleGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
-        <div *ngIf="formError" class="text-red-500">{{formError}}</div>
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="email" class="text-mainp">Student Email</label>
+        <div *ngIf="formError" class="text-red-500 text-sm">{{formError}}</div>
+        <div class="flex flex-col gap-y-2">
+            <label for="email" class="text-mainp required">Student Email</label>
             <input (blur)="fetch_student($event)" type="text" name="student_email" id="email" class="p-2 outline-none border border-slate-200 rounded" formControlName="student_email">
-            <div *ngIf="errors['student_email']" class="text-red-500">{{errors['student_email'][0]}}</div>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && student_email.invalid">{{get_error_message(student_email)}}</div>
+            <div *ngIf="errors['student_email']" class="text-red-500 text-sm">{{errors['student_email'][0]}}</div>
             <div *ngIf="student_name" class="text-gray-500">{{student_name}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-full">
-            <label for="course_type" class="text-mainp">Course Type</label>
-            <div class="relative h-[38px]"><!-- self-stretch -->
-                <div (click)="type_folded = !type_folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': type_folded, 'rotate-[-225deg]': !type_folded, 'top-3': type_folded, 'top-4': !type_folded}"></div>
-                <input (click)="type_folded = !type_folded" placeholder="course type" type="text" name="course_type" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_type" readonly>
-                <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-md z-50" [class.hidden]="type_folded" [class.block]="!type_folded">
-                    <div (click)="setCourseType('Certificate Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certificate Course</div>
-                    <div (click)="setCourseType('Certification Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certification Course</div>
-                    <div (click)="setCourseType('Offshore Course')" class="p-2 cursor-pointer hover:bg-slate-200">Offshore Course</div>
+        <div>
+            <label for="course_type" class="text-mainp required">Sale Type</label>
+            <div class="flex flex-wrap gap-8 mt-4"><!-- self-stretch -->
+                <div class="flex items-center">
+                    <input (change)="fetch_cohorts($event)" type="radio" name="sale_type" value="cohort_sale" id="cohort_sale" formControlName="sale_type" class="cursor-pointer">
+                    <label for="cohort_sale" class="pl-2 cursor-pointer">Cohort</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" name="sale_type" value="individual_course_sale" id="individual_course_sale"formControlName="sale_type" class="cursor-pointer">
+                    <label for="individual_course_sale" class="pl-2 cursor-pointer">Individual course</label>
                 </div>
             </div>
-            <div *ngIf="errors['course_type']" class="text-red-500">{{errors['course_type'][0]}}</div>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && sale_type.invalid">{{get_error_message(sale_type)}}</div>
+            <div *ngIf="errors['sale_type']" class="text-red-500 text-sm">{{errors['sale_type'][0]}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-full" [ngClass]="{'grid': fetching_courses, 'place-items-center': fetching_courses}">
+        <div class="flex flex-col gap-y-2 w-full">
+            <ng-container *ngIf="sale_type.value == 'cohort_sale'">
+                <div class="list-loader small" *ngIf="fetching_cohorts"></div>
+                <ng-container *ngIf="!fetching_cohorts && cohorts_fetched">
+                    <label for="cohort_name" class="text-mainp required">Cohort Name</label>
+                    <div class="relative h-[38px]"><!-- self-stretch -->
+                        <input autocomplete="off" id="cohort_name" placeholder="e.g. Ms Excel April 2023 Cohort" type="text" name="cohort_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none placeholder:italic" formControlName="cohort_name">
+                        <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_cohorts.length > 0" [class.hidden]="matched_cohorts.length == 0">
+                            <div *ngFor="let cohort of matched_cohorts" (click)="setCohortName(cohort.name)" class="p-2 cursor-pointer hover:bg-slate-200">
+                                {{cohort.name}} <span class="text-sm text-gray-400 ml-2">({{cohort.status_id == 0 ? 'Pending' : 'In progress'}})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-red-500 text-sm" *ngIf="tried_to_submit && cohort_name.invalid">{{get_error_message(cohort_name)}}</div>
+                    <div *ngIf="errors['cohort_name']" class="text-red-500 text-sm">{{errors['cohort_name'][0]}}</div>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="sale_type.value == 'individual_course_sale'">
+                <label for="course_type" class="text-mainp required">Course Type</label>
+                <div class="relative h-[38px]"><!-- self-stretch -->
+                    <div (click)="type_folded = !type_folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': type_folded, 'rotate-[-225deg]': !type_folded, 'top-3': type_folded, 'top-4': !type_folded}"></div>
+                    <input (click)="type_folded = !type_folded" placeholder="course type" type="text" name="course_type" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_type" readonly>
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-md z-50" [class.hidden]="type_folded" [class.block]="!type_folded">
+                        <div (click)="setCourseType('Certificate Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certificate Course</div>
+                        <div (click)="setCourseType('Certification Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certification Course</div>
+                        <div (click)="setCourseType('Offshore Course')" class="p-2 cursor-pointer hover:bg-slate-200">Offshore Course</div>
+                    </div>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_type.invalid">{{get_error_message(course_type)}}</div>
+                <div *ngIf="errors['course_type']" class="text-red-500 text-sm">{{errors['course_type'][0]}}</div>
+            </ng-container>
+        </div>
+        <div *ngIf="sale_type.value == 'individual_course_sale'" class="flex flex-col gap-y-2 w-full" [ngClass]="{'grid': fetching_courses, 'place-items-center': fetching_courses}">
             <div class="list-loader small" *ngIf="fetching_courses"></div>
             <ng-container *ngIf="!fetching_courses && courses_fetched">
-                <label for="blog-image" class="text-mainp">Course Name</label>
+                <label for="course_name" class="text-mainp required">Course Name</label>
                 <div class="relative h-[38px]"><!-- self-stretch -->
+                    
+                    
+                    <input type="hidden" name="course_identity" formControlName="course_identity"><!-- contains the actual identity of the course, either title for offshore courses or code for certificate or certification -->
+
                     <input autocomplete="off" id="course_name" placeholder="course name" type="text" name="course_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_name">
                     <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_courses.length > 0" [class.hidden]="matched_courses.length == 0">
-                        <div *ngFor="let course of matched_courses" (click)="setCourseName(course.name)" class="p-2 cursor-pointer hover:bg-slate-200">
-                            {{course.name}}
+                        <div *ngFor="let course of matched_courses" (click)="setCourseName(course)" class="p-2 cursor-pointer hover:bg-slate-200">
+                            {{course.title}}{{course.code ? ' - '+course.code : ''}} 
                         </div>
                     </div>
                 </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_name.invalid">{{get_error_message(course_name)}}</div>
                 <div *ngIf="errors['course_name']" class="text-red-500">{{errors['course_name'][0]}}</div>
             </ng-container>
         </div>
         <div class="flex flex-col gap-y-2 w-full relative"><!-- sale price -->
-            <label for="price" class="text-mainp">Sale Price</label>
+            <label for="price" class="text-mainp required">Sale Price</label>
             <div class="flex gap-x-2 items-center">
                 <span class="min-w-6">₦</span><input type="text" name="price" id="price" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="price">
             </div>
-            <div *ngIf="errors['price']" class="text-red-500">{{errors['price'][0]}}</div>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && price.invalid">{{get_error_message(price)}}</div>
+            <div *ngIf="errors['price']" class="text-red-500 text-sm">{{errors['price'][0]}}</div>
         </div>
         <div class="bg-white mt-4"><!-- affiliate -->
             <div>
                 <label for="has_referral" class="p-4 flex text-lg font-semibold cursor-pointer items-center">
                     Was there a referral?
                     <span class="flex-grow"></span>
-                    <input (change)="affiliate_expanded = !affiliate_expanded" type="checkbox" name="has_referral" id="has_referral" formControlName="has_referral">
+                    <input (change)="expand_affiliate()" type="checkbox" name="has_referral" id="has_referral" formControlName="has_referral">
                 </label>
                 <div class="max-h-0 overflow-hidden transition-all" [class.max-h-[800px]]="affiliate_expanded">
                     <div class="p-4">
@@ -56,13 +101,14 @@
                             <div class="flex gap-x-2 w-max items-center">
                                 <!-- <label for="referral_code" class="text-mainp">Referral Code</label> -->
                                 <input type="text" name="referral_code" id="referral_code" class="p-2 outline-none border border-slate-200 rounded" formControlName="referral_code" placeholder="Enter the afffiliate's referral code">
-                                <div *ngIf="errors['referral_code']" class="text-red-500">{{errors['referral_code'][0]}}</div>
                                 <button [disabled]="affiliate || !referral_code.value" (click)="referral_code.value && fetch_affiliate(); false;" class="p-2 rounded grid place-items-center border" [ngClass]="{'cursor-not-allowed': !referral_code.value, 'bg-mainp/70': !referral_code.value, 'bg-white': affiliate, 'text-mainp': affiliate, 'border-mainp': affiliate, 'bg-mainp': !affiliate, 'text-white': !affiliate, 'border-transparent': !affiliate}">
                                     <ng-container *ngIf="fetching_affiliate"><div class="submit-loader"></div></ng-container>
                                     <ng-container *ngIf="!fetching_affiliate">Fetch</ng-container>
                                 </button>
                             </div>
-                            <div *ngIf="fetch_affiliate_error" class="text-red-500">{{fetch_affiliate_error}}</div>
+                            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && referral_code.invalid">{{get_error_message(referral_code)}}</div>
+                            <div *ngIf="fetch_affiliate_error" class="text-red-500 text-sm">{{fetch_affiliate_error}}</div>
+                            <div *ngIf="errors['referral_code']" class="text-red-500 text-sm">{{errors['referral_code'][0]}}</div>
                         </div>
                         <div *ngIf="affiliate" class="text-sm p-4 flex flex-col gap-y-2">
                             <p>Affiliate name: {{affiliate.name}}</p>
@@ -76,8 +122,12 @@
             </div>
         </div>
         <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-            <button (click)="no_errors || false" [disabled]="!form_is_valid || created" type="submit" [ngClass]="{'bg-mainp': !created && form_is_valid, 'bg-white': created, 'text-white': !created, 'text-mainp': created, 'bg-mainp/70': !form_is_valid, 'cursor-not-allowed': !form_is_valid, 'cursor-pointer': form_is_valid}" class="py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Added' : 'Add'}}</div></button>
-            <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin"></app-redirect-button>
+            <button [disabled]="(tried_to_submit && form_invalid) || created || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{created ? 'Added' : 'Add'}}</div>
+            </button>
+            <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin/sales"></app-redirect-button>
         </div>
     </form>
 </main>

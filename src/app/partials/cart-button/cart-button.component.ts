@@ -14,7 +14,7 @@ export class CartButtonComponent {
 
 
   @Input() carted: boolean;
-  @Input() course: {identity: string, type: string};
+  @Input() course: {identity: string, category: string};
   @Input() type: string = 'rounded';
 
   @HostListener('click', ['$event']) cart(event) {  

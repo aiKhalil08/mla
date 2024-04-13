@@ -4,14 +4,14 @@
         <div class="relative flex flex-col gap-y-6">
             <h3>Certificate Courses</h3>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">Course Code</th>
                             <th class="tc">Course Title</th>
                             <th class="tc">Course Price</th>
                             <th class="tc">Discount (%)</th>
-                            <th class="tc">Action</th>
+                            <th class="tc text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,7 @@
         <div class="relative flex flex-col gap-y-6 mt-12">
             <h3>Certification Courses</h3>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">Course Code</th>
@@ -46,7 +46,7 @@
                             <td class="tc">{{course.title}}</td>
                             <!-- <td class="tc">{{parse(course.price).amount}} {{parse(course.price).currency == 'NGN (₦)' ? '₦' : '$'}}</td>
                             <td class="tc">{{course.discount || 'NONE'}}</td> -->
-                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/certification-course/{{course.code}}"></app-redirect-button></td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="Action" location="/admin/certification-course/{{course.code}}"></app-redirect-button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -56,7 +56,7 @@
         <div class="relative flex flex-col gap-y-6 mt-12">
             <h3>Offshore Courses</h3>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">Course Title</th>
@@ -72,7 +72,7 @@
                             <td class="tc">{{parse(course.price).amount}} {{parse(course.price).currency == 'NGN (₦)' ? '₦' : '$'}}</td>
                             <td class="tc">{{course.location}}</td>
                             <td class="tc">{{course.discount || 'NONE'}}</td>
-                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/offshore-course/{{course.title}}"></app-redirect-button></td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="Action" location="/admin/offshore-course/{{course.title}}"></app-redirect-button></td>
                         </tr>
                     </tbody>
                 </table>

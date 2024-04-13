@@ -4,7 +4,7 @@
         <div class="relative flex flex-col gap-y-6">
             <div class="flex gap-x-4 items-center"><h3>Sales</h3> <div>Total Sales: {{formatCurrency(total_sales)}}</div></div>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">S/N</th>
@@ -20,7 +20,7 @@
                             <td class="tc">{{sale.student}}</td>
                             <td class="tc">{{formatCurrency(sale.price)}}</td>
                             <td class="tc">{{formatDate(sale.date)}}</td>
-                            <td class="tc"><app-redirect-button theme="pink" text="View" location="/admin/sale/{{encryptId(sale.id)}}"></app-redirect-button></td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/sale/{{encryptId(sale.id)}}"></app-redirect-button></td>
                         </tr>
                     </tbody>
                 </table>

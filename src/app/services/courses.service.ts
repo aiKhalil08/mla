@@ -18,11 +18,16 @@ export class CoursesService {
 
   get_course_names(type: string) {
     let url = `${this.domain_name}/${type.replace(' ', '-').toLowerCase()}/names`;
-    return <Observable<{name: string}[]>>this.http.get(url);
+    return <Observable<{code?: string; title: string}[]>>this.http.get(url);
   }
 
   get_trending_courses() {
     let url = `${this.domain_name}/student/trending-courses`;
     return <Observable<{courses: {name: {title: string, code?: string}, type: string}[]}>>this.http.get(url);
+  }
+
+  get_enrolled_students(type: string, course_identity: string) {
+    let url = `${this.domain_name}/${type.toLowerCase().replace(' ', '_')}/enrolled-students/${course_identity}`;
+    return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, has_certificate: 0 | 1}[]}>>this.http.get(url);
   }
 }

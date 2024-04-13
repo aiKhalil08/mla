@@ -1,0 +1,28 @@
+<div class="py-4 px-4 fixed top-0 left-0 w-full bg-white flex z-40 border-b border-b-mainp items-center"> <!-- header -->
+    <app-logout-modal (canceled)="cancel_logout()" *ngIf="logout_confirmation"></app-logout-modal>
+    <a href="/" class="select-none">
+        <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+    </a>
+    <div class="flex-grow"></div>
+    <img (click)="toggleMenu($event)" class="transition-all mr-3 md:hidden h-8 w-8 pink-icon"
+        src="./assets/svgs/hamburger.svg">
+    <app-user-info-box (logoutClicked)="confirm_logout()" class="max-[768px]:hidden" parent="header"></app-user-info-box>
+    <!-- <div class="text-mainp flex gap-x-1 items-center"><span>admin@mitiget.com</span><img src="./assets/svgs/chevron_down.svg" class="pink-icon" /></div> -->
+</div>
+<div class="py-8 px-4 fixed top-[102px] overflow-y-auto h-[calc(100dvh-118px)] m-2 bg-mainp text-white flex flex-col z-20 gap-y-6 min-w-80 transition-all rounded-lg ring-mainp ring-1 md:left-0 md:h-[calc(100dvh-102px)] md:m-0 md:rounded-none md:ring-0 " [class.left-[0px]]="expanded" [class.left-[-440px]]="!expanded"> <!-- sidebar -->
+    <div class="no-scrollbar flex flex-col w-[210px] border border-slate-600/10 mx-auto shadow-inner rounded-lg p-4 overflow-y-auto">
+        <ul class="list-none flex flex-col gap-y-6">
+            <app-sidebar-nav-link *ngFor="let item of first_sidebar_items" [item]="item"></app-sidebar-nav-link>
+            <li class="flex gap-x-4"><img class="white-icon w-[20px] h-[20px]" src="./assets/svgs/home.svg" alt=""><a class="hover:underline cursor-pointer" href="/">Home</a></li>
+            <li class="flex gap-x-4"><img class="white-icon w-[20px] h-[20px]" src="./assets/svgs/quiz.svg" alt=""><a class="hover:underline cursor-pointer" target="_blank" href="https://quiz.mitiget.com/index.php">Quiz</a></li>
+        </ul>
+        <hr class="w-full bg-white my-4 mx-auto">
+        <ul class="list-none flex flex-col gap-y-6">
+            <app-sidebar-nav-link *ngFor="let item of second_sidebar_items" [item]="item"></app-sidebar-nav-link>
+            <li class="flex gap-x-4"><img class="white-icon w-[20px] h-[20px]" src="./assets/svgs/logout_icon.svg" alt=""><a class="hover:underline cursor-pointer" (click)="confirm_logout()">Logout</a></li>
+        </ul>
+    </div>
+    <!-- <div class="grow"></div> -->
+    <app-user-info-box (logoutClicked)="confirm_logout()" class="md:hidden" parent="sidebar"></app-user-info-box>
+</div>
+<router-outlet></router-outlet>

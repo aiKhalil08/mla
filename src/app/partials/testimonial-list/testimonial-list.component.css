@@ -1,0 +1,26 @@
+
+swiper-container::part(button-prev), swiper-container::part(button-next) {
+    background-color: rgba(0, 0, 0, .1);
+    color: #DD127B;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    transition: background-color .1s ease;
+    border-radius: 4px;
+}
+
+swiper-container::part(button-prev) {left: 0}
+swiper-container::part(button-next) {right: 0}
+
+
+swiper-container::part(button-prev):hover, swiper-container::part(button-next):hover {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+swiper-container::part(bullet-active) {
+    background-color: #DD127B;
+}
+
+@media screen and (max-width: 768px) {
+    swiper-container::part(button-prev), swiper-container::part(button-next) {display: none;}
+}

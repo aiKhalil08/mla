@@ -18,9 +18,11 @@ export class AffiliateComponent implements OnInit {
   processing_become_affiliate: boolean = false;
   processing_renew_code: boolean = false;
   referral_code: string = null;
-  has_become_affiliate: boolean = false;
+  // has_become_affiliate: boolean = false;
   affiliate_portal: AffiliatePortal;
   loading_affiliate_portal: boolean = false;
+
+  user_is_affiliate: boolean;
 
   constructor(private affiliateService: AffiliateService, private router: Router) {}
 
@@ -31,33 +33,30 @@ export class AffiliateComponent implements OnInit {
 
     // console.log(this.affiliateService.user_is_affiliate());
 
-    if (this.affiliateService.user_is_affiliate()) {
+    // if (this.affiliateService.user_is_affiliate()) {
       this.load_affiliate_portal();
-    }
+    // }
     
   }
 
 
   get is_affiliate() {
     // console.log(this.affiliateService.user_is_affiliate())
-    return this.affiliateService.user_is_affiliate();
+    // return this.affiliateService.user_is_affiliate();
+    return this.user_is_affiliate;
     // return false;
     // return this.auth.user().is_affiliate;
   }
 
-
-  formatCurrency(number: string) {
-    return Number(number).toLocaleString('en-NG', {style: 'currency', currency: 'NGN'});
-  }
 
   become_affiliate() {
     this.processing_become_affiliate = true;
     this.affiliateService.create_referral_code().subscribe({
       next: (response) => {
         this.processing_become_affiliate = false;
-        console.log(response)
-        this.affiliateService.set_affiliate(response.affiliate);
-        this.has_become_affiliate = true;
+        // console.log(response)
+        // this.affiliateService.set_affiliate(response.affiliate);
+        this.user_is_affiliate = true;
         this.load_affiliate_portal();
       }
     });
@@ -67,17 +66,26 @@ export class AffiliateComponent implements OnInit {
     this.loading_affiliate_portal = true;
     this.affiliateService.load_affiliate_portal().subscribe({
       next: (response) => {
-        console.log(response);
+        this.loading_affiliate_portal = false;
+        // console.log(response);
+        if (response.status == 'failed' && response.message == 'Not affiliate') {
+          this.user_is_affiliate = false;
+          return;
+        }
         // this.affiliate_portal_loaded = true;
+        this.user_is_affiliate = true;
         this.affiliate_portal = response.affiliate_portal;
         this.referral_code = this.affiliate_portal.referral_code;
-        this.loading_affiliate_portal = false;
       }
     });
   }
 
   formatDate(date: string) {
     return moment(date).format('Do MMMM, YYYY');
+  }
+
+  formatCurrency(number: string) {
+    return Number(number).toLocaleString('en-NG', {style: 'currency', currency: 'NGN'});
   }
 
   get payout_history() {
@@ -101,13 +109,14 @@ export class AffiliateComponent implements OnInit {
 
   renewReferralCode() {
     this.processing_renew_code = true;
-    this.affiliateService.create_referral_code().subscribe({
+    this.affiliateService.renew_referral_code().subscribe({
       next: (response) => {
         this.processing_renew_code = false;
-        console.log(response)
-        this.affiliateService.set_affiliate(response.affiliate);
+        // console.log(response)
+        // this.affiliateService.set_affiliate(response.affiliate);
         // console.log(this.affiliateService.get_affiliate());
-        this.referral_code = this.affiliateService.get_affiliate()['referral_code'];
+        // this.referral_code = this.affiliateService.get_affiliate()['referral_code'];
+        this.referral_code = response.referral_code;
         // this.has_become_affiliate = true;
         // this.load_affiliate_portal();
       }

@@ -15,5 +15,11 @@ interface Event$ {
 }
 
 
+interface GetEventResponse {
+    status: string;
+    message?: string;
+    event: Event$;
+}
 
-export { EventItem, Event$ }
+
+export { EventItem, Event$, GetEventResponse }

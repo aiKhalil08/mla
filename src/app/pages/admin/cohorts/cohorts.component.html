@@ -1,0 +1,27 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Cohorts</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">Name</th>
+                            <th class="tc">Status</th>
+                            <th class="tc">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cohort of cohorts">
+                            <td class="tc">{{cohort.name}}</td>
+                            <td class="tc">{{cohort.status}}</td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/cohort/{{cohort.name}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add New Cohort" location="/admin/add-cohort"></app-redirect-button>
+        </div>
+    </div>
+</main>

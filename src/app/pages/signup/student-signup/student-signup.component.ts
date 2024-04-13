@@ -3,15 +3,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Timer } from 'easytimer.js';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import LoginResponse from 'src/app/interfaces/login-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { JWTService } from 'src/app/services/jwt.service';
 import { StudentService } from 'src/app/services/student.service';
+import environment from 'src/environment';
 
 @Component({
   selector: 'app-student-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RecaptchaFormsModule, RecaptchaModule],
   templateUrl: './student-signup.component.html',
   styleUrls: ['./student-signup.component.css']
 })
@@ -52,6 +54,12 @@ export class StudentSignupComponent implements OnInit{
   formOneError: string;
   confirmFormError: string;
 
+  siteKey: string = environment.recaptcha.siteKey;
+  recaptchaResolved: boolean = false;
+  showRecaptcha: boolean = false;
+
+
+
   constructor(private studentService: StudentService, private formBuilder: FormBuilder, private tokenService: JWTService, private auth: AuthService) {
     if (String(document.location.pathname).match(/\/verify-email$/)) {
       this.showConfirmForm = true;
@@ -75,6 +83,11 @@ export class StudentSignupComponent implements OnInit{
       email: [this.email],
       otp: ['', Validators.required],
     });
+  }
+
+  handleResolved(response: string) {
+    console.log(response)
+    if (response.length > 0) this.recaptchaResolved = true;
   }
 
   startCountdown() {
@@ -136,6 +149,14 @@ export class StudentSignupComponent implements OnInit{
   
   
   onSubmitOne(form: HTMLFormElement) {
+    if (!this.showRecaptcha) {
+      this.showRecaptcha = true;
+      return;
+    }
+    if (!this.recaptchaResolved) {
+      this.formOneError = 'Please complete the reCAPTCHA';
+      return;
+    }
     this.submitted_one = true;
     let form_data = new FormData(form);
     this.studentService.add(form_data).subscribe({

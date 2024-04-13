@@ -1,30 +1,40 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
     <h3>New Blog Post</h3>
+
+    <app-report-bar *ngIf="created" message="Blog has been added" type="success"></app-report-bar>
+
     <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="blogGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="blog-heading" class="text-mainp text-[15px]">Blog Heading</label>
-            <input type="text" name="heading" id="blog-heading" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="heading">
+        <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+        <div class="flex flex-col gap-y-2">
+            <label for="blog-heading" class="text-mainp required">Blog Heading</label>
+            <input type="text" name="heading" id="blog-heading" class="p-2 outline-none border border-slate-200 rounded" formControlName="heading">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && heading.invalid">{{get_error_message(heading)}}</div>
         </div>
         <div class="flex flex-col gap-y-2 w-full">
-            <label for="blog-content" class="text-mainp text-[15px]">Blog Content</label>
-            <textarea type="text" rows="6" name="content" id="blog-content" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="content"></textarea>
+            <label for="blog-content" class="text-mainp required">Blog Content</label>
+            <ckeditor class="text-sm" [editor]="editor" formControlName="content"></ckeditor>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && content.invalid">{{get_error_message(content)}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="blog-image" class="text-mainp text-[15px]">Blog Image</label>
+        <div class="flex flex-col gap-y-2">
+            <label for="blog-image" class="text-mainp optional">Blog Image</label>
             <input #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="blog-image" class="hidden" formControlName="image">
-            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
+            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
                 <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
                     <div class="">
                         <img src="./assets/svgs/upload.svg" class="gray-icon m-auto" alt="">
-                        <p class="text-gray-400 text-sm m-auto mt-2">Click to upload image</p>
-                        <p class="text-gray-400 text-sm m-auto mt-2 text-center">(.png, .jpg)</p>
+                        <p class="text-gray-400 m-auto mt-2">Click to upload image</p>
+                        <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
                     </div>
                 </div>
                 <img class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
             </div>
         </div>
         <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-            <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Created' : 'Create'}}</div></button>
+            <button [disabled]="created || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{created ? 'Created' : 'Create'}}</div>
+            </button>
             <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
         </div>
     </form>

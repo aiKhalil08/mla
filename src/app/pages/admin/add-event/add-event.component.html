@@ -1,54 +1,65 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
     <h3>New Event</h3>
+
+    <app-report-bar *ngIf="created" message="Event has been added" type="success"></app-report-bar>
+
+
     <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="eventGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="event-name" class="text-mainp text-[15px]">Event Name</label>
-            <input type="text" name="name" id="event-name" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="name">
+        <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+        <div class="flex flex-col gap-y-2">
+            <label for="event-name" class="text-mainp required">Event Name</label>
+            <input type="text" name="name" id="event-name" class="p-2 outline-none border border-slate-200 rounded" formControlName="name">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && name.invalid">{{get_error_message(name)}}</div>
         </div>
         <div class="flex flex-col gap-y-2 w-full">
-            <label for="event-description" class="text-mainp text-[15px]">Event Description</label>
-            <textarea type="text" rows="6" name="description" id="event-description" class="p-2 text-sm outline-none border border-slate-200 rounded resize-none" formControlName="description"></textarea>
+            <label for="event-description" class="text-mainp required">Event Description</label>
+            <textarea type="text" rows="6" name="description" id="event-description" class="p-2 outline-none border border-slate-200 rounded resize-none" formControlName="description"></textarea>
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && description.invalid">{{get_error_message(description)}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max" formGroupName="date">
-            <label for="start-date" class="text-mainp text-[15px]">Event Date</label>
+        <div class="flex flex-col gap-y-2" formGroupName="date">
+            <label for="start-date" class="text-mainp required">Event Date</label>
             <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
                 <label for="start" class="text-gray text-sm min-w-[100px]">Start Date: </label>
-                <input placeholder="Start date" type="date" name="date[start]" id="start" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="start">
+                <input placeholder="Start date" type="date" name="date[start]" id="start" class="p-2 outline-none border border-slate-200 rounded" formControlName="start">
             </div>
             <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
                 <label for="duration" class="text-gray text-sm min-w-[100px]">Duration: </label>
-                <input placeholder="Duration" type="text" name="date[duration]" id="duration" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="duration">
-                <div class="relative w-[120px] h-[38px]"><!-- self-stretch -->
-                    <div (click)="folded = !folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': folded, 'rotate-[-225deg]': !folded, 'top-3': folded, 'top-4': !folded}"></div>
-                    <input (click)="folded = !folded" placeholder="unit" type="text" name="date[duration-unit]" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" readonly>
-                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 text-sm border border-slate-200 z-50" [class.hidden]="folded" [class.block]="!folded">
-                        <div (click)="setDurationUnit('Days')" class="p-2 cursor-pointer hover:bg-slate-200">Days</div>
-                        <div (click)="setDurationUnit('Weeks')" class="p-2 cursor-pointer hover:bg-slate-200">Weeks</div>
-                        <div (click)="setDurationUnit('Months')" class="p-2 cursor-pointer hover:bg-slate-200">Months</div>
+                <div class="flex gap-2 items-center">
+
+                    <input type="number" min="0" name="date[duration]" id="duration" class="p-2 outline-none border border-slate-200 w-20 rounded" formControlName="duration">
+                    <div class="relative w-[120px] h-[38px]">
+                        <div (click)="folded = !folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': folded, 'rotate-[-225deg]': !folded, 'top-3': folded, 'top-4': !folded}"></div>
+                        <input (click)="folded = !folded" placeholder="unit" type="text" name="date[duration-unit]" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" readonly>
+                        <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 z-20" [class.hidden]="folded" [class.block]="!folded">
+                            <div (click)="setDurationUnit('Days')" class="p-2 cursor-pointer hover:bg-slate-200">Days</div>
+                            <div (click)="setDurationUnit('Weeks')" class="p-2 cursor-pointer hover:bg-slate-200">Weeks</div>
+                            <div (click)="setDurationUnit('Months')" class="p-2 cursor-pointer hover:bg-slate-200">Months</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
                 <label for="end" class="text-gray text-sm min-w-[100px]">End Date: </label>
-                <input placeholder="End date" type="date" name="date[end]" id="end" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="end" readonly>
+                <input placeholder="End date" type="date" name="date[end]" id="end" class="p-2 outline-none border border-slate-200 rounded" formControlName="end" readonly>
             </div>
+            <div class="text-red-500 text-sm" *ngIf="(tried_to_submit && startDate.invalid) || (tried_to_submit && endDate.invalid) || (tried_to_submit && duration.invalid) || (tried_to_submit && unit.invalid)">{{get_error_message(startDate) || get_error_message(endDate) || get_error_message(duration) || get_error_message(unit)}}</div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="" class="text-mainp text-[15px]">Event Type</label>
-            <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
-                <input (click)="setType($event)" type="radio" name="type" value="physical" id="physical" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="type">
+        <div class="flex flex-col gap-y-2">
+            <label for="" class="text-mainp optional">Event Type</label>
+            <div class="flex gap-x-2 max-w-[200px] sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
+                <input (click)="setType($event)" type="radio" name="type" value="physical" id="physical" class="p-2 outline-none border border-slate-200 rounded" formControlName="type">
                 <label for="physical" class="text-sm">Physical Event</label>
             </div>
-            <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
-                <input (click)="setType($event)" type="radio" name="type" value="virtual" id="virtual" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="type">
+            <div class="flex gap-x-2 max-w-[200px] sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
+                <input (click)="setType($event)" type="radio" name="type" value="virtual" id="virtual" class="p-2 outline-none border border-slate-200 rounded" formControlName="type">
                 <label for="virtual" class="text-sm">Virtual Event</label>
             </div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
-            <label for="course-price" class="text-mainp text-[15px]">Event Price</label>
+        <div class="flex flex-col gap-y-2" formGroupName="price">
+            <label for="course-price" class="text-mainp optional">Event Price</label>
             <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none"><!-- items-center -->
-                <input placeholder="physical price" [readOnly]="type != 'physical'" type="text" name="price[amount][physical]" id="event-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
-                <input placeholder="virtual price" [readOnly]="type != 'virtual'" type="text" name="price[amount][virtual]" id="event-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
+                <input placeholder="physical price" [readOnly]="type != 'physical'" type="text" name="price[amount][physical]" id="event-price" class="p-2 outline-none border border-slate-200 placeholder:italic max-w-36 rounded grow" formControlName="amount">
+                <input placeholder="virtual price" [readOnly]="type != 'virtual'" type="text" name="price[amount][virtual]" id="event-price" class="p-2 outline-none border border-slate-200 placeholder:italic max-w-36 rounded grow" formControlName="amount">
                 <div class="relative w-[120px] h-[38px] self-stretch">
                     <div (click)="curFolded = !curFolded"
                         class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear"
@@ -56,7 +67,7 @@
                     <input (click)="curFolded = !curFolded" placeholder="currency" type="text" name="price[currency]"
                         class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none"
                         readonly formControlName="currency">
-                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 text-sm border border-slate-200 z-20"
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 z-20"
                         [class.hidden]="curFolded" [class.block]="!curFolded">
                         <div (click)="setCurrency('NGN (₦)')" class="p-2 cursor-pointer hover:bg-slate-200">NGN (₦)</div>
                         <div (click)="setCurrency('USD ($)')" class="p-2 cursor-pointer hover:bg-slate-200">USD ($)</div>
@@ -64,50 +75,34 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="flex flex-col gap-y-2 w-max" formGroupName="price">
-            <label for="event-price" class="text-mainp text-[15px]">Event Price</label>
-            <div class="flex gap-x-2 flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
-                <input placeholder="physical price" [readOnly]="type != 'physical'" type="text" name="price[amount]" id="event-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
-                <input placeholder="virtual price" [readOnly]="type != 'virtual'" type="text" name="price[amount]" id="event-price" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="amount">
-                <div class="relative w-[120px] h-[38px] self-stretch">
-                    <div (click)="curFolded = !curFolded"
-                        class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear"
-                        [ngClass]="{'-rotate-45': curFolded, 'rotate-[-225deg]': !curFolded, 'top-3': curFolded, 'top-4': !curFolded}"></div>
-                    <input (click)="curFolded = !curFolded" placeholder="currency" type="text" name="price[currency]"
-                        class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none"
-                        readonly formControlName="currency">
-                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 text-sm border border-slate-200 z-50"
-                        [class.hidden]="curFolded" [class.block]="!curFolded">
-                        <div (click)="setCurrency('NGN (₦)')" class="p-2 cursor-pointer hover:bg-slate-200">NGN (₦)</div>
-                        <div (click)="setCurrency('USD ($)')" class="p-2 cursor-pointer hover:bg-slate-200">USD ($)</div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="flex flex-col gap-y-2 w-full relative" formArrayName="attendees">
             <img src="./assets/svgs/plus.svg" (click)="addAttendee()"
                 class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
-            <label for="event-attendees" class="text-mainp text-[15px]">Event Attendees</label>
+            <label for="event-attendees" class="text-mainp optional">Event Attendees</label>
             <div class="flex gap-x-2 items-center" *ngFor="let objective of attendees.controls; index as i">
-                <span class="min-w-6">{{i+1}}.</span><input type="text" name="attendees[]" id="event-attendees" class="p-2 text-sm outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
+                <span class="min-w-6">{{i+1}}.</span><input type="text" name="attendees[]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
             </div>
         </div>
-        <div class="flex flex-col gap-y-2 w-max">
-            <label for="event-image" class="text-mainp text-[15px]">Event Image</label>
+        <div class="flex flex-col gap-y-2">
+            <label for="event-image" class="text-mainp optional">Event Image</label>
             <input #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="event-image" class="hidden" formControlName="image">
-            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] text-sm border border-slate-200 rounded bg-white">
+            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
                 <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
                     <div class="">
                         <img src="./assets/svgs/upload.svg" class="gray-icon m-auto" alt="">
-                        <p class="text-gray-400 text-sm m-auto mt-2">Click to upload image</p>
-                        <p class="text-gray-400 text-sm m-auto mt-2 text-center">(.png, .jpg)</p>
+                        <p class="text-gray-400 m-auto mt-2">Click to upload image</p>
+                        <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
                     </div>
                 </div>
                 <img class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
             </div>
         </div>
         <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-            <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Created' : 'Create'}}</div></button>
+            <button [disabled]="created || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{created ? 'Created' : 'Create'}}</div>
+            </button>
             <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin/events"></app-redirect-button>
         </div>
     </form>

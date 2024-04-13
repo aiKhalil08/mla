@@ -1,10 +1,10 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !course, 'place-items-center': !course, 'h-[500px]': !course}">
-    <div class="loader" *ngIf="!course"></div>
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching_course || error, 'place-items-center': fetching_course || error, 'h-[500px]': !course}">
+    <div class="loader" *ngIf="fetching_course"></div>
     <div id="ran" *ngIf="course" class="max-w-[750px] mx-auto">
         <h3 class="lg:ml-4">{{course_name}}</h3>
         <div id="container" class="flex flex-col gap-y-8 mt-6 lg:ml-4"><!-- container -->
             
-            <app-carted-course [course]="course" [type]="type"></app-carted-course>
+            <app-course [course]="course" [carted_or_enrolled]="carted_or_enrolled" [category]="category" [certificate]="certificate || null"></app-course>
 
             <div id="divider" class="w-full h-[1px] bg-slate-400"></div><!-- divider -->
     
@@ -12,4 +12,5 @@
             
         </div>
     </div>
+    <app-empty-content *ngIf="error" [message]="error"></app-empty-content>
 </main>

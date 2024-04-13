@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Testimonial, TestimonialItem } from '../interfaces/testimonial';
+import { GetTestimonialResponse, Testimonial, TestimonialItem } from '../interfaces/testimonial';
+import PostResponse from '../interfaces/post-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,32 +13,17 @@ export class TestimonialService {
 
   add(testimonial: FormData) {
     let url = `${this.domain_name}/admin/testimonial/create`;
-    return this.http.post(url, testimonial, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.post(url, testimonial);
   }
 
   edit(testimonial: FormData, name: string) {
     let url = `${this.domain_name}/admin/testimonial/${name}/edit`;
-    return this.http.post(url, testimonial, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.post(url, testimonial,);
   }
 
   delete(name: string) {
     let url = `${this.domain_name}/admin/testimonial/${name}/delete`;
-    return <Observable<{status: string}>>this.http.delete(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.delete(url);
   }
   getList(itemsCount: number | 'all') {
     let url = `${this.domain_name}/testimonials/${itemsCount}`;
@@ -50,12 +36,7 @@ export class TestimonialService {
   }
   get(name: string) {
     let url = `${this.domain_name}/testimonial/${name}`;
-    return <Observable<Testimonial>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<GetTestimonialResponse>>this.http.get(url);
   }
 
   // getPost(heading: string) {

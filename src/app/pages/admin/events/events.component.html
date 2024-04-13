@@ -4,7 +4,7 @@
         <div class="relative flex flex-col gap-y-6">
             <h3>Events</h3>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">Name</th>
@@ -18,7 +18,7 @@
                             <td class="tc">{{event.name}}</td>
                             <td class="tc">{{format(parse(event.date).start)}}</td>
                             <td class="tc">{{format(parse(event.date).end)}}</td>
-                            <td class="tc"><app-redirect-button theme="pink" text="Action" location="/admin/event/{{event.name}}"></app-redirect-button></td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="Action" location="/admin/event/{{event.name}}"></app-redirect-button></td>
                         </tr>
                     </tbody>
                 </table>

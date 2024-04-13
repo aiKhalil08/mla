@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartItem } from 'src/app/interfaces/cart';
+// import { CartItem } from 'src/app/interfaces/cart';
+import { CourseItem } from 'src/app/interfaces/courses';
 
 @Component({
   selector: 'app-cart-item',
@@ -10,7 +11,7 @@ import { CartItem } from 'src/app/interfaces/cart';
   styleUrls: ['./cart-item.component.css']
 })
 export class CartItemComponent implements OnInit {
-  @Input() course: CartItem;
+  @Input() course: CourseItem;
   course_category: string;
   course_identity: string;
 

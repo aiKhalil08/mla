@@ -2,7 +2,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { OffshoreCourse, OffshoreCourseItem } from '../interfaces/offshore-course';
+import { GetOffshoreCourseResponse, OffshoreCourse, OffshoreCourseItem } from '../interfaces/offshore-course';
+import PostResponse from '../interfaces/post-response';
 
 @Injectable({
   providedIn: 'root'
@@ -13,62 +14,27 @@ export class OffshoreCourseService {
 
   add(course: FormData) {
     let url = `${this.domain_name}/admin/offshore-course/create`;
-    // this.http.get(init_url).subscribe((res) => {
-    //   console.log(res);
-    // });
-    return this.http.post(url, course, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    
+    return <Observable<PostResponse>>this.http.post(url, course);
   }
 
   edit(course: FormData, course_title: string) {
     let url = `${this.domain_name}/admin/offshore-course/${course_title}/edit`;
-    // console.log(course.get('image'));
-    // console.log(course.get('sch'));
-
-    // console.log(course.get('code'))
-    // this.http.get(init_url).subscribe((res) => {
-    //   console.log(res);
-    // });
-    return this.http.post(url, course, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    
+    return <Observable<PostResponse>>this.http.post(url, course);
   }
 
   delete(course_title: string) {
     let url = `${this.domain_name}/admin/offshore-course/${course_title}/delete`;
-    // this.http.get(init_url).subscribe((res) => {
-    //   console.log(res);
-    // });
-    return <Observable<{status: string}>>this.http.delete(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    
+    return <Observable<PostResponse>>this.http.delete(url);
   }
   getList(itemsCount: number | 'all') {
     let url = `${this.domain_name}/offshore-courses/${itemsCount}`;
-    return <Observable<OffshoreCourseItem[]>> this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<OffshoreCourseItem[]>> this.http.get(url);
   }
   get(course_title: string) {
     let url = `${this.domain_name}/offshore-course/${course_title}`;
-    return <Observable<OffshoreCourse>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<GetOffshoreCourseResponse>>this.http.get(url);
   }
 }

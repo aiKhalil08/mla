@@ -25,7 +25,7 @@
             </div>
             <div class="flex flex-col gap-y-2 w-full">
                 <label for="email" class="text-mainp text-sm">Email</label>
-                <input [readonly]="!editable" type="text" name="email" id="email" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="email">
+                <input readonly type="text" name="email" id="email" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="email">
             </div>
             <div class="flex flex-col gap-y-2 w-full">
                 <label for="phone_number" class="text-mainp text-sm">Mobile Number</label>
@@ -41,7 +41,7 @@
             </div>
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
                 <button [disabled]="!editable || edited" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{edited ? 'Updated' : 'Update'}}</div></button>
-                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/resources"></app-redirect-button>
+                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/home"></app-redirect-button>
             </div>
         </form>
     </div>

@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { EventService } from 'src/app/services/event.service';
+import PostResponse from 'src/app/interfaces/post-response';
+import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
+import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 
 @Component({
     selector: 'app-add-event',
     standalone: true,
     templateUrl: './add-event.component.html',
     styleUrls: ['./add-event.component.css'],
-    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent]
+    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, TooltipComponent, ReportBarComponent]
 })
 export class AddEventComponent implements OnInit {
   eventGroup!: FormGroup;
@@ -23,17 +26,19 @@ export class AddEventComponent implements OnInit {
   submitted: boolean = false;
   created: boolean = false;
   type?: 'virtual' | 'physical';
+  tried_to_submit: boolean = false;
+  formError: string = null;
 
   constructor(private formBuilder: FormBuilder, private eventService: EventService) {}
 
   ngOnInit() {
     this.eventGroup = this.formBuilder.group({
-      name: [''],
-      description: [''],
+      name: ['', Validators.required],
+      description: ['', Validators.required],
       date: this.formBuilder.group({
-        start: [''],
-        duration: [''],
-        durationUnit: [''],
+        start: ['', Validators.required],
+        duration: ['', Validators.required],
+        durationUnit: ['', Validators.required],
         end: ['']
       }),
       type: [''],
@@ -84,12 +89,46 @@ export class AddEventComponent implements OnInit {
     return <FormControl>this.eventGroup.get('date').get('end');
   }
 
+  get startDate() {
+    return <FormControl>this.eventGroup.get('date').get('start');
+  }
+
   get unit() {
     return <FormControl>this.eventGroup.get('date').get('durationUnit');
   }
 
   get currency() {
     return <FormControl>this.eventGroup.get('price').get('currency');
+  }
+
+
+  get description() {
+    return <FormControl>this.eventGroup.get('description');
+  }
+  
+  get name() {
+    return <FormControl>this.eventGroup.get('name');
+  }
+
+
+  get duration() {
+    return <FormControl>this.eventGroup.get('date').get('duration');
+  }
+
+  get form_invalid() {
+    
+    return this.eventGroup.invalid;
+  }
+
+  get_error_message(control: AbstractControl): string | boolean {
+
+    if (!control.errors) return false;
+
+    if ('required' in control.errors) return 'This field is required.';
+    else if ('pattern' in control.errors) return 'Please input the right data format for this field.';
+
+    return true;
+    
   }
 
   setType(event: Event) {
@@ -131,16 +170,31 @@ export class AddEventComponent implements OnInit {
     if (file) reader.readAsDataURL(file);
   }
 
-  onSubmit(form) {
+  
+  onSubmit(form: HTMLFormElement) {
+    this.tried_to_submit = true;
+    
+    if (this.eventGroup.invalid) return;
+
     this.submitted = true;
     let formData = new FormData(form);
+    
+
     this.eventService.add(formData).subscribe({
       next: (response) => {
-        console.log(response);
-        this.created = true;
         this.submitted = false;
+        if (response.status == 'failed') {
+          this.formError = response.message;
+          return;
+        }
+        this.handleResponse(response);
       },
     });
+  }
+
+  handleResponse(response: PostResponse) {
+    this.formError = null;
+    this.created = true;
   }
 
 }

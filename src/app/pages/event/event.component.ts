@@ -9,6 +9,7 @@ import { ContactUsButtonComponent } from "../../partials/contact-us-button/conta
 import { AuthService } from 'src/app/services/auth.service';
 import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
 import { WatchlistButtonComponent } from "../../partials/watchlist-button/watchlist-button.component";
+import { EmptyContentComponent } from "../../partials/empty-content/empty-content.component";
 
 
 
@@ -17,13 +18,14 @@ import { WatchlistButtonComponent } from "../../partials/watchlist-button/watchl
     standalone: true,
     templateUrl: './event.component.html',
     styleUrls: ['./event.component.css'],
-    imports: [CommonModule, RouterLink, ContactUsButtonComponent, WatchlistButtonComponent]
+    imports: [CommonModule, RouterLink, ContactUsButtonComponent, WatchlistButtonComponent, EmptyContentComponent]
 })
 export class EventComponent {
   public event: Event$ | null = null;
-  loaded: boolean = false;
+  fetching: boolean = false;
   message_text: string;
   watched: boolean;
+  no_event: string = null;
 
   constructor (private eventService: EventService, private route: ActivatedRoute, private auth: AuthService, private watchlist: EventWatchlistService) {}
 
@@ -37,10 +39,15 @@ export class EventComponent {
   }
 
   getEvent(name) {
+    this.fetching = true;
     this.eventService.get(name).subscribe({
       next: (response) => {
-        this.loaded = true;
-        this.event = response;
+        this.fetching = false;
+        if (response.status == 'failed') {
+          this.no_event = response.message;
+          return;
+        }
+        this.event = response.event;
         if (this.auth.isLoggedIn('student') && this.watchlist.has(this.event.name)) this.watched = true;
         this.message_text = `Hello. I am chatting you regarding ${this.event.name.toUpperCase()}. My name is ___`;
       }

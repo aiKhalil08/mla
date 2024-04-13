@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 // import Cart from 'src/app/interfaces/cart';
-import { CartComponent } from 'src/app/partials/cart/cart.component';
-import { CartService } from 'src/app/services/cart.service';
+// import { CartComponent } from 'src/app/partials/cart/cart.component';
+// import { CartService } from 'src/app/services/cart.service';
 import { TrendingCoursesComponent } from "../../../partials/trending-courses/trending-courses.component";
+import { CourseListComponent } from 'src/app/partials/course-list/course-list.component';
 
 @Component({
     selector: 'app-courses',
     standalone: true,
     templateUrl: './student-courses.component.html',
     styleUrls: ['./student-courses.component.css'],
-    imports: [CommonModule, CartComponent, TrendingCoursesComponent]
+    imports: [CommonModule, CourseListComponent, TrendingCoursesComponent]
 })
 export class StudentCoursesComponent{
 

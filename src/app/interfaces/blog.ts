@@ -19,5 +19,18 @@ interface BlogPost {
     recent_posts: {heading: string}[]
 }
 
+interface GetBlogResponse {
+    status: string;
+    message?: string;
+    blog: Blog;
+}
 
-export { BlogItem, Blog, BlogPost}
+interface GetBlogPostResponse {
+    status: string;
+    message?: string;
+    blog: Blog,
+    recent_posts: {heading: string}[]
+}
+
+
+export { BlogItem, Blog, BlogPost, GetBlogResponse, GetBlogPostResponse}

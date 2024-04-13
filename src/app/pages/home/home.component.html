@@ -2,7 +2,7 @@
     <div class="h-[400px] relative w-full overflow-clip"> <!-- banner wrapper -->
         <div class="w-[200%] h-full flex">
             <div class="w-1/2 h-full first-state" id="left-slide">
-                <img src="./assets/images/smiling_girl.png" alt="" class="absolute w-full h-full object-cover">
+                <img src="./assets/images/smiling_girl.png" srcset="./assets/images/smiling_girl_600.png 600w, ./assets/images/smiling_girl.png 1024w" sizes="(max-width:600px) 600px, 1024px" alt="" class="absolute w-full h-full object-cover">
                 <div class="w-full h-full bg-gradient-to-r from-mainp/90 to-transparent absolute flex items-center md:pl-20">
                     <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                         <div class="font-bold text-2xl" id="first-paragraph">Learn the latest digital skills for tomorrow’s jobs</div>
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="w-1/2 h-full custom-hidden" id="right-slide">
-                <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+                <img src="./assets/images/typing_boy.png" srcset="./assets/images/typing_boy_600.png 600w, ./assets/images/typing_boy.png 1024w" sizes="(max-width:600px) 600px, 1024px" alt="" class="absolute w-full h-full object-cover">
                 <div class="w-full h-full bg-gradient-to-r from-mainp/90 to-transparent absolute flex items-center md:pl-20">
                     <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                         <div class="font-bold text-2xl" id="first-paragraph">Stay relevant in the fast evolving world</div>
@@ -35,7 +35,7 @@
         <div class="w-full max-w-[900px] relative">
             <h3 class="text-2xl">Upcoming Events</h3>
             <div class="mt-2">Discover events on our calendar</div>
-            <app-event-list (no_events)="handle_no_events()" [count]="3" ></app-event-list>
+            <app-event-list (events_exists)="handle_no_events()" [count]="3" ></app-event-list>
         </div>
     </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- in demand wrapper -->
@@ -110,7 +110,7 @@
         </div>
     </div> -->
     <div class="h-[250px] relative mt-8"> <!-- banner wrapper -->
-        <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+        <img src="./assets/images/typing_boy.png" srcset="./assets/images/typing_boy_600.png 600w, ./assets/images/typing_boy.png 1024w" sizes="(max-width:600px) 600px, 1024px" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Empower your mind and shape your future</div>
@@ -142,13 +142,12 @@
             </div>
         </div>
     </div>
-    <!-- testimonials wrapper -->
-    <!-- <div class="relative p-4 pt-10 flex items-center justify-center"> 
+    <div class="relative p-4 pt-10 items-center justify-center" [class.flex]="!no_testimonials" [class.hidden]="no_testimonials"> <!-- testimonials wrapper -->
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">What our customers are saying about us</h3>
-            <app-testimonial-list type="testimonial"></app-testimonial-list>
+            <app-testimonial-list type="testimonial" (no_testimonials)="handle_no_testimonials()" count="all"></app-testimonial-list>
         </div>
-    </div> -->
+    </div>
     <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- learning options wrapper -->
         <div class="w-full max-w-[768px] relative">
             <h3 class="text-2xl">Learning options</h3>
@@ -174,7 +173,7 @@
         </div>
     </div>
     <div class="h-[250px] relative mt-8"> <!-- banner wrapper -->
-        <img src="./assets/images/typing_boy.png" alt="" class="absolute w-full h-full object-cover">
+        <img rc="./assets/images/typing_boy.png" srcset="./assets/images/typing_boy_600.png 600w, ./assets/images/typing_boy.png 1024w" sizes="(max-width:600px) 600px, 1024px" alt="" class="absolute w-full h-full object-cover">
         <div class="w-full h-full bg-gradient-to-r from-mainp to-transparent absolute flex items-center md:pl-20">
             <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0">
                 <div class="font-bold text-4xl mb-4">Become a tutor and teach the world today</div>

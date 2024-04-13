@@ -4,6 +4,7 @@ import { WatchedEvent } from 'src/app/interfaces/watched-event';
 import { Date } from 'src/app/interfaces/certificate-course';
 import { CommonModule } from '@angular/common';
 import { ContactUsButtonComponent } from "../contact-us-button/contact-us-button.component";
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-watched-event',
@@ -17,12 +18,15 @@ export class WatchedEventComponent implements OnInit {
   attendees: string[];
   message_text: string;
 
+
+  constructor(private auth: AuthService) {}
+
   ngOnInit(): void {
 
-    console.log(this.event)
+    // console.log(this.event)
     this.attendees = <string[]>JSON.parse(this.event.attendees);
 
-    this.message_text = `Hello. I am chatting you regarding ${this.event.name.toUpperCase()}. My name is ___`;
+    this.message_text = `Hello. I am ${this.auth.user().first_name} ${this.auth.user().last_name} and I am chatting you regarding ${this.event.name.toUpperCase()}.`;
   }
 
 

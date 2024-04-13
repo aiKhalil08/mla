@@ -1,5 +1,5 @@
-<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}"><!-- [ngClass]="{'grid': !loaded, 'place-items-center': !loaded} -->
-    <div class="loader" [class.hidden]="loaded"></div>
+<main class="landing" [ngClass]="{'grid': fetching_course || no_course, 'place-items-center': fetching_course || no_course}"><!-- [ngClass]="{'grid': !loaded, 'place-items-center': !loaded} -->
+    <div class="loader" [class.hidden]="!fetching_course"></div>
     <div *ngIf="course" class="max-w-[100%] overflow-hidden">
         <div class="p-4 pt-10 flex items-center justify-center">
             <div class="w-full max-w-[900px]">
@@ -24,8 +24,10 @@
                     </ul>
                 </div>
                 <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
-                    <app-contact-us-button text="Contact Us" [course]="{type:'ctc', name: this.course.title+' - '+this.course.code}" theme="pink"></app-contact-us-button>
-                    <app-cart-button type="button" [carted]="carted" [course]="{identity: course.code, type: 'certification-course'}"></app-cart-button>
+                    <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded">
+                        Contact Us
+                    </a>
+                    <app-cart-button type="button" [carted]="carted" [course]="{identity: course.code, category: 'certification-course'}"></app-cart-button>
                 </div>
             </div>
         </div>
@@ -33,8 +35,9 @@
             <div class="w-full max-w-[780px] p-4 text-white">
                 <h2 class="text-2xl my-4">Who Can Attend The Course</h2>
                 <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
-                    <li class="flex gap-x-2 items-center" *ngFor="let attendee of attendees"><img
-                            src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{attendee}}</span></li>
+                    <ng-container *ngFor="let attendee of attendees">
+                        <li class="flex gap-x-2 items-center" *ngIf="attendee"><img src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{attendee}}</span></li>
+                    </ng-container>
                 </ul>
             </div>
         </div>
@@ -96,8 +99,9 @@
             <div class="w-full max-w-[780px] p-4 text-white">
                 <h2 class="text-2xl my-4">Prerequisites for {{course.title}}</h2>
                 <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
-                    <li class="flex gap-x-2 items-center" *ngFor="let prerequisite of prerequisites"><img
-                            src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>
+                    <ng-container *ngFor="let prerequisite of prerequisites">
+                        <li class="flex gap-x-2 items-center" *ngIf="prerequisite"><img src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>
+                    </ng-container>
                 </ul>
             </div>
         </div>
@@ -113,7 +117,9 @@
                     <div class="bg-mainp p-4 flex items-center">
                         <p class="text-white">Do you like the curriculum and would like to learn more?</p>
                         <div class="flex-grow"></div>
-                        <app-contact-us-button text="Contact Us" [course]="{type:'ctc', name: this.course.title+' - '+this.course.code}" theme="white"></app-contact-us-button>
+                        <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-mainp px-6 py-2 font-[500] flex justify-center items-center bg-white border border-transparent rounded">
+                            Contact Us
+                        </a>
                     </div>
                 </div>
             </div>
@@ -191,5 +197,5 @@
         </div>
         
     </div>
-    
+    <app-empty-content [message]="no_course" *ngIf="no_course"></app-empty-content>
 </main>

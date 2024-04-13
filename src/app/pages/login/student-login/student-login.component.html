@@ -24,6 +24,9 @@
                     <div class="text-xs mt-4">
                         <a (click)="forgotPassword = true" class="text-mainp cursor-pointer">Forgot password?</a>
                     </div>
+                    <div class="mt-4">
+                        <re-captcha (resolved)="handleResolved($event)" [siteKey]="siteKey"></re-captcha>
+                    </div>
                     <div class="mt-6">
                         <button [disabled]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" [class.cursor-not-allowed]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_one" [class.hidden]="!submitted_one"></div><div>{{(backWithErrors_one && (errorsRectified_one == errorneousFields_one.length)) ? 'Login' : backWithErrors_one ? 'Rectify all errors' : studentGroup.invalid ? 'Fill all fields' : 'Login'}}</div></button>
                     </div>
@@ -61,7 +64,10 @@
                         <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
                     </div>
                 </div>
-                <img src="./assets/images/typing_girl.png" class="w-full h-full object-cover" alt="">
+                <picture>
+                    <source media="(min-width:1024px)" srcset="./assets/images/typing_girl.png">
+                    <img src="" class="w-full h-full object-cover" alt="">
+                </picture>
             </div>
             <div class="w-1/2 h-full custom-hidden" id="right-slide">
                 <div class="absolute w-full h-full bg-gradient-to-t from-mainp/90 to-transparent">
@@ -70,7 +76,10 @@
                         <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
                     </div>
                 </div>
-                <img src="./assets/images/waving_girl.png" class="w-full h-full object-cover" alt="">
+                <picture>
+                    <source media="(min-width:1024px)" srcset="./assets/images/waving_girl.png">
+                    <img src="" class="w-full h-full object-cover" alt="">
+                </picture>
             </div>
         </div>
     </div>

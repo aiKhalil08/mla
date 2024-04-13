@@ -1,0 +1,29 @@
+:host {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    z-index: 10;
+    /* width: 100%; */
+}
+
+
+.bubble::after {
+    content: '';
+    position: absolute;
+    /* top: 100%; */
+    top: calc(100% - 8px);
+    /* left: calc(50% - 8px); */
+    left: -8px;
+    transform: rotate(135deg);
+    border-width: 8px;
+    border-style: solid;
+    border-color: rgb(0 0 0 / 0.7) transparent transparent transparent;
+}
+
+
+/* 
+@HostBinding('class.absolute') get absolute() {return true;}
+// @HostBinding('class.bottom-[calc(100%+10px)]') get bottom() {return true;}
+// @HostBinding('class.left-0') get left() {return true;}
+// @HostBinding('class.z-10') get zindex() {return true;}
+// @HostBinding('class.w-full') get width() {return true;} */

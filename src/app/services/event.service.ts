@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Event$, EventItem } from '../interfaces/event';
+import { Event$, EventItem, GetEventResponse } from '../interfaces/event';
+import PostResponse from '../interfaces/post-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,32 +13,17 @@ export class EventService {
 
   add(event: FormData) {
     let url = `${this.domain_name}/admin/event/create`;
-    return this.http.post(url, event, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.post(url, event);
   }
 
   edit(event: FormData, heading: string) {
     let url = `${this.domain_name}/admin/event/${heading}/edit`;
-    return this.http.post(url, event, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.post(url, event);
   }
 
   delete(heading: string) {
     let url = `${this.domain_name}/admin/event/${heading}/delete`;
-    return <Observable<{status: string}>>this.http.delete(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<PostResponse>>this.http.delete(url);
   }
   getList(itemsCount: number | 'all') {
     let url = `${this.domain_name}/events/${itemsCount}`;
@@ -50,12 +36,7 @@ export class EventService {
   }
   get(heading: string) {
     let url = `${this.domain_name}/event/${heading}`;
-    return <Observable<Event$>>this.http.get(url, {
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
-    });
+    return <Observable<GetEventResponse>>this.http.get(url);
   }
 
   // getEvent(heading: string) {

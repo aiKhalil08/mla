@@ -4,18 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { Sale } from 'src/app/interfaces/sales';
 import { SaleService } from 'src/app/services/sale.service';
+import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
 
 @Component({
-  selector: 'app-sale',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './sale.component.html',
-  styleUrls: ['./sale.component.css']
+    selector: 'app-sale',
+    standalone: true,
+    templateUrl: './sale.component.html',
+    styleUrls: ['./sale.component.css'],
+    imports: [CommonModule, EmptyContentComponent]
 })
 export class SaleComponent implements OnInit {
 
   id: number;
-  loaded: boolean = false;
+  fetching: boolean = false;
   sale: Sale;
   errorMessage: string;
 
@@ -26,15 +27,17 @@ export class SaleComponent implements OnInit {
   ngOnInit(): void {
     let paramObservable = this.route.paramMap;
     paramObservable.subscribe((param) => {
+      // console.log(param.get('id'), Number(atob(param.get('id'))))
       this.id = Number(atob(param.get('id')));
       this.getSale();
     }); 
   }
 
   getSale() {
+    this.fetching = true;
     this.saleService.get(this.id).subscribe({
       next: (response) => {
-        this.loaded = true;
+        this.fetching = false;
         if (response.status == 'failed') {
           this.errorMessage = response.message;
           return;

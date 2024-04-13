@@ -13,13 +13,16 @@ import { ForgotPasswordComponent } from "../forgot-password/forgot-password.comp
 import { CartService } from 'src/app/services/cart.service';
 import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
 import { AffiliateService } from 'src/app/services/affiliate.service';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+import environment from 'src/environment';
+
 
 @Component({
     selector: 'app-student-signup',
     standalone: true,
     templateUrl: './student-login.component.html',
     styleUrls: ['./student-login.component.css'],
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, ForgotPasswordComponent]
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, ForgotPasswordComponent, RecaptchaFormsModule, RecaptchaModule]
 })
 export class StudentLoginComponent implements OnInit{
 
@@ -52,12 +55,16 @@ export class StudentLoginComponent implements OnInit{
 
   forgotPassword: boolean = false;
 
+  siteKey: string = environment.recaptcha.siteKey;
+  recaptchaResolved: boolean = false;
+
 
   constructor(private loginService: LoginService, private formBuilder: FormBuilder, private tokenService: JWTService, private cartService: CartService, private watchlistService: EventWatchlistService, private storageService: StorageService, private affiliateSevice: AffiliateService) {
 
   }
 
   ngOnInit(): void {
+    // this.siteKey =
     if (this.storageService.exists('expired_session')) {
       this.formOneError = 'Your session has expired, please revalidate';
       this.storageService.remove('expired_session');
@@ -77,6 +84,11 @@ export class StudentLoginComponent implements OnInit{
     // console.log(btoa('muhammadiidiagbon@gmail.com:123456'));
     // console.log(atob('bXVoYW1tYWRpaWRpYWdib25AZ21haWwuY29tOjEyMzQ1Ng=='))
     // this.startCountdown();
+  }
+
+  handleResolved(response: string) {
+    // console.log(response)
+    if (response.length > 0) this.recaptchaResolved = true;
   }
 
   startCountdown() {
@@ -120,6 +132,10 @@ export class StudentLoginComponent implements OnInit{
   }
 
   onSubmitOne(form: HTMLFormElement) {
+    if (!this.recaptchaResolved) {
+      this.formOneError = 'Please complete the reCAPTCHA';
+      return;
+    }
     this.submitted_one = true;
     let form_data = new FormData(form);
     this.loginService.login_one(form_data, 'student').subscribe({

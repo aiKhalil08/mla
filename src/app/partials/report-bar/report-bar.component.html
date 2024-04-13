@@ -1,0 +1,9 @@
+<div class="mt-4 p-2 rounded text-white text-sm" [ngClass]="{'bg-[#007BFF]': type == 'progress', 'bg-[#5cb85c]': type == 'success', 'bg-[#ff6347]': type == 'error'}">
+    <div class="mb-4 w-full h-[2px] bg-white duration-100 ease-linear" #bar *ngIf="type != 'progress'"></div>
+    <div class="flex gap-x-4 items-center">
+        <div *ngIf="type == 'progress'" class="submit-loader"></div>
+        {{message}}
+        <div class="grow"></div>
+        <img src="./assets/svgs/cancel.svg" class="white-icon w-4 h-4 cursor-pointer" (click)="remove = true" alt="">
+    </div>
+</div>

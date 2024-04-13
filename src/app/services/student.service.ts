@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import LoginResponse from '../interfaces/login-response';
 import StudentProfile from '../interfaces/student-profile';
+import { Courses, FetchCourseResponse } from '../interfaces/courses';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class StudentService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private httpClient: HttpClient) { }
 
   csrfRequest() {
-    // let url = `http:///sanctum/csrf-cookie`;
-    let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
+    let url = `http://localhost:8000/sanctum/csrf-cookie`;
+    // let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
     return this.httpClient.get(url, );
   }
 
@@ -53,6 +54,11 @@ export class StudentService {
     return <Observable<{profile: StudentProfile}>>this.httpClient.get(url); 
   }
 
+  get_user(email: string) {
+    let url = `${this.domain_name}/admin/user/${email}`;
+    return <Observable<{status: string; message?: string; user?: StudentProfile}>>this.httpClient.get(url); 
+  }
+
   update_profile(form: FormData) {
     let url = `${this.domain_name}/student/profile`;
     return <Observable<LoginResponse>>this.httpClient.post(url, form); 
@@ -61,5 +67,29 @@ export class StudentService {
   fetch_student_name(email: string) {
     let url = `${this.domain_name}/admin/fetch_student_name/${email}`;
     return <Observable<{status: string, message: string, name: string}>>this.httpClient.get(url); 
+  }
+
+  get_all() {
+    let url = `${this.domain_name}/admin/users`;
+    return <Observable<{students: {first_name: string; last_name: string; email: string}[]}>>this.httpClient.get(url);
+  }
+
+  fetch_enrolled_courses() {
+    let url = `${this.domain_name}/student/courses`;
+
+    return <Observable<{courses: Courses}>>this.httpClient.get(url);
+  }
+
+  fetch_enrolled_course(course: {identity: string, category?: string, enrollment_type: 'cohort' | 'individual'}) {
+    let url = `${this.domain_name}/student/get_enrolled_course`;
+    let form = new FormData();
+    if (course.enrollment_type == 'individual') form.append('category', course.category);
+    form.append('enrollment_type', course.enrollment_type);
+    form.append('identity', course.identity);
+    form.append('carted_or_enrolled', 'enrolled')
+
+
+
+    return <Observable<FetchCourseResponse>>this.httpClient.post(url, form);
   }
 }

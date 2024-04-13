@@ -1,10 +1,10 @@
-interface Cart {
+interface Course {
     'certificate_courses': CCourse[];
     'certification_courses': CCourse[];
     'offshore_courses': OCourse[];
 }
 
-interface CartItem {
+interface CourseItem {
     code?: string;
     title?: string;
     image_url: string;
@@ -17,15 +17,15 @@ type CCourse = {
     code: string;
     title: string;
     image_url: string;
-    number_of_courses: number;
+    number_of_modules: number;
 }
 
 type OCourse = {
     code: string;
     title: string;
     image_url: string;
-    number_of_courses: number;
+    number_of_modules: number;
 }
 
 
-export {Cart, CartItem};
+// export {Cart, CartItem};

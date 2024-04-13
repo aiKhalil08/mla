@@ -1,0 +1,92 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || no_affiliate, 'place-items-center': fetching || no_affiliate}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="affiliate_portal" class="relative ml-4">
+        <div class="max-w-[768px] w-full m-auto">
+            <div>
+                <h3 class="mb-4">Performance Summary</h3>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <div class="min-w-60 grow max-w-[260px] h-60 bg-white text-mainp shadow-lg rounded-lg flex items-center flex-col justify-center gap-y-4">
+                        <img src="./assets/images/referrals.png" class="w-20 h-20 pink-icon" alt="">
+                        <div class="text-3xl">{{affiliate_portal.total_referrals}}</div>
+                        <div class="text-lg text-center">Total Referrals</div>
+                    </div>
+                    <div class="min-w-60 grow max-w-[260px] h-60 bg-white text-mainp shadow-lg rounded-lg flex items-center flex-col justify-center gap-y-4">
+                        <img src="./assets/images/commission.png" class="w-20 h-20 pink-icon" alt="">
+                        <div class="text-3xl">{{formatCurrency(affiliate_portal.total_commission)}}</div>
+                        <div class="text-lg text-center">Total Commission Earned</div>
+                    </div>
+                    <div class="min-w-60 grow max-w-[260px] h-60 bg-white text-mainp shadow-lg rounded-lg flex items-center flex-col justify-center gap-y-4">
+                        <img src="./assets/images/payout.png" class="w-20 h-20 pink-icon" alt="">
+                        <div class="text-3xl">{{formatCurrency(affiliate_portal.completed_payout)}}</div>
+                        <div class="text-lg text-center">Completed Payout</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6">
+                <h3 class="mb-4">Referral Details</h3>
+                <div class="shadow-lg rounded-lg bg-white p-4">
+                    <div class=" ">
+                        <div>Referral code:<span *ngIf="affiliate_portal.is_expired" class="text-xs text-red-500 ml-4">(Your referral code is expired. Please renew.)</span></div>
+                        <div class="text-3xl mt-4 inline-block mr-4">{{affiliate_portal.referral_code}}</div>
+                        <!-- <span class="text-mainp text-sm cursor-pointer" id="copy_button" (click)="copyReferralCode()">Copy</span> -->
+                    </div>
+                    <!-- <button class="mt-6 bg-mainp rounded p-2 text-white flex gap-4 items-center justify-center" (click)="!processing_renew_code && renewReferralCode()">
+                        <div class="submit-loader" *ngIf="processing_renew_code"></div>
+                        Renew Referral Code
+                    </button> -->
+                    <hr class="h-[2px] bg-gray-500 my-4">
+                    <div class="mt-4">
+                        <div>Commission percentage:</div>
+                        <div class="text-3xl mt-2 inline-block mr-4">{{affiliate_portal.referral_code_commission_percentage}}%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6">
+                <h3 class="mb-4">Payout</h3>
+                <div class="shadow-lg rounded-lg bg-white p-4">
+                    <div  class="flex flex-col gap-6">
+                        <div>
+                            <div>Pending payout:</div>
+                            <div class="text-3xl mt-4 inline-block mr-4">{{formatCurrency(affiliate_portal.pending_payout)}}</div>
+                        </div>
+                        <div>
+                            <div>Withdrawable amount:</div>
+                            <div class="text-3xl mt-4 inline-block mr-4">{{formatCurrency(affiliate_portal.withdrawable_amount)}}</div>
+                        </div>
+                    </div>
+                    <!-- <button (click)="redirect_to_withdraw()" class="mt-6 bg-mainp rounded p-2 text-white">Withdraw commission</button> -->
+                    <hr class="h-[2px] bg-gray-500 my-4">
+                    <div class="mt-4">
+                        <div>Payout history:</div>
+                        <div class="max-w-full overflow-auto">
+                            <table class="mt-6 text-sm w-full border-collapse border border-slate-500">
+                                <thead class="text-left">
+                                    <tr>
+                                        <th class="tc p-2">S/N</th>
+                                        <th class="tc p-2">Date</th>
+                                        <th class="tc p-2">Amount</th>
+                                        <th class="tc p-2">Type</th>
+                                        <th class="tc p-2">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let record of payout_history; index as i">
+                                        <td class="tc p-2">{{i + 1}}.</td>
+                                        <td class="tc p-2">{{formatDate(record.date)}}</td>
+                                        <td class="tc p-2">{{formatCurrency(record.amount)}}</td>
+                                        <td class="tc p-2">{{record.type}}</td>
+                                        <td class="border-slate-500 border p-2 whitespace-nowrap">
+                                            <div class="rounded-full h-3 w-3 inline-block mr-2" [ngClass]="{'bg-yellow-400': record.status == 0, 'bg-green-400': record.status == 1, 'bg-red-400': record.status == 2}"></div>
+                                            {{record.status == 0 ? 'Pending' : record.status == 1 ? 'Completed' : 'Canceled'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-empty-content *ngIf="no_affiliate" [message]="no_affiliate"></app-empty-content>
+</main>

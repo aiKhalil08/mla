@@ -12,8 +12,8 @@ export class LoginService {
   constructor(@Inject('DOMAIN_NAME') private domain_name, private httpClient: HttpClient) { }
 
   csrfRequest() {
-    // let url = `http://localhost:8000/sanctum/csrf-cookie`;
-    let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
+    let url = `http://localhost:8000/sanctum/csrf-cookie`;
+    // let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
     return this.httpClient.get(url, );
   }
 

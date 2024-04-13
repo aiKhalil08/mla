@@ -1,0 +1,109 @@
+<div class="flex flex-col gap-y-4">
+    <div class="rounded-md h-[300px]">
+        <img src="{{course.image_url}}" alt="{{course.title}}" class="w-full h-full cover">
+    </div>
+    <div class="hidden sm:block"> <!-- screen width > 640px -->
+        <div class="flex items-stretch gap-x-6"><!-- header -->
+            <div class="grid place-items-center relative cursor-pointer p-2 hover:bg-slate-300/50 duration-150" [ngClass]="{'selected': present_tab == 0}" (click)="show_tab(0)">Overview</div>
+            <div class="grid place-items-center relative cursor-pointer p-2 hover:bg-slate-300/50 duration-150" [ngClass]="{'selected': present_tab == 1}" (click)="show_tab(1)">Objectives</div>
+            <div class="grid place-items-center relative cursor-pointer p-2 hover:bg-slate-300/50 duration-150" [ngClass]="{'selected': present_tab == 2}" (click)="show_tab(2)">Modules</div>
+            <div class="grow"></div>
+            <ng-container *ngIf="carted_or_enrolled == 'carted'">
+                <app-contact-us-button text="Enroll" [course]="{type: abbreviated_type, name: course_name}" theme="pink"></app-contact-us-button>
+            </ng-container>
+            <ng-container *ngIf="carted_or_enrolled == 'enrolled' && certificate">
+                <div (click)="certificate && download({name: certificate.name, url: certificate.url})" class="px-6 py-2 flex justify-center items-center bg-mainp border rounded" [ngClass]="{'bg-white': !certificate, 'text-mainp': !certificate, 'border-mainp': !certificate, 'cursor-default': !certificate, 'text-white': certificate, 'border-transparent': certificate, 'cursor-pointer': certificate}">Certificate</div>
+            </ng-container>
+            <!-- <app-contact-us-button theme="pink" message="{{message_text}}" text="Enroll"></app-contact-us-button> -->
+        </div>
+        <hr class="h-[3px] bg-slate-300 mt-4">
+        <div class="overflow-hidden pt-4 text-sm"><!-- content -->
+            <div [ngClass]="{'hidden': present_tab != 0}" class="basis-full grow-0 shrink-0"><!-- course overview -->
+                {{course.overview}}
+            </div>
+            <div [ngClass]="{'hidden': present_tab != 1}" class="basis-full grow-0 shrink-0"><!-- course objectives -->
+                <ul >
+                    <ng-container *ngFor="let objective of objectives">
+                        <li class="my-3" *ngIf="objective">
+                            <img src="./assets/svgs/gt.svg" class="pink-icon w-2 h-2 inline" alt="">
+                            <span class="ml-2">{{objective}}</span>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+            <div [ngClass]="{'hidden': present_tab != 2}" class="basis-full grow-0 shrink-0"><!-- course modules -->
+                <div class="mt-4 flex flex-col gap-y-4">
+                    <ng-container *ngFor="let module of modules; index as i">
+                        <ng-container *ngIf="module.objective != null && module.overview != null">
+                            <app-module-item [index]="i+1" [module]="module" class="border-b-[3px] border-slate-300"></app-module-item>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block sm:hidden"> <!-- screen width < 640px -->
+        <div class="pt-4 flex flex-col gap-y-4"><!-- content -->
+            <div><!-- course overview -->
+                <div class="mb-4 font-semibold">Overview</div>
+                <div class="text-sm">{{course.overview}}</div>
+            </div>
+            <div><!-- course objectives -->
+                <div class="mb-4 font-semibold">Objectives</div>
+                <ul class="text-sm">
+                    <ng-container *ngFor="let objective of objectives">
+                        <li class="my-3" *ngIf="objective">
+                            <img src="./assets/svgs/gt.svg" class="pink-icon w-2 h-2 inline" alt="">
+                            <span class="ml-2">{{objective}}</span>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+            <div><!-- course modules -->
+                <div class="mb-4 font-semibold">Modules</div>
+                <div class="mt-4 flex flex-col gap-y-4 text-sm">
+                    <ng-container *ngFor="let module of modules; index as i">
+                        <ng-container *ngIf="module.objective != null && module.overview != null">
+                            <app-module-item [index]="i+1" [module]="module" class="border-b-[3px] border-slate-300"></app-module-item>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="grid place-items-center mt-4" *ngIf="carted_or_enrolled == 'carted'">
+                <app-contact-us-button text="Enroll" [course]="{type: abbreviated_type, name: course_name}" theme="pink"></app-contact-us-button>
+            </div>
+            <div class="grid place-items-center mt-4" *ngIf="carted_or_enrolled == 'enrolled' && certificate">
+                <div (click)="certificate && download({name: certificate.name, url: certificate.url})" class="px-6 py-2 flex justify-center items-center bg-mainp border rounded" [ngClass]="{'bg-white': !certificate, 'text-mainp': !certificate, 'border-mainp': !certificate, 'cursor-default': !certificate, 'text-white': certificate, 'border-transparent': certificate, 'cursor-pointer': certificate}">Certificate</div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col gap-y-8 mt-4">
+        <div>
+            <div class="font-bold">Who can attend this course</div>
+            <ul class="list-none mt-4 flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8 text-sm">
+                <ng-container *ngFor="let attendee of attendees">
+                    <li class="flex gap-x-2 items-center" *ngIf="attendee">
+                        <img src="./assets/svgs/tick_circle.svg" alt="" class="w-4 h-4"><span>{{attendee}}</span>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+        <div>
+            <div class="font-bold">Prerequisites</div>
+            <ul class="list-none mt-4 flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8 text-sm">
+                <ng-container *ngFor="let prerequisite of prerequisites">
+                    <li class="flex gap-x-2 items-center" *ngIf="prerequisite">
+                        <img src="./assets/svgs/tick_circle.svg" alt="" class="w-4 h-4"><span>{{prerequisite}}</span>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+        <div class="flex items-center justify-center" *ngIf="carted_or_enrolled == 'carted'">
+            <div (click)="remove_from_cart(category, course_identity)" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-mainp rounded cursor-pointer gap-x-4">
+                <div class="submit-loader" *ngIf="removing"></div>
+                Remove
+            </div>
+            
+        </div>
+    </div>
+</div>

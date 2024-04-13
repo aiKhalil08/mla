@@ -9,7 +9,9 @@ interface Sale {
     student: {name: string, email: string};
     price: string;
     date: string;
-    course: {type: string, name: string};
+    type: 'Cohort' | 'Individual Course';
+    course?: {type: string, name: string};
+    cohort?: {name: string};
     affiliate: {name: string, email: string, commission: string};
 }
 

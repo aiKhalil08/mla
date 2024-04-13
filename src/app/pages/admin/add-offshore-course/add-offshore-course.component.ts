@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
+import PostResponse from 'src/app/interfaces/post-response';
+import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
+import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 
 @Component({
     selector: 'app-add-offshore-course',
     standalone: true,
     templateUrl: './add-offshore-course.component.html',
     styleUrls: ['./add-offshore-course.component.css'],
-    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent]
+    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, TooltipComponent, ReportBarComponent]
 })
 export class AddOffshoreCourseComponent implements OnInit {
   courseGroup!: FormGroup;
@@ -24,13 +27,15 @@ export class AddOffshoreCourseComponent implements OnInit {
   imageFile: any = null;
   submitted: boolean = false;
   created: boolean = false;
+  tried_to_submit: boolean = false;
+  formError: string = null;
 
   constructor(private formBuilder: FormBuilder, private courseService: OffshoreCourseService) {}
 
   ngOnInit() {
     this.courseGroup = this.formBuilder.group({
-      title: [''],
-      overview: [''],
+      title: ['', Validators.required],
+      overview: ['', Validators.required],
       objectives: this.formBuilder.array([this.formBuilder.control('')]),
       attendees: this.formBuilder.array([this.formBuilder.control('')]),
       prerequisites: this.formBuilder.array([this.formBuilder.control('')]),
@@ -45,11 +50,11 @@ export class AddOffshoreCourseComponent implements OnInit {
         end: ['']
       }),
       price: this.formBuilder.group({
-        amount: [''],
-        currency: ['']
+        amount: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+        currency: ['', Validators.required]
       }),
-      location: [''],
-      discount: [''],
+      location: ['', Validators.required],
+      discount: ['', Validators.pattern(/^\d+$/)],
       image: [null],
       // schedule: [null],
     });
@@ -116,6 +121,36 @@ export class AddOffshoreCourseComponent implements OnInit {
     return <FormControl>this.courseGroup.get('location');
   }
 
+  get title() {
+    return <FormControl>this.courseGroup.get('title');
+  }
+  
+  get overview() {
+    return <FormControl>this.courseGroup.get('overview');
+  }
+
+  get amount() {
+    return <FormControl>this.courseGroup.get('price').get('amount');
+  }
+
+  get discount() {
+    return <FormControl>this.courseGroup.get('discount');
+  }
+
+  get form_invalid() {
+    
+    return this.courseGroup.invalid;
+  }
+
+  get_error_message(control: AbstractControl): string {
+
+    if ('required' in control.errors) return 'This field is required.';
+    else if ('pattern' in control.errors) return 'Please input the right data format for this field.';
+
+    return ''
+    
+  }
+
   addObjective() {
     this.objectives.push(this.formBuilder.control(''));
   }
@@ -160,17 +195,9 @@ export class AddOffshoreCourseComponent implements OnInit {
 
   handleImageSelect(event: Event, img: HTMLImageElement) {
     let file = (<HTMLInputElement>event.target).files[0];
-    // this.image.setValue(file);
-    // console.log(file)
-    // console.log(this.image);
-    // this.courseGroup.patchValue({'image': file});
+    
     let reader = new FileReader();
-    // let image = new FileReader();
-    // image.onloadend = () => {
-    //   this.imageFile = reader.result;
-    //   console.log(this.imageFile);
-    // };
-    // if (file) image.readAsBinaryString(file);
+    
     reader.onloadend = () => {
       img.src = <string>reader.result;
       this.pictureSelected = true;
@@ -181,78 +208,42 @@ export class AddOffshoreCourseComponent implements OnInit {
   handleScheduleSelect(event: Event, embed: HTMLEmbedElement) {
     console.log('in handle schedule select');
     let file = (<HTMLInputElement>event.target).files[0];
-    // this.image.setValue(file);
-    // console.log(file)
-    // console.log(this.image);
-    // this.courseGroup.patchValue({'image': file});
     let reader = new FileReader();
-    // let image = new FileReader();
-    // image.onloadend = () => {
-    //   this.imageFile = reader.result;
-    //   console.log(this.imageFile);
-    // };
-    // if (file) image.readAsBinaryString(file);
+    
     reader.onloadend = () => {
-      // console.log('in loadend', reader.result);
-      // console.log('result of URL.create', URL.createObjectURL(file))
+      
       embed.src = URL.createObjectURL(file);
       this.scheduleSelected = true;
     };
-    // URL.createObjectURL(file)
     if (file) reader.readAsDataURL(file);
   }
 
-  // setEndDate(event: Event) {
-  //   let startDate = <HTMLInputElement> document.querySelector('[name="start"]');
-  //   let duration = <HTMLInputElement> document.querySelector('[name="duration"]');
-  //   let durationUnit = <HTMLInputElement> document.querySelector('[name="duration-unit"]');
-  //   let endDate = <HTMLInputElement> document.querySelector('[name="end"]');
-    
-  //   this.dateStream$.subscribe(e => {
-  //     console.log('end of stream')
-  //     if ([startDate, duration, durationUnit].filter((element)=>element !== event.target).every((element) => element.value != '')) {
-  //       console.log('now')
-  //       let amount = <DurationInputArg1> duration.value;
-  //       let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
-  //       console.log(moment().add(amount, unit).format());
-      
-  //       endDate.value = moment().add(amount, unit).format('yyyy-MM-DD');
-  //     }
-  //   });
-  // }
+
 
   onSubmit(form) {
-    // console.log('form has been submitted');
-    // console.clear();
+    this.tried_to_submit = true;
+    
+    if (this.courseGroup.invalid) return;
+
     this.submitted = true;
-    // console.log(this.courseGroup.value);
-    // console.log(this.imageFile);
     let formData = new FormData(form);
-    // console.log(form);
-    // console.log(formData)
-    // console.log(formData.get('code'));
-    // console.log(formData.getAll('objectives[]'));
-    // console.log(formData.get('modules[]'))
-    // console.log(formData.get('image'))
-    // console.log(formData.get('course-code'), formData.get('course-title'), formData.get('course-image'));
-    // for (let key in this.courseGroup.value) {
-    //   formData.append(key, this.courseGroup.value[key]);
-    // }
-    // console.log(form);
-    // console.log(formData);
-    // // this.courseService.ret().subscribe({
-    // //   next: (response) => console.log(response),
-    // // });
+    
+
     this.courseService.add(formData).subscribe({
       next: (response) => {
-        console.log(response);
-        this.created = true;
         this.submitted = false;
+        if (response.status == 'failed') {
+          this.formError = response.message;
+          return;
+        }
+        this.handleResponse(response);
       },
     });
-    // this.courseService.add(this.courseGroup).subscribe({
-    //   next: (response) => console.log(response),
-    // });
+  }
+
+  handleResponse(response: PostResponse) {
+    this.formError = null;
+    this.created = true;
   }
 
 }

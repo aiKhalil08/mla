@@ -7,6 +7,7 @@ import { DoMoreLinkComponent } from "./partials/links/do-more-link/do-more-link.
 import { ExpandItemLinkComponent } from "./partials/links/expand-item-link/expand-item-link.component";
 import { NavItemDropdownComponent } from "./partials/nav-item-dropdown/nav-item-dropdown.component";
 import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth.service';
 
 
 @Component({
@@ -38,11 +39,13 @@ export class AppComponent implements OnInit {
       name: 'Resources',
       items: [
         {'item-name': 'Blogs', link: '/blogs'},
+        {'item-name': 'About Us', link: '/about-us'},
+        {'item-name': 'Help', link: '/connect-with-us'},
       ]
     }
   ]
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private auth: AuthService) {
     if ((<string>document.location.pathname).match('/admin*')) this.page_type = 'portal';
     else if ((<string>document.location.pathname).match('/enroll*')) this.page_type = 'enroll';
     else if ((<string>document.location.pathname).match('/login*')) this.page_type = 'login';
@@ -70,6 +73,10 @@ export class AppComponent implements OnInit {
       })
       if (this.menu_control) this.menu_control.src = './assets/svgs/hamburger.svg';
     });
+  }
+
+  get user_not_admin() {
+    return !this.auth.isLoggedIn('admin');
   }
 
   toggleMenu($event: MouseEvent) {

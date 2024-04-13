@@ -53,17 +53,21 @@
                 <div class="text-sm">{{event.type}}</div>
             </div>
             <div class="grid place-items-center mt-4">
-                <app-contact-us-button theme="pink" message="{{message_text}}" text="Register"></app-contact-us-button>
+                <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded">
+                    Register
+                </a>
             </div>
         </div>
     </div>
     <div class="flex flex-col gap-y-8 mt-4">
         <div>
-            <div class="font-bold">Who can attend this course</div>
+            <div class="font-bold">Who can attend?</div>
             <ul class="list-none mt-4 flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8 text-sm">
-                <li class="flex gap-x-2 items-center" *ngFor="let attendee of attendees">
-                    <img src="./assets/svgs/tick_circle.svg" alt="" class="w-4 h-4"><span>{{attendee}}</span>
-                </li>
+                <ng-container *ngFor="let attendee of attendees">
+                    <li class="flex gap-x-2 items-center" *ngIf="attendee">
+                        <img src="./assets/svgs/tick_circle.svg" alt="" class="w-4 h-4"><span>{{attendee}}</span>
+                    </li>
+                </ng-container>
             </ul>
         </div>
     </div>

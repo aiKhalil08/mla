@@ -1,0 +1,92 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4"[ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && cohort" class="relative">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <h3>{{cohort.name}}</h3>
+            <div (click)="editable = true" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Edit Cohort</div>
+        </div>
+
+        <app-report-bar *ngIf="edited" message="Cohort has been edited" type="success"></app-report-bar>
+
+        <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="cohortGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="name" class="text-mainp required">Name</label>
+                <input [readonly]="!editable" type="text" name="name" id="name" class="p-2 outline-none border border-slate-200 rounded" formControlName="name">
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && name.invalid">{{get_error_message(name)}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="course_type" class="text-mainp required">Course Type</label>
+                <div class="relative h-[38px]"><!-- self-stretch -->
+                    <div (click)="editable && type_folded = !type_folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': type_folded, 'rotate-[-225deg]': !type_folded, 'top-3': type_folded, 'top-4': !type_folded}"></div>
+                    <input [readonly]="!editable" (click)="editable && type_folded = !type_folded" placeholder="course type" type="text" name="course_type" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_type" readonly>
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-md z-50" [class.hidden]="type_folded" [class.block]="!type_folded">
+                        <div (click)="setCourseType('Certificate Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certificate Course</div>
+                        <div (click)="setCourseType('Certification Course')" class="p-2 cursor-pointer hover:bg-slate-200">Certification Course</div>
+                        <div (click)="setCourseType('Offshore Course')" class="p-2 cursor-pointer hover:bg-slate-200">Offshore Course</div>
+                    </div>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_type.invalid">{{get_error_message(course_type)}}</div>
+                <div *ngIf="errors['course_type']" class="text-red-500 text-sm">{{errors['course_type'][0]}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full" [ngClass]="{'grid': fetching_courses, 'place-items-center': fetching_courses}">
+                <div class="list-loader small" *ngIf="fetching_courses"></div>
+                <ng-container *ngIf="!fetching_courses">
+                    <label for="blog-image" class="text-mainp required">Course Name</label>
+                    <div class="relative h-[38px]"><!-- self-stretch -->
+
+
+                        <input type="hidden" name="course_identity" formControlName="course_identity"><!-- contains the actual identity of the course, either title for offshore courses or code for certificate or certification -->
+
+                        <input [readonly]="!editable" autocomplete="off" id="course_name" placeholder="course name" type="text" name="course_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" formControlName="course_name">
+                        <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_courses.length > 0" [class.hidden]="matched_courses.length == 0">
+                            <div *ngFor="let course of matched_courses" (click)="setCourseName(course)" class="p-2 cursor-pointer hover:bg-slate-200">
+                                {{course.title}}{{course.code ? ' - '+course.code : ''}} 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-red-500 text-sm" *ngIf="tried_to_submit && course_name.invalid">{{get_error_message(course_name)}}</div>
+                    <div *ngIf="errors['course_name']" class="text-red-500 text-sm">{{errors['course_name'][0]}}</div>
+                </ng-container>
+            </div>
+
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label for="start_date" class="text-mainp optional">Start Date</label>
+                <input [readonly]="!editable" type="date" name="start_date" id="start_date" class="p-2 outline-none border border-slate-200 rounded" formControlName="start_date">
+            </div>
+
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]" formGroupName="duration">
+                <label for="duration" class="text-mainp optional">Duration</label>
+                <div class="flex gap-x-2">
+                    <input [readonly]="!editable" type="number" min="0" name="duration[duration]" id="duration" class="p-2 outline-none border grow w-[50px] border-slate-200 rounded " formControlName="duration">
+                    <div class="relative w-[120px] h-[38px]">
+                        <div (click)="editable && unit_folded = !unit_folded" class="absolute z-10 right-2 w-2 h-2 border cursor-pointer border-black border-t-white border-r-white transition-all ease-linear" [ngClass]="{'-rotate-45': unit_folded, 'rotate-[-225deg]': !unit_folded, 'top-3': unit_folded, 'top-4': !unit_folded}"></div>
+                        <input (click)="editable && unit_folded = !unit_folded" placeholder="unit" type="text" name="duration[unit]" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none" readonly formControlName="unit">
+                        <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 z-20" [class.hidden]="unit_folded" [class.block]="!unit_folded">
+                            <div (click)="setDurationUnit('Days')" class="p-2 cursor-pointer hover:bg-slate-200">Days</div>
+                            <div (click)="setDurationUnit('Weeks')" class="p-2 cursor-pointer hover:bg-slate-200">Weeks</div>
+                            <div (click)="setDurationUnit('Months')" class="p-2 cursor-pointer hover:bg-slate-200">Months</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label for="end_date" class="text-mainp optional">End Date</label>
+                <input [readonly]="!editable" type="date" name="end_date" id="end_date" class="p-2 outline-none border border-slate-200 rounded" formControlName="end_date">
+            </div>
+
+        
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <!-- <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Updated' : 'Update'}}</div></button> -->
+                <button [disabled]="!editable || edited || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited, 'bg-mainp/70': tried_to_submit && form_invalid,}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                    <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                    <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                    <div>{{edited ? 'Edited' : 'Edit'}}</div>
+                </button>
+                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" location="/admin/cohorts"></app-redirect-button>
+            </div>
+        </form>
+    </div>
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

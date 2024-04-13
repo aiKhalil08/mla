@@ -4,7 +4,7 @@
         <div class="relative flex flex-col gap-y-6">
             <div class="flex gap-x-4 items-center"><h3>Pending Fulfillments</h3></div>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">S/N</th>
@@ -22,7 +22,7 @@
                             <td class="tc">{{formatCurrency(item.amount)}}</td>
                             <td class="tc">{{item.type}}</td>
                             <td class="tc">{{formatDate(item.date_added)}}</td>
-                            <td class="tc"><app-redirect-button theme="pink" text="Fulfill" location="/admin/fulfillment/{{encryptId(item.id)}}"></app-redirect-button></td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="Fulfill" location="/admin/fulfillment/{{encryptId(item.id)}}"></app-redirect-button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -31,7 +31,7 @@
         <div class="relative flex flex-col gap-y-6 mt-8">
             <div class="flex gap-x-4 items-center"><h3>History</h3></div>
             <div class="max-w-full overflow-auto">
-                <table class="text-sm text-center border-collapse border border-slate-500 w-full">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">S/N</th>

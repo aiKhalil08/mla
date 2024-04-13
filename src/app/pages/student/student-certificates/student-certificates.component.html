@@ -1,0 +1,34 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching_certificates || no_certificates, 'place-items-center': fetching_certificates || no_certificates}">
+    <div class="loader" [class.hidden]="!fetching_certificates"></div>
+    <ng-container *ngIf="certificates">
+        <h3>My Certificates</h3>
+        
+        <app-view-certificate *ngIf="!modalClosed && show_certificate" [path]="certificate_url" (remove)="close_modal()"></app-view-certificate>
+    
+                <div class="max-w-full overflow-auto">
+                    <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                        <thead class="text-mainp">
+                            <tr>
+                                <th class="font-normal tc">S/N</th>
+                                <th class="font-normal tc">Course</th>
+                                <th class="font-normal tc">View</th>
+                                <th class="font-normal tc">Download</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let certificate of certificates; index as i">
+                                <td class="tc">{{i+1}}</td>
+                                <td class="tc">{{certificate.name}}</td>
+                                <td class="tc">
+                                    <div (click)="view(certificate.url)" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-transparent rounded cursor-pointer max-w-max m-auto">View</div>
+                                </td>
+                                <td class="tc">
+                                    <div (click)="(download(certificate))" class="text-white px-6 py-2 flex justify-center items-center bg-mainp border border-transparent rounded cursor-pointer max-w-max m-auto">Download</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    </ng-container>
+    <app-empty-content *ngIf="no_certificates" [message]="no_certificates"></app-empty-content>
+</main>

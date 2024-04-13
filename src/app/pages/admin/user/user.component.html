@@ -1,0 +1,38 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || no_user, 'place-items-center': fetching || no_user}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="user" class="relative ml-4">
+        <h3>{{user.first_name}} {{user.last_name}}</h3>
+        <div class="mt-6 flex flex-col gap-y-6  max-w-[500px]">
+            <div class="flex gap-x-4 w-full items-center">
+                <div class="w-[150px] h-[150px] text-sm border rounded-full overflow-hidden border-slate-200 bg-white">
+                    <img id="imagePreview" class="w-full h-full object-cover"  alt="" #imagePreview>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">First Name</div>
+                <div class="">{{user.first_name}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">Last Name</div>
+                <div class="">{{user.last_name}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">Email</div>
+                <div class="">{{user.email}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">Mobile Number</div>
+                <div class="">{{user.phone_number}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">Home Address</div>
+                <div class="">{{user.home_address}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <div for="first_name" class="text-mainp text-sm">Bio</div>
+                <div class="">{{user.bio}}</div>
+            </div>
+        </div>
+    </div>
+    <app-empty-content *ngIf="no_user" [message]="no_user"></app-empty-content>
+</main>

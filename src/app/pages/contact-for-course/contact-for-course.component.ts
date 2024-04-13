@@ -89,7 +89,7 @@ export class ContactForCourseComponent implements OnInit {
   fetch_affiliate() {
     this.fetching_affiliate = true;
     let code = this.referral_code.value;
-    this.affiliateService.fetch_affiliate(code).subscribe({
+    this.affiliateService.fetch_affiliate_details(code).subscribe({
       next: (response) => {
         this.fetching_affiliate = false;
         if (response.status == 'failed') {

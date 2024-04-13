@@ -1,5 +1,5 @@
-<main class="landing" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}"><!-- [ngClass]="{'grid': !loaded, 'place-items-center': !loaded} -->
-    <div class="loader" [class.hidden]="loaded"></div>
+<main class="landing" [ngClass]="{'grid': fetching_course || no_course, 'place-items-center': fetching_course || no_course}"><!-- [ngClass]="{'grid': !loaded, 'place-items-center': !loaded} -->
+    <div class="loader" [class.hidden]="!fetching_course"></div>
     <div *ngIf="course" class="max-w-[100%] overflow-hidden">
         <div class="p-4 pt-10 flex items-center justify-center">
             <div class="w-full max-w-[900px]">
@@ -24,8 +24,11 @@
                     </ul>
                 </div>
                 <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
-                    <app-contact-us-button text="Contact Us" [course]="{type:'ctc', name: this.course.title+' - '+this.course.code}" theme="pink"></app-contact-us-button>
-                    <app-cart-button type="button" [carted]="carted" [course]="{identity: course.code, type: 'certificate-course'}"></app-cart-button>
+                    <!-- <app-contact-us-button text="Contact Us" [course]="{type:'ctc', name: this.course.title+' - '+this.course.code}" theme="pink"></app-contact-us-button> -->
+                    <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded">
+                        Contact Us
+                    </a>
+                    <app-cart-button type="button" [carted]="carted" [course]="{identity: course.code, category: 'certificate-course'}"></app-cart-button>
                 </div>
             </div>
         </div>
@@ -33,8 +36,9 @@
             <div class="w-full max-w-[780px] p-4 text-white">
                 <h2 class="text-2xl my-4">Who Can Attend The Course</h2>
                 <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
-                    <li class="flex gap-x-2 items-center" *ngFor="let attendee of attendees"><img
-                            src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{attendee}}</span></li>
+                    <ng-container *ngFor="let attendee of attendees">
+                        <li class="flex gap-x-2 items-center" *ngIf="attendee"><img src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{attendee}}</span></li>
+                    </ng-container>
                 </ul>
             </div>
         </div>
@@ -96,8 +100,9 @@
             <div class="w-full max-w-[780px] p-4 text-white">
                 <h2 class="text-2xl my-4">Prerequisites for {{course.title}}</h2>
                 <ul class="list-none flex flex-col gap-y-4 md:flex-row md:flex-wrap md:gap-x-8">
-                    <li class="flex gap-x-2 items-center" *ngFor="let prerequisite of prerequisites"><img
-                            src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>
+                    <ng-container *ngFor="let prerequisite of prerequisites">
+                        <li class="flex gap-x-2 items-center" *ngIf="prerequisite"><img src="./assets/svgs/tick_circle.svg" class="white-icon" alt=""><span>{{prerequisite}}</span></li>
+                    </ng-container>
                 </ul>
             </div>
         </div>
@@ -113,7 +118,9 @@
                     <div class="bg-mainp p-4 flex items-center">
                         <p class="text-white">Do you like the curriculum and would like to learn more?</p>
                         <div class="flex-grow"></div>
-                        <app-contact-us-button text="Contact Us" [course]="{type:'ctc', name: this.course.title+' - '+this.course.code}" theme="white"></app-contact-us-button>
+                        <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-mainp px-6 py-2 font-[500] flex justify-center items-center bg-white border border-transparent rounded">
+                            Contact Us
+                        </a>
                     </div>
                 </div>
             </div>
@@ -122,21 +129,26 @@
             <div class="w-full max-w-[768px] relative">
                 <h3 class="text-2xl">How to get started?</h3>
                 <div class="mt-2">Follow these simple steps to get started</div>
-                <div class="w-full max-w-[768px] flex flex-col items-center sm:grid sm:grid-cols-2 sm:justify-items-center gap-x-6 gap-y-6 mt-8 overflow-x-auto">
-                    <div class="h-full w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 bg-mainp flex flex-col gap-y-4">
-                        <div class="text-lg text-white">Training Mode & Cost</div>
-                        <div class="text-sm text-white">1. E-Learning: $550</div>
-                        <div class="text-sm text-white">2. Virtual Instructor-led: $700</div>
-                        <div class="text-sm text-white">3. On-Site Instructor-led: $1200</div>
+                <div class="w-full max-w-[768px] flex flex-wrap justify-center gap-x-6 gap-y-6 mt-8 overflow-x-auto">
+                    <div class="h-full w-full max-w-[350px] min-h-[310px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 bg-mainp flex flex-col gap-y-4">
+                        <div class="text-lg text-white">Training Locations/Venue</div>
                         <div class="text-sm text-white">
-                            Note: Payment could be in Naira at the prevailing market price. Reach out to discuss the suitable rate. Booking all year.
+                            1. Training Courses take place at our Lagos
+                            training center at 73 Allen Avenue, Ikeja,
+                            Lagos Nigeria.
+                        </div>
+                        <div class="text-sm text-white">
+                            2. Customised implants/repetition of
+                            training courses can be accommodated
+                            based on requests and at your choice
+                            location local/offshore.
                         </div>
                     </div>
-                    <div class="h-full w-full max-w-[350px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 bg-mainp flex flex-col gap-y-4">
-                        <div class="text-lg text-white">Booking and Payment</div>
+                    <div class="h-full w-full max-w-[350px] min-h-[310px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 bg-mainp flex flex-col gap-y-4">
+                        <div class="text-lg text-white">Booking and Course Fee Payment</div>
                         <div class="text-sm text-white">
                             <div class="text-sm text-white">
-                                Contact us to book for your PECB courses. Bookings are confirmed only after payment into:<br>
+                                1. Bookings are confirmed only after payment into:<br>
                                 Bookings are confirmed only after payment into:<br>
                                 Mitiget Assurance & Technology Services Ltd.<br>
                                 Zenith Bank Accounts:<br>
@@ -146,6 +158,21 @@
                             </div>
                         </div>
                         <div class="text-sm text-white">2. Discounts are available for group bookings.</div>
+                    </div>
+                    <div class="h-full w-full max-w-[350px] min-h-[310px] md:min-w-0 rounded-xl relative overflow-hidden px-4 py-6 bg-mainp flex flex-col gap-y-4">
+                        <div class="text-lg text-white">Learning Methods / Contacts</div>
+                        <div class="text-sm text-white">
+                            1. Our training courses are delivered
+                            Online and/orOn-site
+                        </div>
+                        <div class="text-sm text-white">
+                            2. Contact us today:<br>
+                            www.mitiget.com<br>
+                            info@mitiget.com<br>
+                            +234 916 264 4779,<br>
+                            +234 808 174 6461,<br>
+                            +234 806 719 1062
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,12 +198,7 @@
         <div class="relative p-4 pt-10 flex items-center justify-center"> <!-- recommended courses wrapper -->
             <div class="w-full max-w-[900px] relative">
                 <h3 class="text-2xl">Discover our in-demand courses</h3>
-                <!-- <div class="mt-2 flex gap-x-4 text-xs">
-                    <div>Popular Courses</div>
-                    <div>Cyber Security</div>
-                    <div>Software Development</div>
-                    <div>UI/UX Design</div>
-                </div> -->
+                
                 <app-certificate-course-list type="recommended" [count]="3"></app-certificate-course-list>
             </div>
         </div>
@@ -191,5 +213,5 @@
         </div>
         
     </div>
-    
+    <app-empty-content [message]="no_course" *ngIf="no_course"></app-empty-content>
 </main>

@@ -1,20 +1,32 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
-    <div class="loader" [class.hidden]="loaded"></div>
-    <div *ngIf="loaded" class="overflow-hidden">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || errorMessage, 'place-items-center': fetching || errorMessage}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="sale" class="overflow-hidden">
         <div *ngIf="!errorMessage">
             <div class="max-w-[768px] m-auto bg-white shadow-lg flex flex-col p-4 gap-y-4">
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Buyer name:</div><div class="grow min-w-max">{{sale.student.name}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Buyer email:</div><div class="grow whitespace-break-spaces">{{sale.student.email}}</div></div>
+
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Sale type:</div><div class="grow whitespace-break-spaces">{{sale.type}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Price:</div><div class="grow">{{formatCurrency(sale.price)}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Date:</div><div class="grow">{{formatDate(sale.date)}}</div></div>
-                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Course type:</div><div class="grow">{{sale.course.type}}</div></div>
-                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Course name:</div><div class="grow">{{sale.course.name}}</div></div>
+
+                <div *ngIf="sale.type == 'Cohort'" class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Cohort name:</div><div class="grow">{{sale.cohort.name}}</div></div>
+
+                <div *ngIf="sale.type == 'Individual Course'" class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Course type:</div><div class="grow">{{sale.course.type}}</div></div
+                >
+                <div *ngIf="sale.type == 'Individual Course'" class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px]">Course name:</div><div class="grow">{{sale.course.name}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row" *ngIf="sale.affiliate"><div class="min-w-max w-[130px]">Affiliate name:</div><div class="grow">{{sale.affiliate.name}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row" *ngIf="sale.affiliate"><div class="min-w-max w-[130px]">Affiliate email:</div><div class="grow">{{sale.affiliate.email}}</div></div>
+
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row" *ngIf="sale.affiliate"><div class="min-w-max w-[130px]">Commission:</div><div class="grow">{{formatCurrency(sale.affiliate.commission)}}</div></div>
             </div>
         </div>
         
     </div>
-    
+    <app-empty-content *ngIf="errorMessage" [message]="errorMessage"></app-empty-content>
 </main>
