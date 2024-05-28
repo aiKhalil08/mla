@@ -1,0 +1,225 @@
+<div class="relative flex flex-col gap-y-4">
+    <div *ngIf="object_name != 'Offshore Course'" class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course code</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="code['changed']; else code_temp">
+                <div class="bg-red-300 old-value">{{code['old']}}</div>
+                <div class="bg-green-300 new-value">{{code['new']}}</div>
+            </ng-container>
+            <ng-template #code_temp>
+                <div>{{code['value']}}</div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course title</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="title['changed']; else title_temp">
+                <div class="bg-red-300 p-2 old-value">{{title['old']}}</div>
+                <div class="bg-green-300 p-2 new-value">{{title['new']}}</div>
+            </ng-container>
+            <ng-template #title_temp>
+                <div>{{title['value']}}</div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course overview</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="overview['changed']; else overview_temp">
+                <div class="bg-red-300 p-2 old-value">{{overview['old']}}</div>
+                <div class="bg-green-300 p-2 new-value">{{overview['new']}}</div>
+            </ng-container>
+            <ng-template #overview_temp>
+                <div>{{overview['value']}}</div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Objectives</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let objective of objectives" class="border-b border-slate-500 pb-2">
+                <ng-container *ngIf="objective['changed']">
+                    <div class="bg-red-300 p-2 old-value" *ngIf="objective['old']">{{objective['old']}}</div>
+                    <div class="bg-green-300 p-2 new-value" *ngIf="objective['new']">{{objective['new']}}</div>
+                </ng-container>
+                <ng-container *ngIf="!objective['changed']">
+                    <div>{{objective['value']}}</div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Attendees</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let attendee of attendees" class="border-b border-slate-500 pb-2">
+                <ng-container *ngIf="attendee['changed']">
+                    <div class="bg-red-300 p-2 old-value" *ngIf="attendee['old']">{{attendee['old']}}</div>
+                    <div class="bg-green-300 p-2 new-value" *ngIf="attendee['new']">{{attendee['new']}}</div>
+                </ng-container>
+                <ng-container *ngIf="!attendee['changed']">
+                    <div>{{attendee['value']}}</div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Prerequisites</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let prerequisite of prerequisites" class="border-b border-slate-500 pb-2">
+                <ng-container *ngIf="prerequisite['changed']">
+                    <div class="bg-red-300 p-2 old-value" *ngIf="prerequisite['old']">{{prerequisite['old']}}</div>
+                    <div class="bg-green-300 p-2 new-value" *ngIf="prerequisite['new']">{{prerequisite['new']}}</div>
+                </ng-container>
+                <ng-container *ngIf="!prerequisite['changed']">
+                    <div>{{prerequisite['value']}}</div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Modules</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="patched['modules']['changed']">
+                <div *ngFor="let module of modules" class="shadow-lg flex flex-col gap-y-2 my-2 p-4 rounded border border-mainp">
+                    <div class="">
+                        <div class="text-sm">Objective</div>
+                        <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                            <ng-container *ngIf="module['objective']['changed']">
+                                <div class="bg-red-300 p-2 old-value" *ngIf="module['objective']['old']">{{module['objective']['old']}}</div>
+                                <div class="bg-green-300 p-2 new-value" *ngIf="module['objective']['new']">{{module['objective']['new']}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="!module['objective']['changed']">
+                                <div>{{module['objective']['value']}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="text-sm">Overview</div>
+                        <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                            <ng-container *ngIf="module['overview']['changed']">
+                                <div class="bg-red-300 p-2 old-value" *ngIf="module['overview']['old']">{{module['overview']['old']}}</div>
+                                <div class="bg-green-300 p-2 new-value" *ngIf="module['overview']['new']">{{module['overview']['new']}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="!module['overview']['changed']">
+                                <div>{{module['overview']['value']}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!patched['modules']['changed']">
+                <div *ngFor="let module of modules" class="shadow-lg flex flex-col gap-y-2 my-2 p-4 rounded border border-mainp">
+                    <div class="">
+                        <div class="text-sm">Objective</div>
+                        <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                            <div>{{module['objective']}}</div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="text-sm">Overview</div>
+                        <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                            <div>{{module['overview']}}</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <ng-container *ngIf="object_name == 'Offshore Course'"> <!-- show date and location for offshore course -->
+        <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+            <div class="text-gray-600">Date</div>
+            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                <ng-container *ngIf="date['changed']; else date_temp">
+                    <div class="flex flex-col gap-y-2">
+                        <div>
+                            <div class="text-sm">Start</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                <div class="bg-red-300 p-2 old-value" *ngIf="date['old']['start']">{{date['old']['start']}}</div>
+                                <div class="bg-green-300 p-2 new-value" *ngIf="date['new']['start']">{{date['new']['start']}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm">Duration</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                <div class="bg-red-300 p-2 old-value" *ngIf="date['old']['duration']">
+                                    {{date['old']['duration']}} {{date['old']['duration-unit']}}
+                                </div>
+                                <div class="bg-green-300 p-2 new-value" *ngIf="date['new']['duration']">
+                                    {{date['new']['duration']}} {{date['new']['duration-unit']}}
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm">End</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                <div class="bg-red-300 p-2 old-value" *ngIf="date['old']['end']">{{date['old']['end']}}</div>
+                                <div class="bg-green-300 p-2 new-value" *ngIf="date['new']['end']">{{date['new']['end']}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="bg-red-300 p-2 old-value">{{date['old']}}</div>
+                    <div class="bg-green-300 p-2 new-value">{{date['new']}}</div> -->
+                </ng-container>
+                <ng-template #date_temp>
+                    <div class="flex flex-col gap-y-2">
+                        <div>
+                            <div class="text-sm">Start</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                {{date['value']['start']}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm">Duration</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                {{date['value']['duration']}} {{date['value']['duration-unit']}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm">End</div>
+                            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                                {{date['value']['end']}}
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+            <div class="text-gray-600">Location</div>
+            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                <ng-container *ngIf="location['changed']; else location_temp">
+                    <div class="bg-red-300 p-2 old-value" *ngIf="location['old']">{{location['old']}}</div>
+                    <div class="bg-green-300 p-2 new-value" *ngIf="location['new']">{{location['new']}}</div>
+                </ng-container>
+                <ng-template #location_temp>
+                    <div>{{location['value']}}</div>
+                </ng-template>
+            </div>
+        </div>
+    </ng-container>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2" *ngIf="object_name != 'Certification Course'"> <!--- attribute box -->
+        <div class="text-gray-600">Price</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="price['changed']; else price_temp">
+                <div class="bg-red-300 p-2 old-value">{{price['old']['amount']}} {{price['old']['currency']}}</div>
+                <div class="bg-green-300 p-2 new-value">{{price['new']['amount']}} {{price['new']['currency']}}</div>
+            </ng-container>
+            <ng-template #price_temp>
+                <div>{{price['value']['amount']}} {{price['value']['currency']}}</div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2" *ngIf="object_name != 'Certification Course'"> <!--- attribute box -->
+        <div class="text-gray-600">Discount</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <ng-container *ngIf="discount['changed']; else discount_temp">
+                <div class="bg-red-300 p-2 old-value" *ngIf="discount['old']">{{discount['old']}}</div>
+                <div class="bg-green-300 p-2 new-value" *ngIf="discount['new']">{{discount['new']}}</div>
+            </ng-container>
+            <ng-template #discount_temp>
+                <div>{{discount['value'] ? discount['value'] : 'Not set'}}</div>
+            </ng-template>
+        </div>
+    </div>
+</div>

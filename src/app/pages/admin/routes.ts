@@ -29,10 +29,22 @@ import { RequestsComponent } from "./requests/requests.component";
 import { ResourcesComponent } from "./resources/resources.component";
 import { SaleComponent } from "./sale/sale.component";
 import { SalesComponent } from "./sales/sales.component";
-import { UserComponent } from "./user/user.component";
-import { UsersComponent } from "./users/users.component";
 import { EventsComponent } from './events/events.component';
 import { AffiliateComponent } from './affiliate/affiliate.component';
+import { AdminsComponent } from "./admins/admins.component";
+import { AdminComponent } from "./admin/admin.component";
+import { EditAdminComponent } from "./edit-admin/edit-admin.component";
+import { AuditComponent } from "./audit/audit.component";
+import { AuditTrailsComponent } from "./audit-trails/audit-trails.component";
+import { PermissionsComponent } from "./permissions/permissions.component";
+import { UsersComponent } from "./users/users.component";
+import { UserComponent } from "./user/user.component";
+import { EventRegistrantsComponent } from "./event-registrants/event-registrants.component";
+import { EventRegistrationComponent } from "./event-registration/event-registration.component";
+import { AddExternalUserComponent } from "./add-external-user/add-external-user.component";
+import { ExternalUsersComponent } from "./external-users/external-users.component";
+import { ExternalUserComponent } from "./external-user/external-user.component";
+import { EditExternalUserComponent } from "./edit-external-user/edit-external-user.component";
 
 export default <Route[]> [
     {path: '', component: DashboardComponent, title: 'Dashboard | Admin'},
@@ -47,12 +59,15 @@ export default <Route[]> [
     {path: 'add-testimonial', component: AddTestimonialComponent, title: 'Add Testimonial | Admin'},
     {path: 'add-sale', component: AddSaleComponent, title: 'Add Sale | Admin'},
     {path: 'add-cohort', component: AddCohortComponent, title: 'Add Cohort | Admin'},
+    {path: 'add-external-user', component: AddExternalUserComponent, title: 'Add External User | Admin'},
     {path: 'certificate-course/:course_code', component: ActionCertificateCourseComponent, title: 'Action Certificate Course | Admin'},
     {path: 'certification-course/:course_code', component: ActionCertificationCourseComponent, title: 'Action Certification Course | Admin'},
     {path: 'offshore-course/:course_title', component: ActionOffshoreCourseComponent, title: 'Action Offshore Course | Admin'},
     {path: 'blog/:heading', component: ActionBlogComponent, title: 'Action Blog | Admin'},
     {path: 'testimonial/:name', component: ActionTestimonialComponent, title: 'Action Testimonial | Admin'},
     {path: 'event/:name', component: ActionEventComponent, title: 'Action Event | Admin'},
+    {path: 'event/:name/registrations', component: EventRegistrantsComponent, title: 'Event Registrants | Admin'},
+    {path: 'event/registration/:id', component: EventRegistrationComponent, title: 'Registration | Admin'},
     {path: 'requests', component: RequestsComponent, title: 'Requests | Admin'},
     {path: 'request/:last_name/:created_at', component: RequestComponent, title: 'Request | Admin'},
     {path: 'sales', component: SalesComponent, title: 'Sales | Admin'},
@@ -69,4 +84,13 @@ export default <Route[]> [
     {path: 'affiliate/:email', component: AffiliateComponent, title: 'Affiliate | Admin'},
     {path: 'users', component: UsersComponent, title: 'Users | Admin'},
     {path: 'user/:email', component: UserComponent, title: 'User | Admin'},
+    {path: 'audit-trail/:id', component: AuditComponent, title: 'Audit | Admin'},
+    {path: 'audit-trails', component: AuditTrailsComponent, title: 'Audits | Admin'},
+    {path: 'admins', component: AdminsComponent, title: 'Admins | Admin'},
+    {path: ':email/permissions', component: PermissionsComponent, title: 'Permissions | Admin'},
+    // {path: ':email/edit', component: EditAdminComponent, title: 'Edit Admin | Admin'},
+    {path: 'admin/:email', component: AdminComponent, title: 'Admin | Admin'},
+    {path: 'external-users', component: ExternalUsersComponent, title: 'External Users | Admin'},
+    {path: 'external-user/:email', component: ExternalUserComponent, title: 'External User | Admin'},
+    {path: 'external-user/:email/edit', component: EditExternalUserComponent, title: 'Edit External User | Admin'},
 ]

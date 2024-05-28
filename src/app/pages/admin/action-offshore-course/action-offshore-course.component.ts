@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 // import { CourseService } from 'src/app/course.service';
 import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
-import { OffshoreCourse, Date, Module, Price } from 'src/app/interfaces/offshore-course';
+import { OffshoreCourse } from 'src/app/interfaces/offshore-course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionButtonComponent } from "../../../partials/buttons/action-button/action-button.component";
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
+import { add, format } from 'date-fns';
 
 @Component({
     selector: 'app-action-offshote-course',
@@ -57,6 +57,7 @@ export class ActionOffshoreCourseComponent implements OnInit {
     this.fetching_course = true;
     this.offshoreCourseService.get(course_title).subscribe({
       next: (response) => {
+        console.log(response)
         this.fetching_course = false;
         if (response.status == 'failed') {
           this.no_course = response.message;
@@ -67,28 +68,28 @@ export class ActionOffshoreCourseComponent implements OnInit {
           title: [this.course.title, Validators.required],
           overview: [this.course.overview, Validators.required],
           objectives: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.objectives)).map(objective => this.formBuilder.control(objective))
+            this.course.objectives.map(objective => this.formBuilder.control(objective))
           ),
           attendees: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.attendees)).map(attendee => this.formBuilder.control(attendee))
+            this.course.attendees.map(attendee => this.formBuilder.control(attendee))
           ),
           prerequisites: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.prerequisites)).map(prerequisite => this.formBuilder.control(prerequisite))
+            this.course.prerequisites.map(prerequisite => this.formBuilder.control(prerequisite))
           ),
           modules: this.formBuilder.array(
-            (<Module[]>JSON.parse(this.course.modules)).map(module => this.formBuilder.group({
+            this.course.modules.map(module => this.formBuilder.group({
               objective: [module.objective],
               overview: [module.overview]
             }))),
           date: this.formBuilder.group({
-            start: [(<Date>JSON.parse(this.course.date)).start],
-            duration: [(<Date>JSON.parse(this.course.date)).duration],
-            durationUnit: [(<Date>JSON.parse(this.course.date))['duration-unit']],
-            end: [(<Date>JSON.parse(this.course.date)).end]
+            start: [this.course.date.start],
+            duration: [this.course.date.duration],
+            durationUnit: [this.course.date['duration-unit']],
+            end: [this.course.date.end]
           }),
           price: this.formBuilder.group({
-            amount: [(<Price>JSON.parse(this.course.price)).amount, [Validators.required, Validators.pattern(/^\d+$/)]],
-            currency: [(<Price>JSON.parse(this.course.price)).currency, Validators.required]
+            amount: [this.course.price.amount, [Validators.required, Validators.pattern(/^\d+$/)]],
+            currency: [this.course.price.currency, Validators.required]
           }),
           discount: [this.course.discount, Validators.pattern(/^\d+$/)],
           location: [this.course.location, Validators.required],
@@ -96,6 +97,7 @@ export class ActionOffshoreCourseComponent implements OnInit {
           // schedule: [null],
         });
 
+        console.log(this.objectives)
         // console.log('start is: ', (<Date>JSON.parse(this.course.date)))
         setTimeout(()=>{
           if (this.course.image_url) {
@@ -121,10 +123,10 @@ export class ActionOffshoreCourseComponent implements OnInit {
       
           this.dateStream$.subscribe(e => {
             if ([startDate, duration, durationUnit].filter((element)=>element.value !== e).every((element) => element.value != '')) {
-              let amount = <DurationInputArg1> duration.value;
-              let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
-              console.log('changing end date')
-              this.endDate.setValue(moment(startDate.value).add(amount, unit).format('yyyy-MM-DD'));
+              let interval: object = {};
+              interval[String(durationUnit.value).toLowerCase()] = Number(duration.value);
+
+              this.endDate.setValue(format(add(startDate.value, interval), 'yyyy-MM-dd'));
             }
           });
         }, 0);
@@ -199,22 +201,18 @@ export class ActionOffshoreCourseComponent implements OnInit {
     
   }
 
-  addObjective() {
-    if (this.editable) this.objectives.push(this.formBuilder.control(''));
-  }
-  addAttendee() {
-    if (this.editable) this.attendees.push(this.formBuilder.control(''));
-  }
-  addPrerequisite() {
-    if (this.editable) this.prerequisites.push(this.formBuilder.control(''));
-  }
-  addModule() {
-    if (this.editable) {
-      this.modules.push(this.formBuilder.group({
+  add(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    if (control == 'module') {
+      form_array.push(this.formBuilder.group({
         objective: [''],
         overview: ['']
       }));
-    }
+    } else form_array.push(this.formBuilder.control(''));
+  }
+  remove(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
   }
 
   setDurationUnit(unit: string) {

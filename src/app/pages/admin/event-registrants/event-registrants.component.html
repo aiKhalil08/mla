@@ -1,0 +1,38 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || event_not_found, 'place-items-center': fetching || event_not_found}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && registrants">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>Registrants for {{event_name}}</h3>
+            <ng-container *ngIf="registrants.length > 0; else no_registrants_template">
+                <div class="max-w-full overflow-auto">
+                    <table class="text-sm border-collapse border border-slate-500 w-full">
+                        <thead class="text-mainp">
+                            <tr class="">
+                                <th class="tc">#</th>
+                                <th class="tc">Name</th>
+                                <th class="tc">Email</th>
+                                <th class="tc">Phone&nbsp;Number</th>
+                                <th class="tc">View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let registrant of registrants; index as i">
+                                <td class="tc">{{i + 1}}</td>
+                                <td class="tc">{{registrant.first_name}} {{registrant.last_name}}</td>
+                                <td class="tc">{{registrant.email}}</td>
+                                <td class="tc">{{registrant.phone_number}}</td>
+                                <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/event/registration/{{encryptId(registrant.id)}}"></app-redirect-button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+            <ng-template #no_registrants_template>
+                <div class="p-4 bg-gray-300 rounded">
+                    No registrations for this event.
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <app-empty-content [message]="event_not_found" *ngIf="event_not_found"></app-empty-content>
+</main>

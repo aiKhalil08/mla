@@ -1,0 +1,86 @@
+<main class="login bg-[#FFF] min-h-dvh flex items-center justify-center">
+    <app-forgot-password type="student" (canceled)="forgotPassword = false" *ngIf="forgotPassword"></app-forgot-password>
+    <div class="w-full lg:w-1/2 m-auto lg:mr-[50%] grid place-items-center">
+        <div class="overflow-hidden w-full max-w-[500px]">
+            <div class="w-[200%] flex">
+                <form #form (ngSubmit)="!submitted_one && onSubmitOne(form)" [formGroup]="studentGroup" [ngClass]="{'translate-x-full': showFormTwo}" class="p-4 w-full transition-all duration-500 bg-white">
+                    <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+                    <h2 class="mt-8">Welcome Back</h2>
+                    <div>Do not have an account yet? <a routerLink="/enroll" class="text-mainp underline">Register</a></div>
+                    <div class="flex flex-col gap-y-4 mt-8 bg-white"> <!-- fields -->
+                        <div *ngIf="formOneError" class="text-red-500">{{formOneError}}</div>
+                        <!-- <div *ngIf="expired_session" class="text-red-500">Your session has expired, please revalidate</div> -->
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="email">Email</label>
+                            <input [autofocus]="!showFormTwo" formControlName="email" type="text" id="email" name="email" placeholder="Enter your email address" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['email']" class="text-red-500">{{errors['email'][0]}}</div>
+                        </div>
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="password">Password</label>
+                            <input formControlName="password" type="password" id="password" name="password" placeholder="Enter password" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['password']" class="text-red-500">{{errors['password'][0]}}</div>
+                        </div>
+                    </div>
+                    <div class="text-xs mt-4">
+                        <a (click)="forgotPassword = true" class="text-mainp cursor-pointer">Forgot password?</a>
+                    </div>
+                    <div class="mt-4" *ngIf="!remove_recaptcha">
+                        <re-captcha (resolved)="handleResolved($event)" [siteKey]="siteKey"></re-captcha>
+                    </div>
+                    <div class="mt-6">
+                        <button [disabled]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" [class.cursor-not-allowed]="studentGroup.invalid || (backWithErrors_one && (errorsRectified_one < errorneousFields_one.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_one" [class.hidden]="!submitted_one"></div><div>{{(backWithErrors_one && (errorsRectified_one == errorneousFields_one.length)) ? 'Login' : backWithErrors_one ? 'Rectify all errors' : studentGroup.invalid ? 'Fill all fields' : 'Login'}}</div></button>
+                    </div>
+                </form>
+                <form #form_two (ngSubmit)="!submitted_two && onSubmitTwo(form_two)" [ngClass]="{'-translate-x-full': showFormTwo}" [formGroup]="otpGroup" class="p-4 w-full transition-all duration-500 bg-white">
+                    <img src="./assets/logo.png" alt="" class="h-[70px] w-[166px]">
+                    <h2 class="mt-8">Confirm Login</h2>
+                    <div>Check your email for verification code</div>
+                    <div class="flex flex-col gap-y-4 mt-8 bg-white"> <!-- fields -->
+                        <div *ngIf="formTwoError" class="text-red-500">{{formTwoError}}</div>
+                        <input formControlName="email" name="email" type="hidden" value="{{email.value}}">
+                        <div class="text-sm flex flex-col gap-y-2">
+                            <label for="otp">Your verification Code</label>
+                            <input [autofocus]="showFormTwo" formControlName="otp" type="password" id="otp" name="otp" placeholder="Enter 6 digit code" class="p-4 w-full rounded-md border border-gray-400 outline-none placeholder-black">
+                            <div *ngIf="errors['otp']" class="text-red-500">{{errors['otp'][0]}}</div>
+                        </div>
+                    </div>
+                    <div class="text-xs mt-4">
+                        <ng-container *ngIf="!canReqeustOTP">Didn't receive OTP? Request for new a new one in {{countdown}}. <a class="text-mainp" routerLink="/">Cancel</a></ng-container>
+                        <ng-container *ngIf="canReqeustOTP"><a (click)="resendOTP()" class="text-mainp cursor-pointer">Request for new OTP.</a></ng-container>
+                    </div>
+                    <div class="mt-6">
+                        <button [disabled]="otpGroup.invalid || (backWithErrors_two && (errorsRectified_two < errorneousFields_two.length))" [class.cursor-not-allowed]="otpGroup.invalid || (backWithErrors_two && (errorsRectified_two < errorneousFields_two.length))" class="p-4 w-full flex gap-x-4 items-center justify-center bg-mainp text-white rounded-md hover:bg-mainp/70 cursor-pointer border border-transparent outline-none"><div class="submit-loader" [class.block]="submitted_two" [class.hidden]="!submitted_two"></div><div>{{logged_in ? 'Redirecting...' : (backWithErrors_two && (errorsRectified_two == errorneousFields_two.length)) ? 'Confirm Login' : backWithErrors_two ? 'Rectify all errors' : otpGroup.invalid ? 'Fill all fields' : 'Confirm Login'}}</div></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:block fixed top-0 right-0 bottom-0 w-1/2 overflow-clip">
+        <div class="w-[200%] h-full flex">
+            <div class="w-1/2 h-full first-state" id="left-slide">
+                <div class="absolute w-full h-full bg-gradient-to-t from-mainp/90 to-transparent">
+                    <div class="text-white absolute bottom-24 left-14">
+                        <div class="font-bold text-4xl" id="first-paragraph">Unlock your full potential</div>
+                        <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
+                    </div>
+                </div>
+                <picture>
+                    <source media="(min-width:1024px)" srcset="./assets/images/typing_girl.png">
+                    <img src="" class="w-full h-full object-cover" alt="">
+                </picture>
+            </div>
+            <div class="w-1/2 h-full custom-hidden" id="right-slide">
+                <div class="absolute w-full h-full bg-gradient-to-t from-mainp/90 to-transparent">
+                    <div class="text-white absolute bottom-24 left-14">
+                        <div class="font-bold text-4xl" id="first-paragraph">Unlock your full potential</div>
+                        <div class="mt-4" id="second-paragraph">Discover the joy of learning and ignite your educational journey</div>
+                    </div>
+                </div>
+                <picture>
+                    <source media="(min-width:1024px)" srcset="./assets/images/waving_girl.png">
+                    <img src="" class="w-full h-full object-cover" alt="">
+                </picture>
+            </div>
+        </div>
+    </div>
+</main>

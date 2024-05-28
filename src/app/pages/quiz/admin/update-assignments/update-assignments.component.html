@@ -1,0 +1,49 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && all_students" class="relative max-w-[850px] m-auto">
+        <h3>{{quiz_title}}</h3>
+
+        <div>
+            <input #search_field type="text" placeholder="search student by name, email, or company" name="searchParam" class="placeholder:italic placeholder:text-sm mt-6 w-full p-2 rounded border border-slate-200 outline-none">
+        </div>
+        <form action="" #form [formGroup]="studentsGroup" (ngSubmit)="!submitted && onSubmit(form)" class="">
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+
+            <div><label for="select-all" class="flex gap-2 cursor-pointer text-mainp items-center mt-4"><input type="checkbox" name="select-all" id="select-all" [formControl]="select_all_control">Select all</label></div>
+
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">User's name</th>
+                            <th class="font-normal tc">User's email</th>
+                            <th class="font-normal tc">Company</th>
+                            <th class="font-normal tc">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="students">
+                        <ng-container *ngFor="let student of all_students; index as i">
+                            @if (!search_param || check_match(student, i)) {
+                                <tr>
+                                    <td class="tc">{{student.first_name}} {{student.last_name}}</td>
+                                    <td class="tc">{{student.email}}</td>
+                                    <td class="tc">{{student.company.name}}</td>
+                                    <td class="tc"><input type="checkbox" name="students[{{student.id}}]"  formControlName="{{i}}" [checked]="selectAll.value"></td>
+                                </tr>
+                            }
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Updated' : 'Update'}}</div></button>
+                <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location='/quiz/admin/quiz/{{quiz_title}}'></app-redirect-button>
+            </div>
+        </form>
+    
+    </div>
+
+        
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

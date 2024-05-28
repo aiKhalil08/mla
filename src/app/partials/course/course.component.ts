@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 // import { CartedCourse } from 'src/app/interfaces/carted-course';
-import { Module } from 'src/app/interfaces/certificate-course';
 import { ModuleItemComponent } from "../module-item/module-item.component";
 import { ContactUsButtonComponent } from "../contact-us-button/contact-us-button.component";
-import { Course } from 'src/app/interfaces/courses';
 import { CertificateService } from 'src/app/services/certificate.service';
 import { CartService } from 'src/app/services/cart.service';
 import { Router } from '@angular/router';
+import { Course, Module } from 'src/app/interfaces/course';
 
 @Component({
     selector: 'app-course',
@@ -24,11 +23,12 @@ export class CourseComponent implements OnInit {
   @Input() certificate?: {name: string, url: string};
   // @Input() enrollment: 'cohort' | 'individual';
   present_tab: number = 0;
-  objectives: string[];
   modules: Module[];
   prerequisites: string[];
+  objectives: string[];
   attendees: string[];
-  // message_text: string;
+  // date: Date;
+  // price: Price;
   abbreviated_type: string;
   course_name: string;
   removing: boolean;
@@ -53,10 +53,10 @@ export class CourseComponent implements OnInit {
       this.course_name = this.course.title;
     }
 
-    this.objectives = <string[]>JSON.parse(this.course.objectives);
-    this.modules = <Module[]>JSON.parse(this.course.modules);
-    this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
-    this.attendees = <string[]>JSON.parse(this.course.attendees);
+    this.objectives = this.course.objectives;
+    this.modules = this.course.modules;
+    this.prerequisites = this.course.prerequisites;
+    this.attendees = this.course.attendees;
 
     // this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.code.toUpperCase()}. My name is ___`;
   }

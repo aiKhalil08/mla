@@ -1,0 +1,40 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && all_permissions" class="relative max-w-[750px] m-auto">
+
+        <form action="" #form [formGroup]="permissionsGroup" (ngSubmit)="!submitted && onSubmit(form)" class="">
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+            <div>
+                <input #search_field type="text" placeholder="search permission by name" name="searchParam" class="placeholder:italic placeholder:text-sm mt-2 w-full p-2 rounded border border-slate-200 outline-none">
+            </div>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">S/N</th>
+                            <th class="font-normal tc">Name</th>
+                            <th class="font-normal tc">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="permissions">
+                        <ng-container *ngFor="let permission of all_permissions; index as i">
+                            <tr [ngClass]="{'hidden': search_param && !check_match(permission)}">
+                                <td class="tc">{{i + 1}}</td>
+                                <td class="tc">{{permission.name}}</td>
+                                <td class="tc"><input type="checkbox" name="permissions[{{permission.id}}]"  formControlName="{{i}}"></td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Updated' : 'Update'}}</div></button>
+                <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location='{{location}}'></app-redirect-button>
+            </div>
+        </form>
+    
+    </div>
+        
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

@@ -16,7 +16,7 @@ export class StudentCertificatesComponent implements OnInit {
 
   certificates: {name: string, url: string}[];
 
-  no_certificates: string = null;
+  empty: string = null;
 
   fetching_certificates: boolean;
 
@@ -36,10 +36,6 @@ export class StudentCertificatesComponent implements OnInit {
     this.certificateService.get_my_certificates().subscribe({
       next: response => {
         this.fetching_certificates = false;
-        if (response.status == 'failed') {
-          this.no_certificates = response.message;
-          return;
-        }
         this.handle_response(response);
       }
     });
@@ -53,7 +49,10 @@ export class StudentCertificatesComponent implements OnInit {
         url: string;
     }[];
   }) {
-    this.no_certificates = null;
+    if (response.status == 'empty') {
+      this.empty = response.message;
+      return;
+    }
     this.certificates = response.certificates;
   }
 

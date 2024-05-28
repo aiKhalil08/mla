@@ -21,31 +21,32 @@
             <div class="text-red-500 text-sm" *ngIf="tried_to_submit && overview.invalid">{{get_error_message(overview)}}</div>
         </div>
         <div class="flex flex-col gap-y-2 w-full relative" formArrayName="objectives">
-            <img src="./assets/svgs/plus.svg" (click)="addObjective()" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+            <img src="./assets/svgs/dash.svg" (click)="remove('objective')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+            <img src="./assets/svgs/plus.svg" (click)="add('objective')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
             <label for="course-objectives" class="text-mainp">Course Objectives</label>
             <div class="flex gap-x-2 items-center" *ngFor="let objective of objectives.controls; index as i">
                 <span class="min-w-6">{{i+1}}.</span><input type="text" name="objectives[]" id="course-objectives" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
             </div>
         </div>
         <div class="flex flex-col gap-y-2 w-full relative" formArrayName="attendees">
-            <img src="./assets/svgs/plus.svg" (click)="addAttendee()"
-                class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+            <img src="./assets/svgs/dash.svg" (click)="remove('attendee')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+            <img src="./assets/svgs/plus.svg" (click)="add('attendee')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
             <label for="course-attendees" class="text-mainp">Course Attendees</label>
             <div class="flex gap-x-2 items-center" *ngFor="let objective of attendees.controls; index as i">
                 <span class="min-w-6">{{i+1}}.</span><input type="text" name="attendees[]" id="course-attendees" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
             </div>
         </div>
         <div class="flex flex-col gap-y-2 w-full relative" formArrayName="prerequisites">
-            <img src="./assets/svgs/plus.svg" (click)="addPrerequisite()"
-                class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+            <img src="./assets/svgs/dash.svg" (click)="remove('prerequisite')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+            <img src="./assets/svgs/plus.svg" (click)="add('prerequisite')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
             <label for="course-prerequisites" class="text-mainp">Course Prerequisites</label>
             <div class="flex gap-x-2 items-center" *ngFor="let objective of prerequisites.controls; index as i">
                 <span class="min-w-6">{{i+1}}.</span><input type="text" name="prerequisites[]" id="course-prerequisites" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
             </div>
         </div>
         <div class="flex flex-col gap-y-2 relative" formArrayName="modules">
-            <img src="./assets/svgs/plus.svg" (click)="addModule()"
-                class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+            <img src="./assets/svgs/dash.svg" (click)="remove('module')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+            <img src="./assets/svgs/plus.svg" (click)="add('module')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
             <label for="module-objective" class="text-mainp">Course Modules</label>
             <div class="flex gap-x-2 items-center" *ngFor="let objective of modules.controls; index as i">
                 <span class="min-w-6">{{i+1}}.</span>

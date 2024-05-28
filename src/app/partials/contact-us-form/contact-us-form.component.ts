@@ -26,7 +26,7 @@ export class ContactUsFormComponent implements OnInit {
     let phone_number = '';
     let email_address = '';
     let message = '';
-    if (this.auth.isLoggedIn('student')) {
+    if (this.auth.isLoggedIn() && this.auth.user().hasRole('student')) {
       first_name = this.auth.user().first_name;
       last_name = this.auth.user().last_name;
       // phone_number = this.auth.user().pone;

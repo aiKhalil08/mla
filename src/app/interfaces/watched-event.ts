@@ -1,17 +1,9 @@
-interface WatchedEvent {
-    name: string;
-    description: string;
-    attendees: string;
-    image_url: string;
-    price: string;
-    type: 'virtual' | 'physical';
-    date: string;
-}
+import { Event$ } from "./event";
 
 interface WatchedEventResponse {
     status: string;
     message: string;
-    event: WatchedEvent;
+    event: Event$;
 }
 
-export {WatchedEvent, WatchedEventResponse};
+export {WatchedEventResponse};

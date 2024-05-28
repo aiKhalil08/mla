@@ -1,0 +1,108 @@
+<div class="relative flex flex-col gap-y-4">
+    <div *ngIf="object_name != 'Offshore Course'" class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course code</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div>{{object['code']}}</div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course title</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div>{{object['title']}}</div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Course overview</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div>{{object['overview']}}</div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Objectives</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let objective of object['objectives']" class="border-b border-slate-500 pb-2">
+                <div>{{objective}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Attendees</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let attendee of object['attendees']" class="border-b border-slate-500 pb-2">
+                <div>{{attendee}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Prerequisites</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let prerequisite of object['prerequisites']" class="border-b border-slate-500 pb-2">
+                <div>{{prerequisite}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+        <div class="text-gray-600">Modules</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div *ngFor="let module of object['modules']" class="shadow-lg flex flex-col gap-y-2 my-2 p-4 rounded border border-mainp">
+                <div class="">
+                    <div class="text-sm">Objective</div>
+                    <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                        <div>{{module['objective']}}</div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="text-sm">Overview</div>
+                    <div class="border border-mainp rounded flex flex-col gap-y-2 px-4 py-2">
+                        <div>{{module['overview']}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="object_name == 'Offshore Course'"> <!-- show date and location for offshore course -->
+        <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+            <div class="text-gray-600">Date</div>
+            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                <div class="flex flex-col gap-y-2">
+                    <div>
+                        <div class="text-sm">Start</div>
+                        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                            {{object['date']['start']}}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-sm">Duration</div>
+                        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                            {{object['date']['duration']}} {{object['date']['duration-unit']}}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-sm">End</div>
+                        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                            {{object['date']['end']}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white shadow p-4 flex flex-col gap-y-2"> <!--- attribute box -->
+            <div class="text-gray-600">Location</div>
+            <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+                <div>{{object['location']}}</div>
+            </div>
+        </div>
+    </ng-container>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2" *ngIf="object_name != 'Certification Course'"> <!--- attribute box -->
+        <div class="text-gray-600">Price</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div>{{object['price']['amount']}} {{object['price']['currency']}}</div>
+        </div>
+    </div>
+    <div class="bg-white shadow p-4 flex flex-col gap-y-2" *ngIf="object_name != 'Certification Course'"> <!--- attribute box -->
+        <div class="text-gray-600">Discount</div>
+        <div class="border border-mainp px-4 py-2 rounded flex flex-col gap-y-2">
+            <div>{{object['discount'] ? object['discount'] : 'Not set'}}</div>
+        </div>
+    </div>
+</div>

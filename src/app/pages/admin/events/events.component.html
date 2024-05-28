@@ -8,16 +8,22 @@
                     <thead class="text-mainp">
                         <tr class="">
                             <th class="tc">Name</th>
-                            <th class="tc">Start Date</th>
-                            <th class="tc">End Date</th>
+                            <th class="tc">Date</th>
+                            <th class="tc">Link</th>
+                            <th class="tc">Registrations</th>
                             <th class="tc">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let event of events">
-                            <td class="tc">{{event.name}}</td>
-                            <td class="tc">{{format(parse(event.date).start)}}</td>
-                            <td class="tc">{{format(parse(event.date).end)}}</td>
+                            <td class="tc whitespace-nowrap">{{event.name}}</td>
+                            <td class="tc whitespace-nowrap">{{format(event.date.start)}} - {{format(event.date.end)}}</td>
+                            <td class="tc">
+                                <button (click)="copyEventLink(getEventLink(event.name), $event)" class="group bg-mainp text-white relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                                    Copy&nbsp;link
+                                </button>
+                            </td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="Registrations" location="/admin/event/{{event.name}}/registrations"></app-redirect-button></td>
                             <td class="tc text-center"><app-redirect-button theme="pink" text="Action" location="/admin/event/{{event.name}}"></app-redirect-button></td>
                         </tr>
                     </tbody>

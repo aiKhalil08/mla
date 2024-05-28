@@ -52,9 +52,6 @@ export class TestimonialListComponent implements OnInit {
               560: {
                 slidesPerView: 2,
               },
-              768: {
-                slidesPerView: 3,
-              },
             },
           };
         

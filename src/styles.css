@@ -17,54 +17,7 @@
     box-sizing: border-box;
 }
 
-:root {
-    /* font-size: calc(15px + 0.390625vw); */
-    /* font-size: clamp(16px, 15px + 0.390625vw, 20px); */
-    /* font-size: 16px; */
-}
 
-@font-face {
-    font-family: Poppins;
-    font-weight: 100; /* thin */
-    src: url('./webfonts/Poppins-Thin.ttf');
-}
-@font-face {
-    font-family: Poppins;
-    font-weight: 200; /* extra light */
-    src: url('./webfonts/Poppins-ExtraLight.ttf');
-}
-@font-face {
-    font-family: Poppins;
-    font-weight: 300; /* light */
-    src: url('./webfonts/Poppins-Light.ttf');
-}
-
-@font-face {
-    font-family: Poppins;
-    font-weight: 400; /* regular */
-    src: url('./webfonts/Poppins-Regular.ttf');
-}
-
-@font-face {
-    font-family: Poppins;
-    font-weight: 500; /* medium */
-    src: url('./webfonts/Poppins-Medium.ttf'), url('./webfonts/Poppins-Thin.ttf');
-}
-@font-face {
-    font-family: Poppins;
-    font-weight: 700; /* semi bold */
-    src: url('./webfonts/Poppins-SemiBold.ttf');
-}
-@font-face {
-    font-family: Poppins;
-    font-weight: 800; /* bold */
-    src: url('./webfonts/Poppins-Bold.ttf');
-}
-@font-face {
-    font-family: Poppins;
-    font-weight: 900; /* extra bold */
-    src: url('./webfonts/Poppins-ExtraBold.ttf');
-}
 
 body {
     /* min-height: 100vh; */
@@ -433,3 +386,5 @@ input, textarea {min-width: 0;}
     border-style: solid;
     border-color: rgb(221 18 123 / 0.8) transparent transparent transparent;
 }
+/* html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */

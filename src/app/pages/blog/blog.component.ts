@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Blog } from 'src/app/interfaces/blog';
 import { BlogService } from 'src/app/services/blog.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import moment from 'moment';
 import { EmptyContentComponent } from "../../partials/empty-content/empty-content.component";
+import { format } from 'date-fns';
 
 
 
@@ -34,9 +34,9 @@ export class BlogComponent {
       heading = param.get('heading');
       this.getBlog(heading);
     });
-    this.facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURI(document.location.href)}`;
-    this.twitterLink = `https://twitter.com/intent/tweet?url=${encodeURI(document.location.href)}`;
-    this.linkedInLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURI(document.location.href)}`;
+    // this.facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURI(document.location.href)}`;
+    // this.twitterLink = `https://twitter.com/intent/tweet?url=${encodeURI(document.location.href)}`;
+    // this.linkedInLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURI(document.location.href)}`;
   }
 
   getBlog(heading) {
@@ -53,11 +53,15 @@ export class BlogComponent {
       
         this.blog = response.blog;
         this.recent_posts = response.recent_posts;
+
+        this.facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURI(document.location.href)}`;
+        this.twitterLink = `https://twitter.com/intent/tweet?url=${encodeURI(document.location.href)}`;
+        this.linkedInLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURI(document.location.href)}`;
       }
     });
   }
 
   get date() {
-    return moment(this.blog.created_at).format('D MMMM, Y');
+    return format(this.blog.created_at, 'dd MMMM, yyyy');
   }
 }

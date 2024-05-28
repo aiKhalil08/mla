@@ -1,0 +1,20 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="object" class="flex flex-col gap-y-6">
+        <div class="bg-white p-4 shadow">
+            <ng-container *ngIf="action_name == 'updated'; else temp">
+                These updates were made to the {{object_name}} by {{actor.first_name}} {{actor.last_name}} on {{action_date}}
+            </ng-container>
+            <ng-template #temp>
+                This {{object_name}} was {{action_name}} by {{actor.first_name}} {{actor.last_name}} on {{action_date}}
+            </ng-template>
+        </div>
+
+
+        <app-course-record *ngIf="action_name == 'created' || action_name == 'deleted'" [object]="object" [object_name]="object_name"></app-course-record><!-- partial for created or deleted objects -->
+
+
+        <app-patched-course *ngIf="action_name == 'updated'" [patched]="object" [object_name]="object_name"></app-patched-course> <!-- partial for updated objects -->
+    </div>
+    <app-empty-content *ngIf="error" [message]="error"></app-empty-content>
+</main>

@@ -1,0 +1,40 @@
+<form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="question_group" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+    <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+
+    <div class="flex flex-col gap-y-2 w-full ckeditor">
+        <label for="text" class="text-mainp required">Question Text</label>
+        <ckeditor class="text-sm" [editor]="editor" formControlName="text"></ckeditor>
+        <div class="text-red-500 text-sm" *ngIf="tried_to_submit && text.invalid">{{get_error_message(text)}}</div>
+    </div>
+
+    <div class="flex flex-col gap-y-2 w-full relative" formArrayName="options">
+        <img src="./assets/svgs/dash.svg" (click)="remove('option')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+
+        <img src="./assets/svgs/plus.svg" (click)="add('option')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+
+        <label for="options" class="text-mainp required">Options</label>
+        <div class="flex gap-x-2 items-center" *ngFor="let options of options.controls; index as i">
+            <span class="min-w-6">{{i+1}}.</span>
+
+            <input type="text" name="options[]" id="options" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
+
+            <label for="co{{i}}" class="self-stretch px-3 cursor-pointer grid place-items-center rounded border border-zinc-600/50 transition-[background-color] duration-100 ease-linear hover:bg-green-600/50 hover:border-green-600/50" [ngClass]="{'bg-green-600/50': optionIsCorrect(i)}">
+                <input type="radio" class="cursor-pointer" id="co{{i}}" [formControl]="correct_option" name="correct_option" value="{{i}}">
+            </label>
+
+            <div (click)="remove('option', i)" class="self-stretch px-3 cursor-pointer grid place-items-center rounded border border-mainp transition-[background-color] duration-100 ease-linear hover:bg-mainp" (mouseenter)="bin_svg.classList.add('white-icon')" (mouseleave)="bin_svg.classList.remove('white-icon')"><img src="./assets/svgs/trash.svg" class="pink-icon w-4 h-4" #bin_svg alt=""></div>
+
+        </div>
+        <div class="text-red-500 text-sm" *ngIf="tried_to_submit && (options.invalid || options.length < 2)">{{options.length < 2 ? 'Please input at least two options for this question.' : 'Please fill all options.'}}</div>
+        <div class="text-red-500 text-sm" *ngIf="tried_to_submit && correct_option.invalid">Please specify the correct option.</div>
+    </div>
+         
+    <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+        <button [disabled]="action_done || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !action_done, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': action_done, 'text-white': !action_done, 'text-mainp': action_done}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+            <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+            <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+            <div>{{buttonText}}</div>
+        </button>
+        <app-redirect-button theme="white" text="{{!action_done ? 'Cancel' : 'Back'}}" (click)="goBack(); false;"></app-redirect-button>
+    </div>
+</form>

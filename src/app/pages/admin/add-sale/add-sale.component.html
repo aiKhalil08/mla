@@ -37,7 +37,7 @@
                         <input autocomplete="off" id="cohort_name" placeholder="e.g. Ms Excel April 2023 Cohort" type="text" name="cohort_name" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none placeholder:italic" formControlName="cohort_name">
                         <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 border border-slate-200 shadow-2xl z-40" [class.block]="matched_cohorts.length > 0" [class.hidden]="matched_cohorts.length == 0">
                             <div *ngFor="let cohort of matched_cohorts" (click)="setCohortName(cohort.name)" class="p-2 cursor-pointer hover:bg-slate-200">
-                                {{cohort.name}} <span class="text-sm text-gray-400 ml-2">({{cohort.status_id == 0 ? 'Pending' : 'In progress'}})</span>
+                                {{cohort.name}} <span class="text-sm text-gray-400 ml-2">({{cohort.status.name}})</span>
                             </div>
                         </div>
                     </div>

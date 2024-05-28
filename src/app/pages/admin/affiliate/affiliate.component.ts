@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import AffiliatePortal from 'src/app/interfaces/affiliate-portal';
 import { AffiliateService } from 'src/app/services/affiliate.service';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
-import moment from 'moment';
+import { format } from 'date-fns';
 
 @Component({
     selector: 'app-affiliate',
@@ -57,7 +57,7 @@ export class AffiliateComponent {
 
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    return format(date, 'do MMMM, yyyy');
   }
 
   formatCurrency(number: string) {

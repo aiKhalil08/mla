@@ -14,13 +14,7 @@ import { CertificationCourseListComponent } from './partials/certification-cours
 import { OffshoreCourseListComponent } from './partials/offshore-course-list/offshore-course-list.component';
 import { EventComponent } from './pages/event/event.component';
 import { EventsComponent } from './pages/events/events.component';
-import { StudentSignupComponent } from './pages/signup/student-signup/student-signup.component';
-import { StudentLoginComponent } from './pages/login/student-login/student-login.component';
-import { studentAuthGuard } from './guards/student-auth.guard';
 import { adminAuthGuard } from './guards/admin-auth.guard';
-import { AdminLoginComponent } from './pages/login/admin-login/admin-login.component';
-import { studentEmailVerifiedGuard } from './guards/student-email-verified.guard';
-import { ResetPasswordComponent } from './pages/login/reset-password/reset-password.component';
 import { studentNotLoggedInGuard } from './guards/student-not-logged-in.guard';
 import { adminNotLoggedInGuard } from './guards/admin-not-logged-in.guard';
 import { ContactForCourseComponent } from './pages/contact-for-course/contact-for-course.component';
@@ -29,6 +23,16 @@ import { TermsAndConditionComponent } from './pages/terms-and-condition/terms-an
 import { FAQSComponent } from './pages/faqs/faqs.component';
 import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
 import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
+import { emailVerifiedGuard } from './guards/email-verified.guard';
+import { SigninComponent } from './pages/authentication/signin/signin.component';
+import { SignupComponent } from './pages/authentication/signup/signup.component';
+import { ResetPasswordComponent } from './pages/authentication/reset-password/reset-password.component';
+import { userIsStudentGuard } from './guards/user-is-student.guard';
+import { userAuthGuard } from './guards/user-auth.guard';
+import { userNotExternalGuard } from './guards/user-not-external.guard';
+import { userIsAdminGuard } from './guards/user-is-admin.guard';
+import { QuizLayoutComponent } from './pages/quiz/quiz-layout/quiz-layout.component';
+import { userCanTakeQuizGuard } from './guards/user-can-take-quiz.guard';
 
 
 const routes: Routes = [
@@ -42,12 +46,11 @@ const routes: Routes = [
   {path: 'event/:name', component: EventComponent, title: 'Event'},
   {path: 'connect-with-us', component: ConnectWithUsComponent, title: 'Connect With Us'},
   {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
-  {path: 'contact-for-course', component: ContactForCourseComponent, title: 'Contact Us', canActivate: [studentAuthGuard, studentEmailVerifiedGuard]},
-  {path: 'enroll', component: StudentSignupComponent, title: 'Enroll', canActivate: [studentNotLoggedInGuard]},
-  {path: 'verify-email', component: StudentSignupComponent, title: 'Verify Email'},
-  {path: 'login', component: StudentLoginComponent, title: 'Login | Student', canActivate: [studentNotLoggedInGuard]},
+  {path: 'contact-for-course', component: ContactForCourseComponent, title: 'Contact Us', canActivate: [userIsStudentGuard]},
+  {path: 'enroll', component: SignupComponent, title: 'Enroll', canActivate: [studentNotLoggedInGuard]},
+  {path: 'verify-email', component: SignupComponent, title: 'Verify Email'},
+  {path: 'login', component: SigninComponent, title: 'Login', canActivate: [studentNotLoggedInGuard]},
   {path: 'reset-password', component: ResetPasswordComponent, title: 'Reset Password', canActivate: [studentNotLoggedInGuard]},
-  {path: 'login/admin', component: AdminLoginComponent, title: 'Login | Admin', canActivate: [adminNotLoggedInGuard]},
   {path: 'privacy-policy', component: PrivacyPolicyComponent, title: 'Privacy Policy'},
   {path: 'terms-and-conditions', component: TermsAndConditionComponent, title: 'Terms & Condition'},
   {path: 'frequently-asked-questions', component: FAQSComponent, title: 'FAQs'},
@@ -66,16 +69,30 @@ const routes: Routes = [
     path: 'admin',
     component: AdminHomeComponent,
     title: 'Admin',
-    canActivate: [adminAuthGuard],
+    canActivate: [userAuthGuard, userIsAdminGuard],
     loadChildren: () => import('./pages/admin/routes')
   },
   {
     path: 'home',
     component: StudentHomeComponent,
     title: 'Title',
-    canActivate: [studentAuthGuard, studentEmailVerifiedGuard],
+    canActivate: [userAuthGuard, userNotExternalGuard, emailVerifiedGuard],
     loadChildren: () => import('./pages/student/routes')
-  }
+  },
+  {
+    path: 'quiz',
+    component: QuizLayoutComponent,
+    title: 'Quiz',
+    canActivate: [userAuthGuard, userCanTakeQuizGuard],
+    loadChildren: () => import('./pages/quiz/student/routes')
+  },
+  {
+    path: 'quiz/admin',
+    component: QuizLayoutComponent,
+    title: 'Quiz Admin',
+    canActivate: [userAuthGuard, userIsAdminGuard],
+    loadChildren: () => import('./pages/quiz/admin/routes')
+  },
 ];
 
 @NgModule({

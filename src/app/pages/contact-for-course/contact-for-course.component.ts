@@ -97,10 +97,10 @@ export class ContactForCourseComponent implements OnInit {
           this.affiliate = null;
         }
         else {
-          // if (response.affiliate.email == this.auth.user().email) {
-          //   this.fetch_affiliate_error = 'You cannot refer yourself';
-          //   return;
-          // }
+          if (response.affiliate.email == this.auth.user().email) {
+            this.fetch_affiliate_error = 'You cannot refer yourself';
+            return;
+          }
           this.handleFetchAffiliateResponse(response);
         }
       }

@@ -1,17 +1,16 @@
+import { Course, Price } from "./course";
+
 interface CohortItem {
     name: string;
-    status: string;
+    status: {name: string};
 };
 
 
-type Course = {
-    title: string;
-    code?: string;
-    image: string;
-    overview: string;
+interface CohortCourse extends Course {
     type: string;
-    price: string;
-};
+    price: Price;
+    image: string;
+}
 
 type Students = {first_name: string, last_name: string, email: string}[];
 
@@ -23,7 +22,7 @@ interface Cohort {
     status: 'Concluded' | 'Pending' | 'In progress' | 'Aborted';
     created_at: string;
 
-    course: Course;
+    course: CohortCourse;
 
     students: Students;
 }

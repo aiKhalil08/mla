@@ -1,0 +1,58 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching, 'place-items-center': fetching}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="trails">
+        <div class="relative flex flex-col gap-y-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <h3>Audit Trails</h3>
+            </div>
+
+            <div class="flex flex-col w-full max-w-[800px] gap-y-6">
+
+                <div class="w-full flex flex-col gap-y-2">
+                    <div>
+                        Filter by:
+                        <div class="flex gap-x-10" >
+                            <label class="cursor-pointer flex items-center gap-x-2"><input type="checkbox" name="filter" [formControl]="stringFilter" value="actor_name" class="cursor-pointer"> Name / Role / Action</label>
+                            <label class="cursor-pointer flex items-center gap-x-2"><input type="checkbox" name="filter" [formControl]="dateFilter" value="date" class="cursor-pointer"> Date</label>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-4">
+
+                        <div *ngIf="filterByString">
+                            <input [formControl]="search_string_control" #search_field type="text" placeholder="search actor by name, role or action" name="searchParam" class="placeholder:italic placeholder:text-sm mt-4 w-full p-2 rounded border border-slate-200 outline-none">
+                        </div>
+                        <div *ngIf="filterByDate" class="flex flex-wrap gap-x-6 gap-y-4">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">From:</span>
+                                <mat-form-field>
+                                    <mat-label>Choose start date</mat-label>
+                                    <input [formControl]="search_start_date_control" matInput [matDatepicker]="start_picker">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="start_picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #start_picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">To:</span>
+                                <mat-form-field>
+                                    <mat-label>Choose end date</mat-label>
+                                    <input [formControl]="search_end_date_control" matInput [matDatepicker]="end_picker">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="end_picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #end_picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="w-full flex flex-col gap-y-4 overflow-auto">
+                    <ng-container *ngFor="let trail of trails">
+                        <app-audit-trail [trail]="trail" *ngIf="checkStringMatch(trail) && checkDateMatch(trail)"></app-audit-trail>
+                    </ng-container>
+                </div>
+            </div>
+        </div>  
+    </div>
+</main>

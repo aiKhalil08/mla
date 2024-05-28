@@ -1,7 +1,7 @@
-<div [ngClass]="{'grid': !watchlist || watchlist.length == 0, 'place-items-center': !watchlist || watchlist.length == 0, 'h-[500px]': !watchlist || watchlist.length == 0}">
-    <div class="loader" [class.hidden]="watchlist"></div>
-    <div *ngIf="watchlist && watchlist.length > 0" id="container" class="max-w-max mx-auto flex flex-col gap-4 md:gap-8 md:grid grid-cols-[repeat(2,_minmax(300px,_1fr))] auto-rows-[minmax(max-content,_1fr)]">
+<div [ngClass]="{'grid': fetching || empty, 'place-items-center': fetching || empty, 'h-[500px]': fetching || empty}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="watchlist" id="container" class="max-w-max mx-auto flex flex-col gap-4 md:gap-8 md:grid grid-cols-[repeat(2,_minmax(300px,_1fr))] auto-rows-[minmax(max-content,_1fr)]">
         <app-watchlist-item *ngFor="let event of watchlist" [event]="event"></app-watchlist-item>
     </div>
-    <app-empty-content *ngIf="watchlist && watchlist.length == 0" message="Your event watchlist is empty"></app-empty-content>
+    <app-empty-content *ngIf="empty" message="{{empty}}"></app-empty-content>
 </div>

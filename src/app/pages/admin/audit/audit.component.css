@@ -1,0 +1,8 @@
+.old-value, .new-value {position: relative;}
+.old-value::before, .new-value::before {
+    position: absolute;
+    right: calc(100% + 2px);
+}
+
+.old-value::before {content: '-';}
+.new-value::before {content: '+';}

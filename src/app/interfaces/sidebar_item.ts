@@ -1,5 +1,6 @@
 export interface SidebarItem {
     image: string,
     location: string,
-    text: string
+    text: string,
+    permission?: string,
 }

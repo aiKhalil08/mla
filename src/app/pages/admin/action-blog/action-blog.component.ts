@@ -9,7 +9,7 @@ import { Blog } from 'src/app/interfaces/blog';
 import { BlogService } from 'src/app/services/blog.service';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";

@@ -1,0 +1,61 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
+    <h3>Add Admin</h3>
+
+    <app-report-bar *ngIf="created" message="Admin has been added" type="success"></app-report-bar>
+
+    <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="adminGroup" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+        <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+        <div class="flex flex-col gap-y-2">
+            <label for="first-name" class="text-mainp required">First Name</label>
+            <input type="text" name="first_name" id="first-name" class="p-2 outline-none border border-slate-200 rounded" formControlName="first_name">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && first_name.invalid">{{get_error_message(first_name)}}</div>
+        </div>
+        <div class="flex flex-col gap-y-2">
+            <label for="last-name" class="text-mainp required">Last Name</label>
+            <input type="text" name="last_name" id="last-name" class="p-2 outline-none border border-slate-200 rounded" formControlName="last_name">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && last_name.invalid">{{get_error_message(last_name)}}</div>
+        </div>
+        <div class="text-sm flex flex-col gap-y-2">
+            <label for="email" class="text-mainp required">Email</label>
+            <input formControlName="email" type="text" id="email" name="email" class="p-2 outline-none border border-slate-200 rounded">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && email.invalid">{{get_error_message(email)}}</div>
+        </div>
+        <div class="text-sm flex flex-col gap-y-2">
+            <label for="phone_number" class="text-mainp required">Phone Number</label>
+            <input formControlName="phone_number" type="text" id="phone_number" name="phone_number" class="p-2 outline-none border border-slate-200 rounded">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && phone_number.invalid">{{get_error_message(phone_number)}}</div>
+        </div>
+        <div class="text-sm flex flex-col gap-y-2">
+            <label for="password" class="text-mainp required">Password</label>
+            <input formControlName="password" type="password" id="password" name="password" class="p-2 outline-none border border-slate-200 rounded">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && password.invalid">{{get_error_message(password)}}</div>
+        </div>
+        <div class="text-sm flex flex-col gap-y-2">
+            <label for="password_confirmation" class="text-mainp required">Confirm Password</label>
+            <input formControlName="password_confirmation" type="password" id="password_confirmation" name="password_confirmation" class="p-2 outline-none border border-slate-200 rounded">
+            <div class="text-red-500 text-sm" *ngIf="tried_to_submit && password_confirmation.invalid">{{get_error_message(password_confirmation)}}</div>
+        </div>
+        <div class="flex flex-col gap-y-2">
+            <label for="image" class="text-mainp optional">Image</label>
+            <input #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="image" class="hidden" formControlName="image">
+            <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
+                <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
+                    <div class="">
+                        <img src="./assets/svgs/upload.svg" class="gray-icon m-auto" alt="">
+                        <p class="text-gray-400 m-auto mt-2">Click to upload image</p>
+                        <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
+                    </div>
+                </div>
+                <img class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+            <button [disabled]="created || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                <div>{{created ? 'Created' : 'Create'}}</div>
+            </button>
+            <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/admin/admins"></app-redirect-button>
+        </div>
+    </form>
+</main>

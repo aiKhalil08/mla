@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
+import { Observable, Subscription, combineLatest, combineLatestAll, filter, fromEvent, map, merge, of, startWith } from 'rxjs';
 
 
 
@@ -13,17 +14,26 @@ import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/e
     styleUrls: ['./course-catalogue.component.css'],
     imports: [CommonModule, RouterLink, ExpandItemLinkComponent, RouterOutlet]
 })
-export class CourseCatalogueComponent implements OnInit {
+export class CourseCatalogueComponent implements OnInit, OnDestroy {
     section_header: string;
-    course_type: string;
+    course_type_stream: Observable<string>;
+    course_type_subscription: Subscription;
 
-    constructor (private route: ActivatedRoute) {}
+    constructor (private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
-        this.route.url.subscribe((url) => {
-            this.course_type = /.*\/(.+)$/.exec(location.href)[1];
-            this.setHeader(this.course_type);
-        })
+
+        this.course_type_stream = this.router.events.pipe(
+            filter(e => e instanceof NavigationEnd),
+            map(e => /.*\/(.+)$/.exec((<NavigationEnd>e).url)[1]),
+            startWith(/.*\/(.+)$/.exec(location.href)[1])
+        )
+
+        this.course_type_subscription = this.course_type_stream.subscribe(e => this.setHeader(e));
+    }
+
+    ngOnDestroy(): void {
+        this.course_type_subscription.unsubscribe();
     }
 
     setHeader(course_type: string) {

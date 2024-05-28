@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
-import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 // import { CourseService } from 'src/app/course.service';
 import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { TooltipComponent } from "../../../partials/tooltip/tooltip.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 
 @Component({
@@ -37,13 +36,10 @@ export class AddCertificateCourseComponent implements OnInit {
       code: ['', Validators.required],
       title: ['', Validators.required],
       overview: ['', Validators.required],
-      objectives: this.formBuilder.array([this.formBuilder.control('')]),
-      attendees: this.formBuilder.array([this.formBuilder.control('')]),
-      prerequisites: this.formBuilder.array([this.formBuilder.control('')]),
-      modules: this.formBuilder.array([this.formBuilder.group({
-        objective: [''],
-        overview: ['']
-      })]),
+      objectives: this.formBuilder.array([]),
+      attendees: this.formBuilder.array([]),
+      prerequisites: this.formBuilder.array([]),
+      modules: this.formBuilder.array([]),
       price: this.formBuilder.group({
         amount: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
         currency: ['', Validators.required]
@@ -123,21 +119,19 @@ export class AddCertificateCourseComponent implements OnInit {
     
   }
 
-  addObjective() {
-    this.objectives.push(this.formBuilder.control(''));
+  add(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    if (control == 'module') {
+      form_array.push(this.formBuilder.group({
+        objective: [''],
+        overview: ['']
+      }));
+    } else form_array.push(this.formBuilder.control(''));
   }
-  addAttendee() {
-    this.attendees.push(this.formBuilder.control(''));
-  }
-  addPrerequisite() {
-    this.prerequisites.push(this.formBuilder.control(''));
-  }
-  addModule() {
-    this.modules.push(this.formBuilder.group({
-      objective: [''],
-      overview: ['']
-    }));
-    console.log(this.modules);
+  
+  remove(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
   }
 
   setDurationUnit(unit: string) {

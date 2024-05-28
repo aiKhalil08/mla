@@ -1,0 +1,41 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching, 'place-items-center': fetching}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="admins">
+        <div class="relative flex flex-col gap-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <h3>All admins</h3>
+    
+                <div class="flex gap-x-4">
+                    <a [routerLink]="['/admin/add-admin']" class="bg-mainp text-white border-transparent border py-2 px-6 rounded cursor-pointer">Add Admin</a>
+                </div>
+            </div>
+
+            <div>
+                <input #search_field type="text" placeholder="search admin by name or email" name="searchParam" class="placeholder:italic placeholder:text-sm mt-4 w-full p-2 rounded border border-slate-200 outline-none">
+            </div>
+
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">S/N</th>
+                            <th class="font-normal tc">Admin's name</th>
+                            <th class="font-normal tc">Admin's email</th>
+                            <th class="font-normal tc">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let admin of admins; index as i">
+                            <tr [ngClass]="{'hidden': search_param && !check_match(admin)}">
+                                <td class="tc">{{i + 1}}</td>
+                                <td class="tc">{{admin.first_name}} {{admin.last_name}}</td>
+                                <td class="tc">{{admin.email}}</td>
+                                <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/admin/{{admin.email}}"></app-redirect-button></td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</main>

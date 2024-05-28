@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import moment from 'moment';
-import { Observable, take, tap } from 'rxjs';
 import { RefreshTokenService } from './refresh-token.service';
 import { StorageService } from './storage.service';
+import { getUnixTime } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -27,27 +26,33 @@ export class JWTService {
   exists() {
     return this.storage.exists(this.token_name);
   }
+  
   payload () {
     return JSON.parse(atob(this.get().split('.')[1]))
   }
   isExpired () {
     let payload = this.payload();
-    return moment().unix() >= payload.exp;
+    return getUnixTime(new Date()) >= payload.exp;
   }
   rightIssuer(apiAuthType: string) {
-    let tokenIssuer = this.getUserType();
-    return tokenIssuer == apiAuthType;
+    // let tokenIssuer = this.getUserType();
+    // return tokenIssuer == apiAuthType;
+    return this.getUserRoles().includes(apiAuthType);
   }
   isValid (apiAuthType) {
     if (!this.exists()) return null;
     return !this.isExpired && this.rightIssuer(apiAuthType);
   }
-  getUserType() {
-    let match_1 = /\/(\w+)\/confirm-email/.exec(this.payload().iss);
-    let match_2 = /\/(\w+)\/profile/.exec(this.payload().iss);
-    if (match_1) return match_1[1];
-    if (match_2) return match_2[1];
-    else return String(this.payload().iss).match(/.*\/(\w+)$/)[1]
+  // getUserType() {
+  //   let match_1 = /\/(\w+)\/confirm-email/.exec(this.payload().iss);
+  //   let match_2 = /\/(\w+)\/profile/.exec(this.payload().iss);
+  //   if (match_1) return match_1[1];
+  //   if (match_2) return match_2[1];
+  //   else return String(this.payload().iss).match(/.*\/(\w+)$/)[1]
+  // }
+
+  getUserRoles() {
+    return <string[]>this.payload().roles;
   }
   getUserFirstName() {
     return this.payload().first_name;

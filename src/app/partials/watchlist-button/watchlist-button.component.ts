@@ -18,7 +18,7 @@ export class WatchlistButtonComponent {
 
 
   @HostListener('click', ['$event']) add(event) {  
-    if (!this.authService.isLoggedIn('student')) document.location.href = 'login';
+    if (!(this.authService.isLoggedIn() && this.authService.user().hasRole('student'))) document.location.href = 'login';
     if (this.watched || this.processing) return false;
     this.processing = true;
 

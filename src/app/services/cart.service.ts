@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-// import { Cart } from '../interfaces/cart';
-// import { CartedCourseResponse } from '../interfaces/carted-course';
 import { Courses, FetchCourseResponse } from '../interfaces/courses';
 
 @Injectable({
@@ -45,7 +43,7 @@ export class CartService {
   fetch_cart() {
     let url = `${this.domain_name}/student/cart`;
 
-    return <Observable<{courses: Courses}>>this.http.get(url);
+    return <Observable<{status: string, message: string, courses: Courses}>>this.http.get(url);
   }
 
   fetch_carted_course(course: {identity: string, category: string}) {

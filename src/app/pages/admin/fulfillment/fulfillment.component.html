@@ -3,10 +3,10 @@
     <div *ngIf="loaded" class="overflow-hidden">
             <div class="max-w-[768px] m-auto bg-white shadow-lg flex flex-col p-4 gap-y-4">
                 <div *ngIf="error" class="my-4 text-red-500 text-sm">{{error}}</div>
-                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate name:</div><div class="grow min-w-max">{{fulfillment.name}}</div></div>
-                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate email:</div><div class="grow whitespace-break-spaces">{{fulfillment.email}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate name:</div><div class="grow min-w-max">{{fulfillment.affiliate.full_name}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Affiliate email:</div><div class="grow whitespace-break-spaces">{{fulfillment.affiliate.email}}</div></div>
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Amount:</div><div class="grow">{{formatCurrency(fulfillment.amount)}}</div></div>
-                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Date:</div><div class="grow">{{formatDate(fulfillment.date)}}</div></div>
+                <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Date:</div><div class="grow">{{formatDate(fulfillment.date_added)}}</div></div>
                 <div class="border-b border-mainp pb-2 flex flex-col lg:flex-row"><div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Type:</div><div class="grow">{{fulfillment.type}}</div></div>
                 <div *ngIf="account_details" class="border-b border-mainp pb-2 flex flex-col lg:flex-row">
                     <!-- <div class="min-w-max w-[130px] text-sm text-mainp lg:text-base lg:text-black">Account details:</div> -->

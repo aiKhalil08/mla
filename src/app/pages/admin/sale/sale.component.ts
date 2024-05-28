@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
 import { Sale } from 'src/app/interfaces/sales';
 import { SaleService } from 'src/app/services/sale.service';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
+import { format } from 'date-fns';
 
 @Component({
     selector: 'app-sale',
@@ -27,7 +27,6 @@ export class SaleComponent implements OnInit {
   ngOnInit(): void {
     let paramObservable = this.route.paramMap;
     paramObservable.subscribe((param) => {
-      // console.log(param.get('id'), Number(atob(param.get('id'))))
       this.id = Number(atob(param.get('id')));
       this.getSale();
     }); 
@@ -55,6 +54,6 @@ export class SaleComponent implements OnInit {
 
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    return format(date, 'do MMMM, yyyy');
   }
 }

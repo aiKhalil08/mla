@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import { CartedCourse, CartedCourseResponse } from 'src/app/interfaces/carted-course';
 import { CartService } from 'src/app/services/cart.service';
 import { CommonModule } from '@angular/common';
-import { Course, FetchCourseResponse } from 'src/app/interfaces/courses';
+import { FetchCourseResponse } from 'src/app/interfaces/courses';
 import { CourseComponent } from 'src/app/partials/course/course.component';
 import { StudentService } from 'src/app/services/student.service';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
+import { Course } from 'src/app/interfaces/course';
 
 @Component({
     selector: 'app-student-course',
@@ -21,7 +22,6 @@ export class StudentCourseComponent implements OnInit {
 
     category: string;
     identity: string;
-    // course_category: string;
     course: Course;
     certificate?: {name: string, url: string};
     carted_or_enrolled: 'carted' | 'enrolled';

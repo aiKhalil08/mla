@@ -1,6 +1,6 @@
 <div class="mt-8 p-4 bg-slate-100" *ngIf="testimonials">
     <swiper-container init="false">
-        <swiper-slide *ngFor="let testimonial of testimonials" [testimonial]="testimonial">
+        <swiper-slide *ngFor="let testimonial of testimonials" [testimonial]="testimonial" class="self-center h-full">
             <app-testimonial-item [testimonial]="testimonial"></app-testimonial-item>
         </swiper-slide>
     </swiper-container>

@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CertificateCourse, CertificateCourseItem, GetCertificateCourseResponse } from '../interfaces/certificate-course';
-import PostResponse from '../interfaces/post-response';
+import PostResponse from '../interfaces/base-response';
 
 @Injectable({
   providedIn: 'root'

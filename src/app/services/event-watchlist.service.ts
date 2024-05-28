@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-import { Watchlist } from '../interfaces/watchlist';
+import { WatchlistItem } from '../interfaces/watchlist';
 import { WatchedEventResponse } from '../interfaces/watched-event';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class EventWatchlistService {
   fetch_watchlist() {
     let url = `${this.domain_name}/student/watchlist`;
 
-    return <Observable<Watchlist>>this.http.get(url);
+    return <Observable<{status: string; message: string; watchlist: WatchlistItem[]}>>this.http.get(url);
   }
 
   fetch_watched_event(event_name: string) {

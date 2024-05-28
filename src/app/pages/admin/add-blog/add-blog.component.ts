@@ -6,7 +6,7 @@ import { BlogService } from 'src/app/services/blog.service';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 
 @Component({

@@ -1,0 +1,69 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && admin" class="relative max-w-[750px] m-auto">
+        <app-password-confirmation-modal (canceled)="cancel_confirmation('delete')" (confirmed)="confirm_delete()" *ngIf="delete_confirmation"></app-password-confirmation-modal>
+        <div class="flex flex-wrap justify-between gap-4 items-center">
+            <h3>{{admin.first_name}} {{admin.last_name}}</h3>
+
+            <div class="relative w-40 text-sm shadow-2xl">
+                <div (click)="actions_folded = !actions_folded" class="bg-mainp cursor-pointer py-2 px-4 text-white flex items-center justify-between">
+                    Actions
+                    <span class="inline-block w-2 h-2 border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': actions_folded, 'rotate-[135deg]': !actions_folded}"></span>
+                </div>
+                <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
+                    <ul class="w-full border border-mainp">
+                        <li><a [routerLink]="['admin', admin.email, 'permissions']" [relativeTo]="null" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Permissions</a></li>
+                        <li><a [routerLink]="['admin', admin.email, 'edit']" [relativeTo]="null" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Edit</a></li>
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('delete')">Delete</li>    
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <app-report-bar *ngIf="action_in_progress" [message]="action_in_progress" type="progress"></app-report-bar>
+        <app-report-bar *ngIf="action_done" [message]="action_done" type="success"></app-report-bar>
+        <app-report-bar *ngIf="error_in_action" [message]="error_in_action" type="error"></app-report-bar>
+        
+        <div class="bg-white mt-6 p-4">
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">First name:</span><span>{{admin.first_name}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Last name:</span><span>{{admin.last_name}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Email:</span><span>{{admin.email}}</span>
+            </div>
+            <div class="border-b border-mainp flex flex-col lg:flex-row gap-2 justify-between mb-4">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Phone number:</span><span>{{admin.phone_number}}</span>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-2 justify-between">
+                <span class="text-sm text-gray-400 lg:text-base lg:text-black min-w-max">Permissions:</span>
+                <div class="flex items-center justify-evenly gap-4">
+                    <span *ngIf="permissions.length == 0">{{permissions.length}}</span>
+                    <div *ngIf="permissions.length > 0" (click)="permissions_folded = !permissions_folded" class="border border-mainp cursor-pointer flex items-center justify-evenly gap-4 px-2 rounded">
+                        <span>{{permissions.length}}</span>
+                        <span class="inline-block w-2 h-2 border-mainp border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': permissions_folded, 'rotate-[135deg]': !permissions_folded, '-translate-y-[2px]': permissions_folded, 'translate-y-[2px]': !permissions_folded}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full overflow-y-hidden duration-150 ease-linear max-w-full overflow-x-auto" [ngClass]="{'max-h-0': permissions_folded, 'max-h-[10000px]': !permissions_folded}">
+                <table class="text-sm border-collapse border bg-white border-slate-500 w-full mt-4 table-auto">
+                    <thead class="text-mainp">
+                        <tr>
+                            <th class="font-normal tc">S/N</th>
+                            <th class="font-normal tc">Permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let permission of permissions; index as i">
+                            <td class="tc w-[9%]">{{i + 1}}</td>
+                            <td class="tc">{{permission.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

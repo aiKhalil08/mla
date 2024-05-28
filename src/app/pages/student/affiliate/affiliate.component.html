@@ -99,14 +99,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let record of payout_history; index as i">
+                                            <tr *ngFor="let payout of payout_history; index as i">
                                                 <td class="tc p-2">{{i + 1}}.</td>
-                                                <td class="tc p-2">{{formatDate(record.date)}}</td>
-                                                <td class="tc p-2">{{formatCurrency(record.amount)}}</td>
-                                                <td class="tc p-2">{{record.type}}</td>
+                                                <td class="tc p-2">{{formatDate(payout.date_added)}}</td>
+                                                <td class="tc p-2">{{formatCurrency(payout.amount)}}</td>
+                                                <td class="tc p-2">{{payout.type}}</td>
                                                 <td class="border-slate-500 border p-2 whitespace-nowrap">
-                                                    <div class="rounded-full h-3 w-3 inline-block mr-2" [ngClass]="{'bg-yellow-400': record.status == 0, 'bg-green-400': record.status == 1, 'bg-red-400': record.status == 2}"></div>
-                                                    {{record.status == 0 ? 'Pending' : record.status == 1 ? 'Completed' : 'Canceled'}}
+                                                    <div class="rounded-full h-3 w-3 inline-block mr-2" [ngClass]="{'bg-yellow-400': payout.status.name == 'Pending', 'bg-green-400': payout.status.name == 'Approved', 'bg-red-400': payout.status.name == 'Rejected'}"></div>
+                                                    {{payout.status.name}}
                                                 </td>
                                             </tr>
                                         </tbody>

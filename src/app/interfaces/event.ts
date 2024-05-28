@@ -1,17 +1,19 @@
+import { Date, Price } from "./course";
+
 interface EventItem {
     name: string,
-    date: string,
+    date: Date,
     image_url: string,
 };
 
 interface Event$ {
     name: string,
     description: string,
-    date: string,
+    date: Date,
     type: 'virtual' | 'physical',
-    price: string,
-    attendees: string,
-    image_url: string,
+    price: Price,
+    attendees: string[],
+    image_urls: string[],
 }
 
 
@@ -21,5 +23,13 @@ interface GetEventResponse {
     event: Event$;
 }
 
+interface Registration {
+    id: number,
+    first_name: string,
+    last_name: string,
+    email: string;
+    phone_number: string;
+}
 
-export { EventItem, Event$, GetEventResponse }
+
+export { EventItem, Event$, GetEventResponse, Registration }

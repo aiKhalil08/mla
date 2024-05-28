@@ -9,7 +9,7 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
 
   // console.log('in guard and type is',auth.isLoggedIn(), auth.user().type)
 
-  if (auth.isLoggedIn('admin')) {
+  if (auth.isLoggedIn()) {
     return true;
   }
   if (auth.exists) {

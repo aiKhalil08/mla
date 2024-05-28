@@ -1,6 +1,6 @@
 <main class="landing" [ngClass]="{'grid': fetching || no_blog, 'place-items-center': fetching || no_blog}">
     <div class="loader" [class.hidden]="!fetching"></div>
-    <div *ngIf="blog">
+    <div *ngIf="!fetching && blog">
         <div class="max-w-[900px] m-auto p-4 mt-4">
             <figure class="">
                 <img src="{{blog.image_url}}" class="object-cover w-full h-full min-h-48 max-h-[500px]" alt="{{blog.heading}}">
@@ -30,6 +30,6 @@
             </div>
         </div>
     </div>
-    <app-empty-content [message]="no_blog" *ngIf="no_blog"></app-empty-content>
+    <app-empty-content [message]="no_blog" *ngIf="!fetching && no_blog"></app-empty-content>
 </main>
 

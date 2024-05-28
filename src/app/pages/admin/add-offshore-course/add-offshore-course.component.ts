@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
+import { add, format } from 'date-fns';
 
 @Component({
     selector: 'app-add-offshore-course',
@@ -36,13 +36,10 @@ export class AddOffshoreCourseComponent implements OnInit {
     this.courseGroup = this.formBuilder.group({
       title: ['', Validators.required],
       overview: ['', Validators.required],
-      objectives: this.formBuilder.array([this.formBuilder.control('')]),
-      attendees: this.formBuilder.array([this.formBuilder.control('')]),
-      prerequisites: this.formBuilder.array([this.formBuilder.control('')]),
-      modules: this.formBuilder.array([this.formBuilder.group({
-        objective: [''],
-        overview: ['']
-      })]),
+      objectives: this.formBuilder.array([]),
+      attendees: this.formBuilder.array([]),
+      prerequisites: this.formBuilder.array([]),
+      modules: this.formBuilder.array([]),
       date: this.formBuilder.group({
         start: [''],
         duration: [''],
@@ -77,10 +74,10 @@ export class AddOffshoreCourseComponent implements OnInit {
 
     this.dateStream$.subscribe(e => {
       if ([startDate, duration, durationUnit].filter((element)=>element.value !== e).every((element) => element.value != '')) {
-        let amount = <DurationInputArg1> duration.value;
-        let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
-        console.log('changing end date')
-        this.endDate.setValue(moment(startDate.value).add(amount, unit).format('yyyy-MM-DD'));
+        let interval: object = {};
+        interval[String(durationUnit.value).toLowerCase()] = Number(duration.value);
+
+        this.endDate.setValue(format(add(startDate.value, interval), 'yyyy-MM-dd'));
       }
     });
   }
@@ -151,21 +148,18 @@ export class AddOffshoreCourseComponent implements OnInit {
     
   }
 
-  addObjective() {
-    this.objectives.push(this.formBuilder.control(''));
+  add(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    if (control == 'module') {
+      form_array.push(this.formBuilder.group({
+        objective: [''],
+        overview: ['']
+      }));
+    } else form_array.push(this.formBuilder.control(''));
   }
-  addAttendee() {
-    this.attendees.push(this.formBuilder.control(''));
-  }
-  addPrerequisite() {
-    this.prerequisites.push(this.formBuilder.control(''));
-  }
-  addModule() {
-    this.modules.push(this.formBuilder.group({
-      objective: [''],
-      overview: ['']
-    }));
-    console.log(this.modules);
+  remove(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
   }
 
   setDurationUnit(unit: string) {

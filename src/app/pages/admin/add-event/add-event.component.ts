@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import moment, { DurationInputArg1, DurationInputArg2 } from 'moment';
 import { fromEvent, map, merge, Observable, filter, debounceTime, distinctUntilChanged } from 'rxjs';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { EventService } from 'src/app/services/event.service';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
+import { add, format } from 'date-fns';
+import { SwiperContainer, register } from 'swiper/element';
 
 @Component({
     selector: 'app-add-event',
     standalone: true,
     templateUrl: './add-event.component.html',
     styleUrls: ['./add-event.component.css'],
-    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, TooltipComponent, ReportBarComponent]
+    imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, TooltipComponent, ReportBarComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AddEventComponent implements OnInit {
   eventGroup!: FormGroup;
@@ -28,10 +30,13 @@ export class AddEventComponent implements OnInit {
   type?: 'virtual' | 'physical';
   tried_to_submit: boolean = false;
   formError: string = null;
+  selected_images: any[] = [];
+  @ViewChild('imagePreview') image_preview: ElementRef;
 
   constructor(private formBuilder: FormBuilder, private eventService: EventService) {}
 
   ngOnInit() {
+    register();
     this.eventGroup = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -68,13 +73,32 @@ export class AddEventComponent implements OnInit {
 
     this.dateStream$.subscribe(e => {
       if ([startDate, duration, durationUnit].filter((element)=>element.value !== e).every((element) => element.value != '')) {
-        let amount = <DurationInputArg1> duration.value;
-        let unit = <DurationInputArg2> String(durationUnit.value).toLowerCase();
-        console.log('changing end date')
-        this.endDate.setValue(moment(startDate.value).add(amount, unit).format('yyyy-MM-DD'));
+        let interval: object = {};
+        interval[String(durationUnit.value).toLowerCase()] = Number(duration.value);
+
+        this.endDate.setValue(format(add(startDate.value, interval), 'yyyy-MM-dd'));
       }
     });
-    console.log('a',this.curFolded);
+
+    setTimeout(() => {
+    
+      // swiper parameters
+      const swiperParams = {
+        slidesPerView: 1,
+        autoplay: {
+          delay: 200,
+        },
+        speed: 800,
+        pagination: {
+          dynamicBullets: true,
+        },
+      };
+    
+      
+      Object.assign(this.image_preview.nativeElement, swiperParams);
+    
+      this.image_preview.nativeElement.initialize();
+    }, 0);
   }
 
   get attendees() {
@@ -120,6 +144,22 @@ export class AddEventComponent implements OnInit {
     return this.eventGroup.invalid;
   }
 
+  add(control: string) {
+    let form_array = <FormArray>this.eventGroup.get(control+'s');
+    if (control == 'popup') {
+      form_array.push(this.formBuilder.group({
+        heading: [''],
+        sub_heading: [''],
+        hashtags: this.formBuilder.array([this])
+      }));
+    } else form_array.push(this.formBuilder.control(''));
+  }
+  
+  remove(control: string) {
+    let form_array = <FormArray>this.eventGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
+  }
+
   get_error_message(control: AbstractControl): string | boolean {
 
     if (!control.errors) return false;
@@ -160,14 +200,17 @@ export class AddEventComponent implements OnInit {
     this.curFolded = !this.curFolded;
   }
 
-  handleImageSelect(event: Event, img: HTMLImageElement) {
-    let file = (<HTMLInputElement>event.target).files[0];
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      img.src = <string>reader.result;
-      this.pictureSelected = true;
-    };
-    if (file) reader.readAsDataURL(file);
+  handleImageSelect(event: Event) {
+    this.selected_images = [];
+    let files = (<HTMLInputElement>event.target).files;
+    Array.from(files).forEach(file => {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        this.selected_images.push(<string>reader.result);
+        this.pictureSelected = true;
+      };
+      if (file) reader.readAsDataURL(file);
+    });
   }
 
   

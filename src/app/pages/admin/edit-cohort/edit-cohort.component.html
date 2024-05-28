@@ -78,7 +78,6 @@
 
         
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
-                <!-- <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Updated' : 'Update'}}</div></button> -->
                 <button [disabled]="!editable || edited || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited, 'bg-mainp/70': tried_to_submit && form_invalid,}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
                     <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
                     <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>

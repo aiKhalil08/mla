@@ -18,9 +18,9 @@
     <div class="relative p-4 flex items-center justify-center"> <!-- our training courses section -->
         <div class="w-full max-w-[900px] relative">
             <ul class="flex flex-col gap-4 sm:flex-row">
-                <li><a [ngClass]="{'border-b-2': course_type == 'certificate-courses', 'border-mainp': course_type == 'certificate-courses'}" routerLink="/course-catalogue/certificate-courses">Certificate Courses</a></li>
-                <li><a [ngClass]="{'border-b-2': course_type == 'certification-courses', 'border-mainp': course_type == 'certification-courses'}" routerLink="/course-catalogue/certification-courses">Certification Courses</a></li>
-                <li><a [ngClass]="{'border-b-2': course_type == 'offshore-courses', 'border-mainp': course_type == 'offshore-courses'}" routerLink="/course-catalogue/offshore-courses">Offshore Courses</a></li>
+                <li><a [ngClass]="{'border-b-2': (course_type_stream | async) == 'certificate-courses', 'border-mainp': (course_type_stream | async) == 'certificate-courses'}" routerLink="/course-catalogue/certificate-courses">Certificate Courses</a></li>
+                <li><a [ngClass]="{'border-b-2': (course_type_stream | async) == 'certification-courses', 'border-mainp': (course_type_stream | async) == 'certification-courses'}" routerLink="/course-catalogue/certification-courses">Certification Courses</a></li>
+                <li><a [ngClass]="{'border-b-2': (course_type_stream | async) == 'offshore-courses', 'border-mainp': (course_type_stream | async) == 'offshore-courses'}" routerLink="/course-catalogue/offshore-courses">Offshore Courses</a></li>
             </ul>
             <h3 class="text-xl mt-4">{{section_header}}</h3>
             <router-outlet></router-outlet>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { Request$ } from 'src/app/interfaces/request';
 import { RequestService } from 'src/app/services/request.service';
 
@@ -20,7 +20,7 @@ export class RequestComponent{
   loaded: boolean = false;
 
   date(date: string) {
-    return moment(date).format('D MMMM, Y');
+    return format(date, 'dd MMMM, yyyy');
   }
 
   constructor (private requestService: RequestService, private route: ActivatedRoute) {}

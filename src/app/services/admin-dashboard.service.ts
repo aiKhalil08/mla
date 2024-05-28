@@ -14,10 +14,7 @@ export class AdminDashboardService {
     let url = `${this.domain_name}/admin-dashboard`;
     return <Observable<AdminDashboard>>this.http.get(url, {
       withCredentials: true,
-      headers: new HttpHeaders({
-        // 'Origin': 'http://localhost:4200',
-        // 'somerandomheader': 'something'
-      }),
+      headers: new HttpHeaders(),
     });
   }
 }

@@ -18,7 +18,7 @@ export class CartButtonComponent {
   @Input() type: string = 'rounded';
 
   @HostListener('click', ['$event']) cart(event) {  
-    if (!this.authService.isLoggedIn('student')) document.location.href = 'login';
+    if (!(this.authService.isLoggedIn() && this.authService.user().hasRole('student'))) document.location.href = 'login';
     if (this.carted || this.processing) return false;
     this.processing = true;
 

@@ -7,7 +7,7 @@
             <div (click)="editable = true" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Edit</div>
         </div>
         <form #form action="" class="mt-6 flex flex-col gap-y-6  max-w-[500px]" [formGroup]="profileGroup" (ngSubmit)="onSubmit(form)" enctype="multipart/form-data">
-            <div *ngIf="formError">{{formError}}</div>
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
             <div class="flex gap-x-4 w-full items-center">
                 <input [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[150px] h-[150px] text-sm border rounded-full overflow-hidden border-slate-200 bg-white">

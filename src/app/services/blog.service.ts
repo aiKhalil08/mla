@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BlogItem, Blog, BlogPost, GetBlogPostResponse, GetBlogResponse } from '../interfaces/blog';
-import PostResponse from '../interfaces/post-response';
+import PostResponse from '../interfaces/base-response';
 
 @Injectable({
   providedIn: 'root'

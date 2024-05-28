@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import PostResponse from '../interfaces/post-response';
+import PostResponse from '../interfaces/base-response';
 import { SaleRecord, Sale } from '../interfaces/sales';
 import { Fulfillment, FulfillmentItem } from '../interfaces/fulfillment';
 

@@ -96,7 +96,7 @@
             </div>
             <div class="flex flex-col gap-y-2">
                 <label for="event-image" (click)="editable || false" class="text-mainp optional">Event Image</label>
-                <input [readonly]='!editable' [readonly]="!editable" #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="course-image" class="hidden" formControlName="image">
+                <input [readonly]='!editable' [readonly]="!editable" multiple #imagePicker (change)="handleImageSelect($event)" type="file" name="image[]" accept="image/*" id="course-image" class="hidden" formControlName="image">
                 <div (click)="editable && imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
                     <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
                         <div class="">
@@ -105,7 +105,12 @@
                             <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
                         </div>
                     </div>
-                    <img id="imagePreview" class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
+                    <swiper-container init="false" class="relative w-full h-full" [class.hidden]="!pictureSelected" #imagePreview>
+                        <swiper-slide *ngFor="let image_blob of selected_images">
+                            
+                            <img class="w-full h-full object-cover" src="{{image_blob}}" alt="">
+                        </swiper-slide>
+                    </swiper-container>
                 </div>
             </div>
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">

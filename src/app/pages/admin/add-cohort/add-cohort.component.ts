@@ -8,7 +8,7 @@ import { CoursesService } from 'src/app/services/courses.service';
 import { CohortService } from 'src/app/services/cohort.service';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 
 @Component({
     selector: 'app-add-offshore-course',

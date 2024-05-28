@@ -1,6 +1,6 @@
-interface Watchlist {
-    watchlist: WatchlistItem[];
-}
+// interface Watchlist {
+//     watchlist: WatchlistItem[];
+// }
 
 type WatchlistItem = {
     name: string;
@@ -8,4 +8,4 @@ type WatchlistItem = {
     image_url?: string;
 }
 
-export {Watchlist, WatchlistItem};
+export { WatchlistItem };

@@ -3,7 +3,7 @@ import { SaleService } from 'src/app/services/sale.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { CommonModule } from '@angular/common';
 import { SaleRecord } from 'src/app/interfaces/sales';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 @Component({
     selector: 'app-sales',
@@ -26,12 +26,11 @@ export class SalesComponent implements OnInit{
   ngOnInit(): void {
     this.salesService.get_all().subscribe({
       next: (response) => {
-        // console.log(response)
+        console.log(response)
         this.loaded = true;
+        this.total_sales = Number(response.total_amount);
         if (response.sales.length > 0) {
           this.sales = response.sales;
-          this.sales.map((sale) => sale.price).forEach(price => this.total_sales += Number(price));
-          // console.log(this.total_sales)
         } else this.no_sales = true;
       }
     });
@@ -44,7 +43,7 @@ export class SalesComponent implements OnInit{
 
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    return format(date, 'do MMMM, yyyy');
   }
 
   encryptId(id: number) {

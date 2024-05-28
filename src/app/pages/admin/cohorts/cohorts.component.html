@@ -15,7 +15,7 @@
                     <tbody>
                         <tr *ngFor="let cohort of cohorts">
                             <td class="tc">{{cohort.name}}</td>
-                            <td class="tc">{{cohort.status}}</td>
+                            <td class="tc">{{cohort.status.name}}</td>
                             <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/cohort/{{cohort.name}}"></app-redirect-button></td>
                         </tr>
                     </tbody>

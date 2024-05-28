@@ -1,4 +1,4 @@
-<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching_certificates || no_certificates, 'place-items-center': fetching_certificates || no_certificates}">
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching_certificates || empty, 'place-items-center': fetching_certificates || empty}">
     <div class="loader" [class.hidden]="!fetching_certificates"></div>
     <ng-container *ngIf="certificates">
         <h3>My Certificates</h3>
@@ -30,5 +30,5 @@
                     </table>
                 </div>
     </ng-container>
-    <app-empty-content *ngIf="no_certificates" [message]="no_certificates"></app-empty-content>
+    <app-empty-content *ngIf="empty" [message]="empty"></app-empty-content>
 </main>

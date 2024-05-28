@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import moment from 'moment';
+import { format, getUnixTime } from 'date-fns';
 import AffiliatePortal from 'src/app/interfaces/affiliate-portal';
 import { AffiliateService } from 'src/app/services/affiliate.service';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-affiliate',
@@ -28,15 +27,7 @@ export class AffiliateComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    // console.log(this.affiliateService.get_affiliate());
-
-    // console.log(this.affiliateService.user_is_affiliate());
-
-    // if (this.affiliateService.user_is_affiliate()) {
-      this.load_affiliate_portal();
-    // }
-    
+    this.load_affiliate_portal();
   }
 
 
@@ -81,7 +72,7 @@ export class AffiliateComponent implements OnInit {
   }
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    return format(date, 'do MMMM, yyyy')
   }
 
   formatCurrency(number: string) {

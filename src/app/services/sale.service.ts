@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import PostResponse from '../interfaces/post-response';
+import PostResponse from '../interfaces/base-response';
 import { Sale, SaleRecord } from '../interfaces/sales';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class SaleService {
 
   get_all() {
     let url = `${this.domain_name}/admin/sales`;
-    return <Observable<{sales: SaleRecord[]}>>this.http.get(url);
+    return <Observable<{total_amount: string, sales: SaleRecord[]}>>this.http.get(url);
   }
 
   get(id: number) {

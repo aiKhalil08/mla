@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { TestimonialService } from 'src/app/services/testimonial.service';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 

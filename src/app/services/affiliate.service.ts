@@ -40,20 +40,20 @@ export class AffiliateService {
   }
 
   create_referral_code() {
-    let url = `${this.domain_name}/student/become-affiliate`;
+    let url = `${this.domain_name}/user/become-affiliate`;
 
     return <Observable<{status: string, message?:string, affiliate?: string}>> this.http.get(url);
   }
 
   renew_referral_code() {
-    let url = `${this.domain_name}/student/renew-referral-code`;
+    let url = `${this.domain_name}/user/renew-referral-code`;
 
     return <Observable<{status: string, message?:string, referral_code?: string}>> this.http.get(url);
   }
 
 
   load_affiliate_portal() {
-    let url = `${this.domain_name}/student/load-affiliate-portal`;
+    let url = `${this.domain_name}/user/load-affiliate-portal`;
 
     return <Observable<{status: string, message?:string, affiliate_portal: AffiliatePortal}>> this.http.get(url);
 

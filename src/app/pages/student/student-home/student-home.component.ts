@@ -22,7 +22,7 @@ export class StudentHomeComponent {
   first_sidebar_items: SidebarItem[] = [
     {text: 'Dashboard', location: '/home', image: './assets/svgs/dashboard_icon.svg'},
     {text: 'My Courses', location: '/home/courses', image: './assets/svgs/courses_icon.svg'},
-    {text: 'My Events', location: '/home/events', image: './assets/svgs/events_icon.svg'},
+    // {text: 'My Events', location: '/home/events', image: './assets/svgs/events_icon.svg'},
     {text: 'My Certificates', location: '/home/certificates', image: './assets/images/certificate.png'},
     {text: 'Cart', location: '/home/cart', image: './assets/svgs/cart.svg'},
     {text: 'Profile', location: '/home/profile', image: './assets/svgs/profile.svg'},

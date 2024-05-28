@@ -9,24 +9,21 @@
             <h3>{{cohort.name}}</h3>
 
             <div class="relative w-40 text-sm shadow-2xl">
-                <!-- <div *ngIf="cohort.status == 'Concluded'" class="bg-mainp py-2 px-4 text-white flex items-center justify-center">Concluded</div>
-                <ng-container *ngIf="cohort.status != 'Concluded'"> -->
-                    <div (click)="actions_folded = !actions_folded" class="bg-mainp cursor-pointer py-2 px-4 text-white flex items-center justify-between">
-                        Actions
-                        <span class="inline-block w-2 h-2 border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': actions_folded, 'rotate-[135deg]': !actions_folded}"></span>
-                    </div>
-                    <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
-                        <ul class="w-full border border-mainp">
-                            <li *ngIf="cohort.status == 'Pending' || cohort.status == 'In progress'"><a [routerLink]="['/admin/cohort/populate']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Update Students</a></li>
-                            <li><a [routerLink]="['/admin/cohort/notify-students']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Notify Students</a></li>
-                            <li *ngIf="cohort.status == 'Concluded' || cohort.status == 'Pending' || cohort.status == 'Aborted'"><a [routerLink]="['/admin/cohort/edit']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Edit</a></li>
-                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('start')" *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'">Start</li>
-                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('abort')" *ngIf="cohort.status == 'In progress'">Abort</li>
-                            <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('conclude')" *ngIf="cohort.status == 'In progress'">Conclude</li>
-                            <li *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'" class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('delete')">Delete</li>    
-                        </ul>
-                    </div>
-                <!-- </ng-container> -->
+                <div (click)="actions_folded = !actions_folded" class="bg-mainp cursor-pointer py-2 px-4 text-white flex items-center justify-between">
+                    Actions
+                    <span class="inline-block w-2 h-2 border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': actions_folded, 'rotate-[135deg]': !actions_folded}"></span>
+                </div>
+                <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
+                    <ul class="w-full border border-mainp">
+                        <li *ngIf="cohort.status == 'Pending' || cohort.status == 'In progress'"><a [routerLink]="['/admin/cohort/populate']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Update Students</a></li>
+                        <li><a [routerLink]="['/admin/cohort/notify-students']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Notify Students</a></li>
+                        <li *ngIf="cohort.status == 'Concluded' || cohort.status == 'Pending' || cohort.status == 'Aborted'"><a [routerLink]="['/admin/cohort/edit']" [queryParams]="{'n': cohort.name}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Edit</a></li>
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('start')" *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'">Start</li>
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('abort')" *ngIf="cohort.status == 'In progress'">Abort</li>
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('conclude')" *ngIf="cohort.status == 'In progress'">Conclude</li>
+                        <li *ngIf="cohort.status == 'Pending' || cohort.status == 'Aborted'" class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="show_confirmation_modal('delete')">Delete</li>    
+                    </ul>
+                </div>
             </div>
         </div>
 

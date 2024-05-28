@@ -1,0 +1,47 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4"[ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && quiz" class="relative">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+            <h3>Add Quiz Question</h3>
+        </div>
+
+        <app-report-bar *ngIf="added" message="Question has been added" type="success"></app-report-bar>
+
+        <div class="space-y-6">
+            <div class="text-sm flex flex-wrap gap-x-6 gap-y-4 bg-white shadow p-4">
+                <span>Quiz:</span>
+                <span>{{quiz.title}}</span>
+            </div>
+    
+            <div class="flex gap-4 flex-wrap items-center">
+                <div class="flex flex-col gap-y-2">
+                    <label for="question_type" class="text-mainp required">Question type</label>
+                    <mat-form-field class="max-w-fit">
+                        <mat-label>Select question type</mat-label>
+                        <mat-select id="question_type" name="question_type" [formControl]="question_type_control">
+                          @for (type of question_types; track type) {
+                            <mat-option [value]="type" class="capitalize">{{type}}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="flex flex-col gap-y-2">
+                    <label for="question_type" class="text-mainp optional">Question point(s)</label>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Points</mat-label>
+                        <input matInput placeholder="1" min="1" max="10" type="number" name="points" [formControl]="question_points_control">
+                      </mat-form-field>
+                </div>
+            </div>
+
+            <app-add-multiple-choice-question *ngIf="question_type == 'multiple choice'" [question_points]="question_points"  [quiz_title]="quiz_title"></app-add-multiple-choice-question>
+
+            <app-add-multiple-choice-question *ngIf="question_type == 'true or false'" [question_points]="question_points" [true_or_false]="true" [quiz_title]="quiz_title"></app-add-multiple-choice-question>
+        </div>
+
+
+
+        
+    </div>
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

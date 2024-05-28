@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
 import { EnrollButtonComponent } from "../../partials/buttons/enroll-button/enroll-button.component";
 import { ModuleItemComponent } from "../../partials/module-item/module-item.component";
 import { FaqItemComponent } from "../../partials/faq-item/faq-item.component";
 import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
-import moment from 'moment';
 import { OffshoreCourseListComponent } from 'src/app/partials/offshore-course-list/offshore-course-list.component';
-import { OffshoreCourse, Module, Date, Price } from 'src/app/interfaces/offshore-course';
+import { OffshoreCourse } from 'src/app/interfaces/offshore-course';
 import { OffshoreCourseService } from 'src/app/services/offshore-course.service';
 import { CertificateCourseListComponent } from "../../partials/certificate-course-list/certificate-course-list.component";
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +17,8 @@ import { FaqListComponent } from "../../partials/faq-list/faq-list.component";
 import { ContactUsFormComponent } from "../../partials/contact-us-form/contact-us-form.component";
 import { ContactUsButtonComponent } from "../../partials/contact-us-button/contact-us-button.component";
 import { EmptyContentComponent } from "../../partials/empty-content/empty-content.component";
+import { format } from 'date-fns';
+import { Date, Module, Price } from 'src/app/interfaces/course';
 
 
 
@@ -69,17 +69,15 @@ export class OffshoreCourseComponent {
           return;
         }
         this.course = response.course;
-        if (this.auth.isLoggedIn('student') && this.cart.has('offshore_courses', this.course.title)) this.carted = true;
-        this.modules = <Module[]>JSON.parse(this.course.modules);
-        this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
-        this.objectives = <string[]>JSON.parse(this.course.objectives);
-        this.attendees = <string[]>JSON.parse(this.course.attendees);
-        if (this.course.date != 'null') {
-          this.date = <Date>JSON.parse(this.course.date);
-          // console.log('are you here', this.date, moment(this.date.start).format('MMMM Do YYYY'))
-          // console.log(this.date, this.course.date)
+        if (this.auth.isLoggedIn() && this.auth.user().hasRole('student') && this.cart.has('offshore_courses', this.course.title)) this.carted = true;
+        this.modules = this.course.modules;
+        this.prerequisites = this.course.prerequisites;
+        this.objectives = this.course.objectives;
+        this.attendees = this.course.attendees;
+        if (this.course.date.start) {
+          this.date = this.course.date;
         }
-        this.price = <Price>JSON.parse(this.course.price);
+        this.price = this.course.price;
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.title.toUpperCase()}. My name is ___`;
         // this.setRequestFormGroup();
       }
@@ -87,11 +85,11 @@ export class OffshoreCourseComponent {
   }
 
   get start_date() {
-    return this.date.start ? moment(this.date.start).format('MMMM Do YYYY') : 'Not set';
+    return this.date.start ? format(this.date.start, 'MMMM do yyyy') : 'Not set';
   }
 
   get end_date() {
-    return this.date.end ? moment(this.date.end).format('MMMM Do YYYY') : 'Not set';
+    return this.date.end ? format(this.date.end, 'MMMM do yyyy') : 'Not set';
   }
 
   get duration() {

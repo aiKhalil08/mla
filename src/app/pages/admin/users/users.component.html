@@ -2,10 +2,10 @@
     <div class="loader" [class.hidden]="!fetching"></div>
     <div *ngIf="users">
         <div class="relative flex flex-col gap-y-6">
-            <h3>All Users</h3>
+            <h3>All users</h3>
 
             <div>
-                <input #search_field type="text" placeholder="search student by name or email" name="searchParam" class="placeholder:italic placeholder:text-sm mt-4 w-full p-2 rounded border border-slate-200 outline-none">
+                <input #search_field type="text" placeholder="search user by name or email" name="searchParam" class="placeholder:italic placeholder:text-sm mt-4 w-full p-2 rounded border border-slate-200 outline-none">
             </div>
 
             <div class="max-w-full overflow-auto">
@@ -13,8 +13,9 @@
                     <thead class="text-mainp">
                         <tr>
                             <th class="font-normal tc">S/N</th>
-                            <th class="font-normal tc">Student's name</th>
-                            <th class="font-normal tc">Student's email</th>
+                            <th class="font-normal tc">Name</th>
+                            <th class="font-normal tc">Email</th>
+                            <th class="font-normal tc">Roles</th>
                             <th class="font-normal tc">View</th>
                         </tr>
                     </thead>
@@ -24,6 +25,11 @@
                                 <td class="tc">{{i + 1}}</td>
                                 <td class="tc">{{user.first_name}} {{user.last_name}}</td>
                                 <td class="tc">{{user.email}}</td>
+                                <td class="tc">
+                                    <mat-chip-set aria-label="selection">
+                                        <mat-chip *ngFor="let role of user.roles">{{role == 'super_admin' ? 'admin' : (role == 'student' ? 'user' : role)}}</mat-chip>
+                                      </mat-chip-set>
+                                </td>
                                 <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/user/{{user.email}}"></app-redirect-button></td>
                             </tr>
                         </ng-container>

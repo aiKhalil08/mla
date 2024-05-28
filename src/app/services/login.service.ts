@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import LoginResponse from '../interfaces/login-response';
+import { AuthResponse } from '../interfaces/auth-response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,37 +18,28 @@ export class LoginService {
     return this.httpClient.get(url, );
   }
 
-  admin_login(form: FormData) {
-    let url = `${this.domain_name}/login/admin`;
+  login_one(form: FormData) {
+    let url = `${this.domain_name}/login1`;
     return this.csrfRequest().pipe(
       map((res) => {
-        return this.httpClient.post<LoginResponse>(url, form,);
+        return <Observable<AuthResponse>>this.httpClient.post(url, form,);
       })
     );
   }
 
-  login_one(form: FormData, type: string) {
-    let url = `${this.domain_name}/login1/${type}`;
-    return this.csrfRequest().pipe(
-      map((res) => {
-        return <Observable<{status: string, message: string}>>this.httpClient.post(url, form,);
-      })
-    );
-  }
-
-  login_two(form: FormData, type: string) {
-    let url = `${this.domain_name}/login2/${type}`;
+  login_two(form: FormData) {
+    let url = `${this.domain_name}/login2`;
     return <Observable<LoginResponse>>this.httpClient.post(url, form,);
   }
 
-  resend_otp(type: string, email: string) {
-    let url = `${this.domain_name}/login/resend-otp/${type}/${email}`;
+  resend_otp(email: string) {
+    let url = `${this.domain_name}/login/resend-otp/${email}`;
     return <Observable<LoginResponse>>this.httpClient.post(url, null);
   }
 
 
-  send_password_reset_link(form: FormData, type: string) {
-    let url = `${this.domain_name}/send_password_reset_link/${type}`;
+  send_password_reset_link(form: FormData) {
+    let url = `${this.domain_name}/send_password_reset_link`;
     return this.csrfRequest().pipe(
       map((res) => {
         return <Observable<{status: string, message: string}>>this.httpClient.post(url, form,);
@@ -55,11 +47,10 @@ export class LoginService {
     );
   }
 
-  validate_link(email: string, token: string, type: string) {
+  validate_link(email: string, token: string) {
     let form = new FormData;
     form.append('email', email);
     form.append('token', token);
-    form.append('type', type);
     let url = `${this.domain_name}/validate_link`;
     return this.csrfRequest().pipe(
       map((res) => {
@@ -68,9 +59,8 @@ export class LoginService {
     );
   }
 
-  reset_password(form: FormData, email: string, type: string) {
+  reset_password(form: FormData, email: string) {
     form.append('email', email);
-    form.append('type', type);
 
     let url = `${this.domain_name}/reset_password`;
     return <Observable<LoginResponse>>this.httpClient.post(url, form);

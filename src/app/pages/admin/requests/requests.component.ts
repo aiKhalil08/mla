@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { Request$, RequestItem } from 'src/app/interfaces/request';
 import { RequestService } from 'src/app/services/request.service';
 
@@ -29,7 +29,7 @@ export class RequestsComponent implements OnInit {
   }
 
   date(date: string) {
-    return moment(date).format('D MMMM, Y');
+    return format(date, 'dd MMMM, yyyy');
   }
 
   substring(message: string) {

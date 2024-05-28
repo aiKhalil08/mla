@@ -1,0 +1,44 @@
+#heading, #sub-heading, #hashtags {
+    transform: translateY(1000%);
+    opacity: 0;
+    animation: slide-in-out linear;
+}
+
+#button {
+    opacity: 0;
+    pointer-events: none;
+    animation: fade-in-out linear;
+}
+
+#heading {animation-duration: 13s;}
+#sub-heading {animation-delay: 1s; animation-duration: 11s;}
+#hashtags {animation-delay: 2s; animation-duration: 9s;}
+#button {animation-delay: 3s; animation-duration: 7s;}
+
+@keyframes slide-in-out {
+    0% {
+        transform: translateY(1000%);
+        opacity: 0;
+    }
+    10%,90% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(1000%);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-out {
+    0% {
+        opacity: 0;
+    }
+    20%,80% {
+        pointer-events: all;
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

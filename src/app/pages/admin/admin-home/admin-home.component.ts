@@ -6,6 +6,10 @@ import { UserInfoBoxComponent } from "../../../partials/user-info-box/user-info-
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LogoutModalComponent } from "../../../partials/logout-modal/logout-modal.component";
+import { JWTService } from 'src/app/services/jwt.service';
+import { AdminService } from 'src/app/services/admin.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { SidebarItems } from './sidebar-links';
 
 @Component({
     selector: 'app-admin-layout',
@@ -18,23 +22,25 @@ export class AdminHomeComponent {
   expanded: boolean = false;
   menu_control!: HTMLImageElement;
   logout_confirmation: boolean = false;
-  sidebar_items: SidebarItem[] = [
+  all_sidebar_items: SidebarItem[] = SidebarItems;
+
+  authorized_sidebar_items: SidebarItem[] = [
     {text: 'Dashboard', location: '/admin', image: './assets/svgs/dashboard_icon.svg'},
-    {text: 'Courses', location: '/admin/courses', image: './assets/svgs/courses_icon.svg'},
-    {text: 'Events', location: '/admin/events', image: './assets/svgs/events_icon.svg'},
-    {text: 'Resources', location: '/admin/resources', image: './assets/svgs/resources_icon.svg'},
-    {text: 'Requests', location: '/admin/requests', image: './assets/svgs/request.svg'},
-    {text: 'Users', location: '/admin/users', image: './assets/svgs/users_icon.svg'},
-    {text: 'Cohorts', location: '/admin/cohorts', image: './assets/svgs/cohort.svg'},
-    {text: 'Certificates', location: '/admin/certificates', image: './assets/images/certificate.png'},
-    {text: 'Sales', location: '/admin/sales', image: './assets/svgs/sales.svg'},
-    {text: 'Affiliates', location: '/admin/affiliates', image: './assets/svgs/affiliates_icon.svg'},
-    {text: 'Fulfillments', location: '/admin/fulfillments', image: './assets/svgs/fulfillment.svg'},
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService, private admin: AdminService, private t: JWTService) {}
 
   ngOnInit() {
+
+    // console.log(this.t.payload())
+
+    if (this.auth.user().hasRole('super_admin')) this.authorized_sidebar_items = this.all_sidebar_items
+    else {
+      this.all_sidebar_items.forEach(item => {
+        if (item.permission && this.admin.hasPermission(item.permission)) this.authorized_sidebar_items.push(item);
+      });
+    }
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {

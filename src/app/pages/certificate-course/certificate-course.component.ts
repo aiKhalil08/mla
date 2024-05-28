@@ -6,9 +6,8 @@ import { EnrollButtonComponent } from "../../partials/buttons/enroll-button/enro
 import { ModuleItemComponent } from "../../partials/module-item/module-item.component";
 import { FaqItemComponent } from "../../partials/faq-item/faq-item.component";
 import { ExpandItemLinkComponent } from "../../partials/links/expand-item-link/expand-item-link.component";
-import moment from 'moment';
 import { CertificateCourseListComponent } from 'src/app/partials/certificate-course-list/certificate-course-list.component';
-import { CertificateCourse, Module, Date, Price } from 'src/app/interfaces/certificate-course';
+import { CertificateCourse } from 'src/app/interfaces/certificate-course';
 import { CertificateCourseService } from 'src/app/services/certificate-course.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CartButtonComponent } from "../../partials/cart-button/cart-button.component";
@@ -18,6 +17,7 @@ import { FaqListComponent } from "../../partials/faq-list/faq-list.component";
 import { ContactUsFormComponent } from "../../partials/contact-us-form/contact-us-form.component";
 import { ContactUsButtonComponent } from "../../partials/contact-us-button/contact-us-button.component";
 import { EmptyContentComponent } from "../../partials/empty-content/empty-content.component";
+import { Date, Module, Price } from 'src/app/interfaces/course';
 
 
 
@@ -29,7 +29,6 @@ import { EmptyContentComponent } from "../../partials/empty-content/empty-conten
     imports: [CommonModule, EnrollButtonComponent, ModuleItemComponent, RouterLink, FaqItemComponent, ExpandItemLinkComponent, CertificateCourseListComponent, ReactiveFormsModule, CartButtonComponent, FaqListComponent, ContactUsFormComponent, ContactUsButtonComponent, EmptyContentComponent]
 })
 export class CertificateCourseComponent {
-  // private course_name!: any;
   public course: CertificateCourse | null = null;
   fetching_course: boolean = false;
   modules: Module[];
@@ -69,12 +68,12 @@ export class CertificateCourseComponent {
           return;
         }
         this.course = response.course;
-        if (this.auth.isLoggedIn('student') && this.cart.has('certificate_courses', this.course.code)) this.carted = true;
-        this.modules = <Module[]>JSON.parse(this.course.modules);
-        this.prerequisites = <string[]>JSON.parse(this.course.prerequisites);
-        this.objectives = <string[]>JSON.parse(this.course.objectives);
-        this.attendees = <string[]>JSON.parse(this.course.attendees);
-        this.price = <Price>JSON.parse(this.course.price);
+        if (this.auth.isLoggedIn() && this.auth.user().hasRole('student') && this.cart.has('certificate_courses', this.course.code)) this.carted = true;
+        this.modules = this.course.modules;
+        this.prerequisites = this.course.prerequisites;
+        this.objectives = this.course.objectives;
+        this.attendees = this.course.attendees;
+        this.price = this.course.price;
         this.message_text = `Hello. I am chatting you regarding ${this.course.title.toUpperCase()} - ${this.course.code.toUpperCase()}. My name is ___`;
         // this.setRequestFormGroup();
       }

@@ -1,0 +1,12 @@
+<div class="bg-black/15 fixed top-0 left-0 w-full h-full z-50 grid place-items-center">
+    <div class="w-[300px] max-w-[90%] max-h-[250px] bg-slate-100 p-4 justify-evenly shadow-2xl space-y-4 text-sm select-none rounded-md"> <!-- logout modal -->
+        <div>Please choose the role you would like to continue as:</div>
+        <div class="space-y-3">
+            <label for="{{role}}" *ngFor="let role of roles" class="flex items-center ring-1 rounded ring-mainp capitalize cursor-pointer p-2 gap-x-2"><input type="radio" name="role" [value]="role" id="{{role}}" [formControl]="role_control"> {{role}} <span *ngIf="role == present" class="text-sm text-gray-400">(current)</span></label>
+        </div>
+        <div class="flex justify-end gap-x-4">
+            <div class="border border-slate-400 cursor-pointer p-2 rounded" (click)="cancel()">Cancel</div> 
+            <div class="bg-mainp text-white cursor-pointer border border-transparent p-2 rounded" (click)="choose()">Continue</div>
+        </div>
+        </div>
+</div>

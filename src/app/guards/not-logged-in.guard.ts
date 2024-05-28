@@ -6,7 +6,7 @@ export const notLoggedInGuard: CanActivateFn = (route, state) => {
   let auth = inject(AuthService);
 
 
-  if (!auth.isLoggedIn('s')) {
+  if (!auth.isLoggedIn()) {
     return true;
   }
 

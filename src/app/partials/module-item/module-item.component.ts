@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Module } from 'src/app/interfaces/certificate-course';
+import { Module } from 'src/app/interfaces/course';
 
 @Component({
   selector: 'app-module-item',

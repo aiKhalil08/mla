@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import moment from 'moment';
 import { FulfillmentItem } from 'src/app/interfaces/fulfillment';
 import { FulfillmentService } from 'src/app/services/fulfillment.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
+import { format } from 'date-fns';
 
 @Component({
     selector: 'app-fulfillments',
@@ -45,7 +45,8 @@ export class FulfillmentsComponent implements OnInit {
 
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    if (!date) return 'Invalid date';
+    return format(date, 'do MMMM, yyyy');
   }
 
   encryptId(id: number) {

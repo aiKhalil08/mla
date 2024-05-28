@@ -1,0 +1,83 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4">
+    <h3>Notify Students</h3>
+
+
+    <app-report-bar *ngIf="action_in_progress" [message]="action_in_progress" type="progress"></app-report-bar>
+    <app-report-bar *ngIf="action_done" [message]="action_done" type="success"></app-report-bar>
+    <app-report-bar *ngIf="error_in_action" [message]="error_in_action" type="error"></app-report-bar>
+
+    <form class="mt-6 flex flex-col gap-y-6 max-w-[600px]" action="" #form [formGroup]="notisGroup" (ngSubmit)="!submitted && onSubmit(form)">
+        
+        <div class="flex flex-col gap-y-2">
+            <div for="subject" class="text-mainp text-[15px]">Quiz Title</div>
+            <div>{{quiz_title}}</div>
+            <!-- <input type="text" name="subject" id="subject" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="subject"> -->
+        </div>
+
+        <div class="shadow bg-white">
+            <header class="p-4">
+                <mat-slide-toggle [formControl]="notify_all_users_control">Notify all assigned users</mat-slide-toggle>
+            </header>
+            <hr class="h-[1px] bg-black">
+            <div class="max-h-0 opacity-100 transition-[max-height] duration-200 ease-linear overflow-hidden" [ngClass]="{'max-h-[300px]': !notify_all_users_control.value, 'opacity-0': !notify_all_users_control.value}">
+                <div class="p-4 grid place-items-center">
+                    <div class="list-loader small" *ngIf="fetching_assigned_students"></div>
+                    <div *ngIf="!fetching_assigned_students && fetch_error" class="text-red-500">{{fetch_error}}</div>
+                    <div *ngIf="!fetching_assigned_students && assigned_students_fetched" class="flex flex-col w-full">
+                        <input autocomplete="off" id="search_param" placeholder="search by name, email or company..." type="text" class="placeholder:italic text-sm p-2 cursor-pointer rounded border border-slate-200 outline-none" [formControl]="search_param_control">
+                        <div class="shadow">
+                            @for (student of assigned_students; track $index) {
+                                <div *ngIf="search_param && checkMatch(student) && !student.selected" (click)="addToRecepients(student)" class="p-2 cursor-pointer text-sm hover:bg-slate-200">
+                                    {{student.first_name}} {{student.last_name}} <span class="text-gray-400">({{student.email}})</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-y-2" *ngIf="recepients.length > 0">
+            <div class="text-mainp text-[15px]">Recepients</div>
+            <div>
+                <mat-chip-set aria-label="Fish selection">
+                    <mat-chip *ngFor="let recepient of recepients">
+                        <div class="flex gap-x-2 items-center">
+                            <span>{{recepient.first_name}} {{recepient.last_name}}</span>
+                            <span (click)="removeFromRecepients(recepient)" class="cursor-pointer"><img src="./assets/svgs/wrong_option.svg" class="w-4 h-4" alt=""></span>
+                        </div>
+                    </mat-chip>
+                  </mat-chip-set>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+            <label for="subject" class="text-mainp text-[15px]">Email Subject</label>
+            <input type="text" name="subject" id="subject" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="subject" placeholder="email subject*">
+        </div>
+
+        <div class="flex flex-col gap-y-2 w-full">
+            <label for="body" class="text-mainp text-[15px]">Email Body</label>
+
+            <ckeditor class="text-sm" (ready)="editorReady($event)" [editor]="editor" formControlName="body" [config]="{placeholder: 'email body*'}"></ckeditor>
+
+            <div class="mt-2">
+                <div class="text-sm text-gray-400">Available attributes (click to insert):</div>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span *ngFor="let attribute of available_attributes" (click)="insert(attribute)" class="bg-white p-2 border border-black text-xs rounded-xl cursor-pointer hover:bg-white/10">
+                        {{attribute}}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+            <button [disabled]="!can_submit || sent" type="submit" [ngClass]="{'bg-mainp': !sent, 'bg-mainp/70': !can_submit, 'bg-white': sent, 'text-white': !sent, 'text-mainp': sent}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{sent ? 'Sent' : 'Send'}}</div></button>
+            <app-redirect-button theme="white" text="{{!sent ? 'Cancel' : 'Back'}}" location='{{location}}'></app-redirect-button>
+        </div>
+    </form>
+    
+        
+    <!-- <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content> -->
+</main>

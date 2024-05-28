@@ -1,7 +1,7 @@
-<div [ngClass]="{'grid': !courses || courses.length == 0, 'place-items-center': !courses || courses.length == 0, 'h-[500px]': !courses || courses.length == 0}">
-    <div class="loader" [class.hidden]="courses"></div>
-    <div *ngIf="courses && courses.length > 0" id="container" class="max-w-max mx-auto flex flex-col gap-4 md:gap-8 md:grid grid-cols-[repeat(2,_minmax(300px,_1fr))] auto-rows-[minmax(max-content,_1fr)]">
+<div [ngClass]="{'grid': fetching || empty, 'place-items-center': fetching || empty, 'h-[500px]': fetching || empty}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="courses" id="container" class="max-w-max mx-auto flex flex-col gap-4 md:gap-8 md:grid grid-cols-[repeat(2,_minmax(300px,_1fr))] auto-rows-[minmax(max-content,_1fr)]">
         <app-course-item *ngFor="let course of courses" [type]="type" [course]="course"></app-course-item>
     </div>
-    <app-empty-content message="{{type == 'carted' ? 'Your cart is empty.' : 'You have not enrolled for any course.'}}" *ngIf="courses && courses.length == 0"></app-empty-content>
+    <app-empty-content *ngIf="empty" message="{{empty}}"></app-empty-content>
 </div>

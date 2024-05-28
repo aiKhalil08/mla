@@ -3,15 +3,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { CoursesService } from 'src/app/services/courses.service';
-import { Observable, debounceTime, fromEvent, of } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import PostResponse from 'src/app/interfaces/post-response';
-import { StudentService } from 'src/app/services/student.service';
+import { debounceTime, fromEvent, of } from 'rxjs';
+import PostResponse from 'src/app/interfaces/base-response';
 import { CohortService } from 'src/app/services/cohort.service';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { CertificateService } from 'src/app/services/certificate.service';
 import { ViewCertificateComponent } from 'src/app/partials/view-certificate/view-certificate.component';
+import { CohortItem } from 'src/app/interfaces/cohort';
 
 @Component({
     selector: 'app-certificates',
@@ -33,8 +32,8 @@ export class CertificatesComponent implements OnInit {
 
   fetching_cohorts: boolean = false;
   cohorts_fetched: boolean = false;
-  cohorts: {name: string, status_id: 0 | 1}[] = null;
-  matched_cohorts: { name: string; status_id: 0|1}[] = [];
+  cohorts: CohortItem[] = null;
+  matched_cohorts: CohortItem[] = [];
 
   fetching_affiliate: boolean = false;
   certificate_courses: {code?: string, title: string}[] = null;
@@ -66,7 +65,7 @@ export class CertificatesComponent implements OnInit {
     first_name: string;
     last_name: string;
     email: string;
-    certificate?: string;
+    certificate: {url?: string};
   }[] = null;
 
   editArray: string[] = [];
@@ -78,7 +77,7 @@ export class CertificatesComponent implements OnInit {
     first_name: string;
     last_name: string;
     email: string;
-    certificate?: string;
+    certificate: {url?: string};
   }[][] = [];
   certificate?: string;
   // show_certificate: boolean;
@@ -220,7 +219,7 @@ export class CertificatesComponent implements OnInit {
         this.fetching_cohorts = false;
         this.cohorts_fetched = true;
 
-        this.cohorts = response;
+        this.cohorts = response.cohorts;
 
         setTimeout(() => {
           let searchInputObservable = fromEvent(document.querySelector('#cohort_name'), 'input');
@@ -236,9 +235,8 @@ export class CertificatesComponent implements OnInit {
 
 
   match_cohorts() {
-    // console.log('in match cohorts')
 
-    let source: {name: string, status_id: 0|1}[] = this.cohorts;
+    let source: CohortItem[] = this.cohorts;
 
     if (this.cohort_name.value == '') {
       this.matched_cohorts = []; return;
@@ -326,10 +324,10 @@ export class CertificatesComponent implements OnInit {
         
         this.cohortService.get_students_certificates(this.cohort_name.value).subscribe({
           next: response => {
-            // console.log(response);
             this.editArray = [];
             this.fetching_students = false;
             this.students = response.students;
+            console.log(this.students[0]);
             this.pages_count = Math.ceil(this.students.length / this.PER_PAGE);
             for (let i = 0; i < this.pages_count; i++) {
               let start = i*this.PER_PAGE;
@@ -341,7 +339,7 @@ export class CertificatesComponent implements OnInit {
     } else if (this.certificate_type.value == 'individual_course_certificates') {
       this.courseService.get_enrolled_students(this.course_type.value, this.course_identity.value).subscribe({
         next: response => {
-          console.log(response);
+          // console.log(response);
           this.editArray = [];
           this.fetching_students = false;
           this.students = response.students;

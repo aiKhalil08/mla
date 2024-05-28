@@ -6,12 +6,13 @@ import { RedirectButtonComponent } from "../../../partials/buttons/redirect-butt
 import { CoursesService } from 'src/app/services/courses.service';
 import { Observable, debounceTime, fromEvent, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { StudentService } from 'src/app/services/student.service';
 import { AffiliateService } from 'src/app/services/affiliate.service';
 import { CohortService } from 'src/app/services/cohort.service';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
+import { Cohort, CohortItem } from 'src/app/interfaces/cohort';
 
 @Component({
     selector: 'app-add-sale',
@@ -33,8 +34,8 @@ export class AddSaleComponent implements OnInit {
 
   fetching_cohorts: boolean = false;
   cohorts_fetched: boolean = false;
-  cohorts: {name: string, status_id: 0 | 1}[] = null;
-  matched_cohorts: { name: string; status_id: 0|1}[] = [];
+  cohorts: CohortItem[] = null;
+  matched_cohorts: CohortItem[] = [];
 
   fetching_affiliate: boolean = false;
   certificate_courses: {code?: string, title: string}[] = null;
@@ -48,7 +49,7 @@ export class AddSaleComponent implements OnInit {
     course_type: null,
     course_name: null,
     price: null,
-  }
+  };
   errrorsRectified: number;
   errorneousFields: string[] = [];
   backWithErrors: boolean;
@@ -232,7 +233,7 @@ export class AddSaleComponent implements OnInit {
         this.fetching_cohorts = false;
         this.cohorts_fetched = true;
 
-        this.cohorts = response;
+        this.cohorts = response.cohorts;
 
         setTimeout(() => {
           let searchInputObservable = fromEvent(document.querySelector('#cohort_name'), 'input');
@@ -250,7 +251,7 @@ export class AddSaleComponent implements OnInit {
   match_cohorts() {
     // console.log('in match cohorts')
 
-    let source: {name: string, status_id: 0|1}[] = this.cohorts;
+    let source: CohortItem[] = this.cohorts;
 
     if (this.cohort_name.value == '') {
       this.matched_cohorts = []; return;
@@ -344,6 +345,8 @@ export class AddSaleComponent implements OnInit {
       },
       error: (error) => {
         this.submitted = false;
+        // console.log('oops error');
+        // console.log(error)
         this.handleError(error);
       }
     });

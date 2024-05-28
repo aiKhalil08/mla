@@ -7,7 +7,7 @@ import { ActionButtonComponent } from "../../../partials/buttons/action-button/a
 import { Testimonial } from 'src/app/interfaces/testimonial';
 import { TestimonialService } from 'src/app/services/testimonial.service';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
 

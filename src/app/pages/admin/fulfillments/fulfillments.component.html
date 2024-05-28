@@ -18,7 +18,7 @@
                     <tbody>
                         <tr *ngFor="let item of pending; index as i">
                             <td class="tc">{{i + 1}}</td>
-                            <td class="tc">{{item.student}}</td>
+                            <td class="tc">{{item.affiliate ? item.affiliate.full_name : 'Deleted'}}</td>
                             <td class="tc">{{formatCurrency(item.amount)}}</td>
                             <td class="tc">{{item.type}}</td>
                             <td class="tc">{{formatDate(item.date_added)}}</td>
@@ -45,11 +45,11 @@
                     <tbody>
                         <tr *ngFor="let item of history; index as i">
                             <td class="tc">{{i + 1}}</td>
-                            <td class="tc">{{item.student}}</td>
+                            <td class="tc">{{item.affiliate ? item.affiliate.full_name : 'Deleted'}}</td>
                             <td class="tc">{{formatCurrency(item.amount)}}</td>
                             <td class="tc">{{item.type}}</td>
                             <td class="tc">{{formatDate(item.date_fulfilled)}}</td>
-                            <td class="tc">{{item.status == 1 ? 'Completed' : 'Canceled'}}</td>
+                            <td class="tc">{{item.status.name}}</td>
                         </tr>
                     </tbody>
                 </table>

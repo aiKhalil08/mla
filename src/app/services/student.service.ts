@@ -2,35 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import LoginResponse from '../interfaces/login-response';
-import StudentProfile from '../interfaces/student-profile';
+import StudentProfile from '../interfaces/user-profile';
 import { Courses, FetchCourseResponse } from '../interfaces/courses';
+import BaseResponse from '../interfaces/base-response';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-
+  
   constructor(@Inject('DOMAIN_NAME') private domain_name, private httpClient: HttpClient) { }
-
+  
   csrfRequest() {
     let url = `http://localhost:8000/sanctum/csrf-cookie`;
     // let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
     return this.httpClient.get(url, );
   }
-
-  add(form: FormData) {
-    let url = `${this.domain_name}/student`;
-    return this.csrfRequest().pipe(
-      map((res) => {
-        return <Observable<{status: string, message: string}>>this.httpClient.post(url, form, {});
-      })
-    );
-  }
-
-  // add(form: FormData) {
-  //   let url = `${this.domain_name}/student`;
-  //   return <Observable<{status: string, message: string}>>this.httpClient.post(url, form, {});
-  // }
+  
 
   send_otp(email: string) {
     let data = new FormData();
@@ -44,25 +33,12 @@ export class StudentService {
     return <Observable<LoginResponse>>this.httpClient.post(url, null);
   }
 
-  confirm_email(form: FormData,) {
-    let url = `${this.domain_name}/student/confirm-email`;
-    return <Observable<LoginResponse>>this.httpClient.post(url, form); 
+
+  get_student(email: string) {
+    let url = `${this.domain_name}/user/student/${email}`;
+    return <Observable<{status: string; message?: string; student?: StudentProfile}>>this.httpClient.get(url); 
   }
 
-  get_profile() {
-    let url = `${this.domain_name}/student/profile`;
-    return <Observable<{profile: StudentProfile}>>this.httpClient.get(url); 
-  }
-
-  get_user(email: string) {
-    let url = `${this.domain_name}/admin/user/${email}`;
-    return <Observable<{status: string; message?: string; user?: StudentProfile}>>this.httpClient.get(url); 
-  }
-
-  update_profile(form: FormData) {
-    let url = `${this.domain_name}/student/profile`;
-    return <Observable<LoginResponse>>this.httpClient.post(url, form); 
-  }
 
   fetch_student_name(email: string) {
     let url = `${this.domain_name}/admin/fetch_student_name/${email}`;
@@ -70,14 +46,14 @@ export class StudentService {
   }
 
   get_all() {
-    let url = `${this.domain_name}/admin/users`;
+    let url = `${this.domain_name}/admin/students`;
     return <Observable<{students: {first_name: string; last_name: string; email: string}[]}>>this.httpClient.get(url);
   }
 
   fetch_enrolled_courses() {
     let url = `${this.domain_name}/student/courses`;
 
-    return <Observable<{courses: Courses}>>this.httpClient.get(url);
+    return <Observable<{status: string, message: string, courses: Courses}>>this.httpClient.get(url);
   }
 
   fetch_enrolled_course(course: {identity: string, category?: string, enrollment_type: 'cohort' | 'individual'}) {

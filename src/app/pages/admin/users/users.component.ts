@@ -1,35 +1,36 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StudentService } from 'src/app/services/student.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { Observable, debounceTime, fromEvent } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
-    selector: 'app-users',
+    selector: 'app-students',
     standalone: true,
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.css'],
-    imports: [CommonModule, RedirectButtonComponent]
+    imports: [CommonModule, RedirectButtonComponent, MatChipsModule]
 })
 export class UsersComponent implements OnInit {
 
-  users: {first_name: string; last_name: string; email: string}[];
+  users: {first_name: string; last_name: string; email: string, roles: string[]}[];
   fetching: boolean = false;
   search_input_stream: Observable<Event>;
   search_param: string = null;
 
   @ViewChild('search_field', {static: false}) search_field: ElementRef;
 
-  constructor(private studentsService: StudentService, private changeDetector: ChangeDetectorRef) {}
+  constructor(private userService: UserService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
 
-    this.fetch_users();
+    this.fetch_students();
   }
 
-  fetch_users() {
+  fetch_students() {
     this.fetching = true;
-    this.studentsService.get_all().subscribe({
+    this.userService.getAll().subscribe({
       next: (response) => {
         this.fetching = false;
         this.handleResponse(response)
@@ -38,13 +39,14 @@ export class UsersComponent implements OnInit {
   }
 
   handleResponse(response: {
-    students: {
+    users: {
         first_name: string;
         last_name: string;
         email: string;
+        roles: string[]
     }[];
   }) {
-      this.users = response.students;
+      this.users = response.users;
 
       this.changeDetector.detectChanges();
 
@@ -61,6 +63,7 @@ export class UsersComponent implements OnInit {
     if ((String(student.first_name).toLowerCase().search(this.search_param.toLowerCase()) >= 0) ||
     (String(student.last_name).toLowerCase().search(this.search_param.toLowerCase()) >= 0) ||
     (String(student.email).toLowerCase().search(this.search_param.toLowerCase()) >= 0)) return true;
+    
       return false;
   }
 

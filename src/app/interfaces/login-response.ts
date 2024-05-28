@@ -6,4 +6,6 @@ export default interface LoginResponse {
     cart?: string;
     watchlist?: string;
     affiliate?: string;
+    is_super_admin?: boolean;
+    is_external_user?: boolean;
 }

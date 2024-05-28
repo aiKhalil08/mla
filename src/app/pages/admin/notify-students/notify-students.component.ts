@@ -94,9 +94,9 @@ export class NotifyStudentsComponent implements OnInit {
   async copy(string: string) {
     // try {
       await navigator.clipboard.writeText(string);
-      // document.querySelector('#copy_button').innerHTML = 'Copied';
+    //   document.querySelector('#copy_button').innerHTML = 'Copied';
     // } catch (e) {
-      // document.querySelector('#copy_button').innerHTML = 'Couldn\'t copy';
+    //   document.querySelector('#copy_button').innerHTML = 'Couldn\'t copy';
     // }
   }
 }

@@ -6,7 +6,7 @@ export const studentNotLoggedInGuard: CanActivateFn = (route, state) => {
   let auth = inject(AuthService);
 
 
-  if (auth.isLoggedIn('student')) {
+  if (auth.isLoggedIn()) {
     document.location.href = 'home';
     return false;
   }

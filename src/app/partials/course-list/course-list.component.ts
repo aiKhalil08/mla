@@ -20,6 +20,8 @@ export class CourseListComponent implements OnInit {
   @Input() type: 'carted' | 'enrolled';
 
   courses: CourseItem[];
+  empty: string = null;
+  fetching: boolean;
 
   constructor(private cartService: CartService, private studentService: StudentService) {}
 
@@ -31,9 +33,10 @@ export class CourseListComponent implements OnInit {
   }
 
   fetch_cart() {
+    this.fetching = true;
     this.cartService.fetch_cart().subscribe({
       next: (response) => {
-
+        this.fetching = false;
         this.handleResponse(response)
       }
     });
@@ -42,7 +45,6 @@ export class CourseListComponent implements OnInit {
   fetch_enrolled_courses() {
     this.studentService.fetch_enrolled_courses().subscribe({
       next: (response) => {
-        // console.log(response)
 
         this.handleResponse(response)
       }
@@ -50,11 +52,14 @@ export class CourseListComponent implements OnInit {
   }
 
 
-  handleResponse(response: {courses: Courses}) {
-    // console.log(response.courses)
+  handleResponse(response: {status: string, message: string, courses: Courses}) {
+    if (response.status == 'empty') {
+      this.empty = response.message;
+      return;
+    }
+
     this.courses = Object.entries(response.courses).flatMap(([category, courses]) => {
       return courses.map(course => ({...course, category}))
     });
-    // console.log(this.courses)
   }
 }

@@ -1,1 +1,0 @@
-export default interface PostResponse {status: string, message?: string}

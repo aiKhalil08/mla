@@ -28,6 +28,6 @@ export class CoursesService {
 
   get_enrolled_students(type: string, course_identity: string) {
     let url = `${this.domain_name}/${type.toLowerCase().replace(' ', '_')}/enrolled-students/${course_identity}`;
-    return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, has_certificate: 0 | 1}[]}>>this.http.get(url);
+    return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, certificate: {url?: string}}[]}>>this.http.get(url);
   }
 }

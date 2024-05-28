@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private token: JWTService, private cart: CartService, private watchlist: EventWatchlistService, private xsrf: XSRFService, private affiliate: AffiliateService) { }
 
-  isLoggedIn(type: string) {
-    return this.token.exists() && !this.token.isExpired() && this.token.getUserType() == type;
+  isLoggedIn() {
+    return this.token.exists() && !this.token.isExpired();// && this.token.getUserRoles().includes(role);
   }
 
   get exists () {
@@ -23,9 +23,14 @@ export class AuthService {
     return this.token.isExpired();
   }
 
+  hasRole(role: string) {
+    return this.token.getUserRoles().includes(role);
+  }
+
   user() {
     return this.token.exists() ? {
-      type: this.token.getUserType(),
+      roles: this.token.getUserRoles(),
+      hasRole: (role: string) => this.token.getUserRoles().includes(role),
       first_name: this.token.getUserFirstName(),
       last_name: this.token.getUserLastName(),
       email: this.token.getUserEmail(),

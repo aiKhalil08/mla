@@ -21,6 +21,6 @@ export class OffshoreCourseItemComponent {
   constructor(private auth: AuthService, private cart: CartService) {}
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn('student') && this.cart.has('offshore_courses', this.course.title)) this.carted = true;
+    if (this.auth.isLoggedIn() && this.auth.user().hasRole('student') && this.cart.has('offshore_courses', this.course.title)) this.carted = true;
   }
 }

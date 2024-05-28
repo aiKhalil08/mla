@@ -16,6 +16,18 @@
             <textarea type="text" rows="6" name="description" id="event-description" class="p-2 outline-none border border-slate-200 rounded resize-none" formControlName="description"></textarea>
             <div class="text-red-500 text-sm" *ngIf="tried_to_submit && description.invalid">{{get_error_message(description)}}</div>
         </div>
+        <div class="flex flex-col gap-y-2 w-full relative" formArrayName="attendees">
+            <img src="./assets/svgs/plus.svg" (click)="addAttendee()"
+                class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+            <label for="event-attendees" class="text-mainp optional">Pop up Info</label>
+            <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
+                <label for="start" class="text-gray text-sm min-w-[100px]">Start Date: </label>
+                <input type="text" name="popups[][heading]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+            </div>
+            <!-- <div class="flex gap-x-2 items-center" *ngFor="let objective of attendees.controls; index as i">
+                <span class="min-w-6">{{i+1}}.</span><input type="text" name="attendees[]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow" formControlName="{{i}}">
+            </div> -->
+        </div>
         <div class="flex flex-col gap-y-2" formGroupName="date">
             <label for="start-date" class="text-mainp required">Event Date</label>
             <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
@@ -85,7 +97,7 @@
         </div>
         <div class="flex flex-col gap-y-2">
             <label for="event-image" class="text-mainp optional">Event Image</label>
-            <input #imagePicker (change)="handleImageSelect($event, imagePreview)" type="file" name="image" accept="image/*" id="event-image" class="hidden" formControlName="image">
+            <input #imagePicker (change)="handleImageSelect($event)" type="file" multiple name="image[]" accept="image/*" id="event-image" class="hidden" formControlName="image">
             <div (click)="imagePicker.click()" class="cursor-pointer w-[200px] h-[200px] border border-slate-200 rounded bg-white">
                 <div class="flex items-center justify-center h-full" [class.hidden]="pictureSelected">
                     <div class="">
@@ -94,7 +106,12 @@
                         <p class="text-gray-400 m-auto mt-2 text-center">(.png, .jpg)</p>
                     </div>
                 </div>
-                <img class="w-full h-full object-cover" [class.hidden]="!pictureSelected" src="" alt="" #imagePreview>
+                <swiper-container init="false" class="relative w-full h-full" [class.hidden]="!pictureSelected" #imagePreview>
+                    <swiper-slide *ngFor="let image_blob of selected_images">
+                        
+                        <img class="w-full h-full object-cover" src="{{image_blob}}" alt="">
+                    </swiper-slide>
+                </swiper-container>
             </div>
         </div>
         <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">

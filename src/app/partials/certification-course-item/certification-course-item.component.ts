@@ -21,6 +21,6 @@ export class CertificationCourseItemComponent {
   constructor(private auth: AuthService, private cart: CartService) {}
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn('student') && this.cart.has('certification_courses', this.course.code)) this.carted = true;
+    if (this.auth.isLoggedIn() && this.auth.user().hasRole('student') && this.cart.has('certification_courses', this.course.code)) this.carted = true;
   }
 }

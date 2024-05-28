@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Watchlist, WatchlistItem } from 'src/app/interfaces/watchlist';
+import { WatchlistItem } from 'src/app/interfaces/watchlist';
 import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
 import { WatchlistItemComponent } from "../watchlist-item/watchlist-item.component";
 import { EmptyContentComponent } from "../empty-content/empty-content.component";
@@ -13,22 +13,38 @@ import { EmptyContentComponent } from "../empty-content/empty-content.component"
     imports: [CommonModule, WatchlistItemComponent, EmptyContentComponent]
 })
 export class WatchlistComponent {
+
   watchlist: WatchlistItem[];
+  fetching: boolean;
+  empty: string = null;
 
   constructor(private watchlistService: EventWatchlistService) {}
 
   ngOnInit(): void {
-      this.watchlistService.fetch_watchlist().subscribe({
-        next: (response) => {
-  
-          this.handleResponse(response)
-        }
-      });
+      this.fetchWatchlist();
+  }
+
+  fetchWatchlist() {
+    this.fetching = true;
+    this.watchlistService.fetch_watchlist().subscribe({
+      next: (response) => {
+        this.fetching = false;
+        this.handleResponse(response)
+      }
+    });
   }
 
 
-  handleResponse(response: Watchlist) {
+  handleResponse(response: {
+    status: string;
+    message: string;
+    watchlist: WatchlistItem[];
+  }) {
+    if (response.status == 'empty') {
+      this.empty = response.message;
+      return;
+    }
+
     this.watchlist = response.watchlist;
-    console.log(this.watchlist)
   }
 }

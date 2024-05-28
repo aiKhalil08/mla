@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Cohort } from 'src/app/interfaces/cohort';
 import { CohortService } from 'src/app/services/cohort.service';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
-import moment from 'moment';
 import { PasswordConfirmationModalComponent } from "../../../partials/password-confirmation-modal/password-confirmation-modal.component";
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
+import { format } from 'date-fns';
 
 @Component({
     selector: 'app-cohort',
@@ -83,17 +83,17 @@ export class CohortComponent implements OnInit {
 
 
   get created_at() {
-    return moment(this.cohort.created_at).format('Do MMMM, yyy');
+    return format(this.cohort.created_at, 'do MMMM, yyyy');
   }
 
   get start_date() {
     if (this.cohort.start_date == null) return 'Not set';
-    return moment(this.cohort.start_date).format('Do MMMM, yyy');
+    return format(this.cohort.start_date, 'do MMMM, yyyy');
   }
 
   get end_date() {
     if (this.cohort.end_date == null) return 'Not set';
-    return moment(this.cohort.end_date).format('Do MMMM, yyy');
+    return format(this.cohort.end_date, 'do MMMM, yyyy');
   }
 
   get duration() {
@@ -104,7 +104,7 @@ export class CohortComponent implements OnInit {
 
   get price() {
     // if (this.course.price == null) console.log('price is null');
-    let price = JSON.parse(this.course.price);
+    let price = this.course.price;
     // console.log(price)
     if (price == null || price.amount == null || price.currency ==  null) return 'Not set';
     return `${price.amount} ${price.currency}`;

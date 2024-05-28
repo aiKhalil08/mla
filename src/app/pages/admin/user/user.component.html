@@ -1,7 +1,35 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || no_user, 'place-items-center': fetching || no_user}">
     <div class="loader" [class.hidden]="!fetching"></div>
     <div *ngIf="user" class="relative ml-4">
-        <h3>{{user.first_name}} {{user.last_name}}</h3>
+        <app-password-confirmation-modal (canceled)="cancelConfirmation()" (confirmed)="proceedWithAction()" *ngIf="confirm_action"></app-password-confirmation-modal>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <h3>{{user.first_name}} {{user.last_name}}</h3>
+
+            <div class="relative w-40 text-sm shadow-2xl">
+                <div (click)="actions_folded = !actions_folded" class="bg-mainp cursor-pointer py-2 px-4 text-white flex items-center justify-between">
+                    Actions
+                    <span class="inline-block w-2 h-2 border-2 border-t-transparent border-r-transparent duration-150 ease-linear" [ngClass]="{'-rotate-45': actions_folded, 'rotate-[135deg]': !actions_folded}"></span>
+                </div>
+                <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
+                    <ul class="w-full border border-mainp">
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="showConfirmationModal('makeOrRevoke', ['Admin', 1])" *ngIf="!isExternal && !isAdmin">Make Admin</li>
+
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="showConfirmationModal('makeOrRevoke', ['Admin', 0])" *ngIf="!isExternal && isAdmin">Revoke Admin</li>
+
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="showConfirmationModal('makeOrRevoke', ['Tutor', 1])" *ngIf="!isExternal && !isTutor">Make Tutor</li>
+
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="showConfirmationModal('makeOrRevoke', ['Tutor', 0])" *ngIf="!isExternal && isTutor">Revoke Tutor</li>
+
+                        <li class="py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400" (click)="showConfirmationModal('delete', [user.email])">Delete</li>    
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <app-report-bar *ngIf="action_in_progress" [message]="action_in_progress" type="progress"></app-report-bar>
+        <app-report-bar *ngIf="action_done" [message]="action_done" type="success"></app-report-bar>
+        <app-report-bar *ngIf="error_in_action" [message]="error_in_action" type="error"></app-report-bar>
+        
         <div class="mt-6 flex flex-col gap-y-6  max-w-[500px]">
             <div class="flex gap-x-4 w-full items-center">
                 <div class="w-[150px] h-[150px] text-sm border rounded-full overflow-hidden border-slate-200 bg-white">
@@ -26,11 +54,11 @@
             </div>
             <div class="flex flex-col gap-y-2 w-full">
                 <div for="first_name" class="text-mainp text-sm">Home Address</div>
-                <div class="">{{user.home_address}}</div>
+                <div class="">{{user.info ? user.info.home_address : 'Not set'}}</div>
             </div>
             <div class="flex flex-col gap-y-2 w-full">
                 <div for="first_name" class="text-mainp text-sm">Bio</div>
-                <div class="">{{user.bio}}</div>
+                <div class="">{{user.info ? user.info.bio : 'Not set'}}</div>
             </div>
         </div>
     </div>

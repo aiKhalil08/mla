@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
-import { CertificationCourse, Date, Module, Price } from 'src/app/interfaces/certification-course';
+import { CertificationCourse} from 'src/app/interfaces/certification-course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionButtonComponent } from "../../../partials/buttons/action-button/action-button.component";
 import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 import { EmptyContentComponent } from "../../../partials/empty-content/empty-content.component";
 
@@ -62,16 +62,16 @@ export class ActionCertificationCourseComponent implements OnInit {
           title: [this.course.title, Validators.required],
           overview: [this.course.overview, Validators.required],
           objectives: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.objectives)).map(objective => this.formBuilder.control(objective))
+            this.course.objectives.map(objective => this.formBuilder.control(objective))
           ),
           attendees: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.attendees)).map(attendee => this.formBuilder.control(attendee))
+            this.course.attendees.map(attendee => this.formBuilder.control(attendee))
           ),
           prerequisites: this.formBuilder.array(
-            (<string[]>JSON.parse(this.course.prerequisites)).map(prerequisite => this.formBuilder.control(prerequisite))
+            this.course.prerequisites.map(prerequisite => this.formBuilder.control(prerequisite))
           ),
           modules: this.formBuilder.array(
-            (<Module[]>JSON.parse(this.course.modules)).map(module => this.formBuilder.group({
+            this.course.modules.map(module => this.formBuilder.group({
               objective: [module.objective],
               overview: [module.overview]
           }))),
@@ -150,22 +150,18 @@ export class ActionCertificationCourseComponent implements OnInit {
     
   }
 
-  addObjective() {
-    if (this.editable) this.objectives.push(this.formBuilder.control(''));
-  }
-  addAttendee() {
-    if (this.editable) this.attendees.push(this.formBuilder.control(''));
-  }
-  addPrerequisite() {
-    if (this.editable) this.prerequisites.push(this.formBuilder.control(''));
-  }
-  addModule() {
-    if (this.editable) {
-      this.modules.push(this.formBuilder.group({
+  add(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    if (control == 'module') {
+      form_array.push(this.formBuilder.group({
         objective: [''],
         overview: ['']
       }));
-    }
+    } else form_array.push(this.formBuilder.control(''));
+  }
+  remove(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
   }
 
   setDurationUnit(unit: string) {

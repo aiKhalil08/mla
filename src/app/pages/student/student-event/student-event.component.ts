@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { WatchedEvent, WatchedEventResponse } from 'src/app/interfaces/watched-event';
+import { WatchedEventResponse } from 'src/app/interfaces/watched-event';
 import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
 import { WatchedEventComponent } from "../../../partials/watched-event/watched-event.component";
 import { TrendingCoursesComponent } from "../../../partials/trending-courses/trending-courses.component";
+import { Event$ } from 'src/app/interfaces/event';
 
 @Component({
     selector: 'app-student-event',
@@ -14,7 +15,7 @@ import { TrendingCoursesComponent } from "../../../partials/trending-courses/tre
     imports: [CommonModule, WatchedEventComponent, TrendingCoursesComponent]
 })
 export class StudentEventComponent implements OnInit {
-  event: WatchedEvent;
+  event: Event$;
   event_name: string;
 
   constructor(private watchlist: EventWatchlistService, private route: ActivatedRoute) {}

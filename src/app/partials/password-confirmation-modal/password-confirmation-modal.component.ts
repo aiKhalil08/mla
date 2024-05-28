@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { PasswordService } from 'src/app/services/password.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-password-confirmation-modal',
@@ -21,7 +21,7 @@ export class PasswordConfirmationModalComponent {
 
   submitted: boolean = false;
 
-  constructor(private auth: AuthService, private passwordService: PasswordService) {}
+  constructor(private auth: AuthService, private userService: UserService) {}
 
   cancel() {
     this.canceled.emit();
@@ -29,14 +29,14 @@ export class PasswordConfirmationModalComponent {
 
   confirm() {
     this.submitted = true;
-    let type = this.auth.user().type;
+    // let type = this.auth.user().type;
 
     // console.log(this.password_field.nativeElement.value); return;
     
     let form = new FormData;
     form.append('password', this.password_field.nativeElement.value);
 
-    this.passwordService.confirm(form, type).subscribe({
+    this.userService.confirmPassword(form).subscribe({
       next: (response) => {
         this.submitted = false;
         if (response.status == 'failed') {

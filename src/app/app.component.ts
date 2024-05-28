@@ -46,20 +46,18 @@ export class AppComponent implements OnInit {
   ]
 
   constructor(private router: Router, private route: ActivatedRoute, private auth: AuthService) {
-    if ((<string>document.location.pathname).match('/admin*')) this.page_type = 'portal';
+    if ((<string>document.location.pathname).match('/admin*')) this.page_type = 'admin_portal';
     else if ((<string>document.location.pathname).match('/enroll*')) this.page_type = 'enroll';
-    else if ((<string>document.location.pathname).match('/login*')) this.page_type = 'login';
-    else if ((<string>document.location.pathname).match('/home*')) this.page_type = 'student';
     else if ((<string>document.location.pathname).match('/reset-password')) this.page_type = 'login';
+    else if ((<string>document.location.pathname).match('/login*')) this.page_type = 'login';
+    else if ((<string>document.location.pathname).match('/home*')) this.page_type = 'student_portal';
+    else if ((<string>document.location.pathname).match('/quiz*')) this.page_type = 'quiz_portal';
     else if ((<string>document.location.pathname).match('/contact-for-course')) this.page_type = 'contact';
 
-    // alert(document.location.pathname)
 
-    if (Array('portal', 'enroll', 'login', 'student', 'contact').includes(this.page_type)) {
+    if (Array('admin_portal', 'student_portal', 'quiz_portal', 'enroll', 'login', 'student', 'contact').includes(this.page_type)) {
       this.landing_page = false;
     }
-
-    this.route.url.subscribe((url) => console.log(url));
   }
 
   ngOnInit() {
@@ -76,7 +74,7 @@ export class AppComponent implements OnInit {
   }
 
   get user_not_admin() {
-    return !this.auth.isLoggedIn('admin');
+    return !this.auth.isLoggedIn() || (this.auth.isLoggedIn() && !this.auth.user().hasRole('admin'));
   }
 
   toggleMenu($event: MouseEvent) {

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { Fulfillment } from 'src/app/interfaces/fulfillment';
 import { FulfillmentService } from 'src/app/services/fulfillment.service';
 
@@ -46,7 +46,7 @@ export class FulfillmentComponent {
 
 
         this.fulfillment = response.fulfillment;
-        this.account_details = JSON.parse(this.fulfillment.account_details);
+        this.account_details = this.fulfillment.account_details;
         // console.log(this.account_details)
 
       }
@@ -84,6 +84,6 @@ export class FulfillmentComponent {
 
 
   formatDate(date: string) {
-    return moment(date).format('Do MMMM, YYYY');
+    return format(date, 'do MMMM, yyyy');
   }
 }

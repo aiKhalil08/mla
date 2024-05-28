@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cohort, CohortItem, EditableCohort } from '../interfaces/cohort';
-import PostResponse from '../interfaces/post-response';
+import BaseResponse from '../interfaces/base-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ CohortService {
   create(form: FormData) {
     let url = `${this.domain_name}/admin/cohort`;
     
-    return <Observable<PostResponse>>this.http.post(url, form);
+    return <Observable<BaseResponse>>this.http.post(url, form);
   }
 
   getList() {
@@ -39,11 +39,11 @@ CohortService {
   }
 
   get_cohort_names() {
-    let url = `${this.domain_name}/admin/cohort/names`;
-    return <Observable<{name: string, status_id: 0 | 1}[]>>this.http.get(url);
+    let url = `${this.domain_name}/admin/cohorts/for-sale`;
+    return <Observable<{cohorts: CohortItem[]}>>this.http.get(url);
   }
 
-  get_all_students(name: string) {
+  get_all_students(name: string) { // get all students indicating those who have registered for cohort
     let url = `${this.domain_name}/admin/cohort/${name}/students`;
     return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, id: number, registration_status: '0' | '1'}[]}>> this.http.get(url);
   }
@@ -84,7 +84,7 @@ CohortService {
 
   get_students_certificates(name: string) {
     let url = `${this.domain_name}/admin/cohort/${name}/certificates`;
-    return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, certificate?: string}[]}>> this.http.get(url);
+    return <Observable<{status: string, message?: string, students: {first_name: string, last_name: string; email: string, certificate: {url?: string}}[]}>> this.http.get(url);
   }
 
   

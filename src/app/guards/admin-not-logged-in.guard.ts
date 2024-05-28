@@ -6,7 +6,7 @@ export const adminNotLoggedInGuard: CanActivateFn = (route, state) => {
   let auth = inject(AuthService);
 
 
-  if (auth.isLoggedIn('admin')) {
+  if (auth.isLoggedIn()) {
     document.location.href = 'admin';
     return false;
   }

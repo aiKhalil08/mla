@@ -4,7 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsM
 import { CertificationCourseService } from 'src/app/services/certification-course.service';
 import { RedirectButtonComponent } from "../../../partials/buttons/redirect-button/redirect-button.component";
 import { ReportBarComponent } from "../../../partials/report-bar/report-bar.component";
-import PostResponse from 'src/app/interfaces/post-response';
+import PostResponse from 'src/app/interfaces/base-response';
 import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
 
 @Component({
@@ -33,15 +33,11 @@ export class AddCertificationCourseComponent implements OnInit {
       code: ['', Validators.required],
       title: ['', Validators.required],
       overview: ['', Validators.required],
-      objectives: this.formBuilder.array([this.formBuilder.control('')]),
-      attendees: this.formBuilder.array([this.formBuilder.control('')]),
-      prerequisites: this.formBuilder.array([this.formBuilder.control('')]),
-      modules: this.formBuilder.array([this.formBuilder.group({
-        objective: [''],
-        overview: ['']
-      })]),
+      objectives: this.formBuilder.array([]),
+      attendees: this.formBuilder.array([]),
+      prerequisites: this.formBuilder.array([]),
+      modules: this.formBuilder.array([]),
       image: [null],
-      // schedule: [null],
     });
 
   }
@@ -109,21 +105,18 @@ export class AddCertificationCourseComponent implements OnInit {
   }
 
 
-  addObjective() {
-    this.objectives.push(this.formBuilder.control(''));
+  add(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    if (control == 'module') {
+      form_array.push(this.formBuilder.group({
+        objective: [''],
+        overview: ['']
+      }));
+    } else form_array.push(this.formBuilder.control(''));
   }
-  addAttendee() {
-    this.attendees.push(this.formBuilder.control(''));
-  }
-  addPrerequisite() {
-    this.prerequisites.push(this.formBuilder.control(''));
-  }
-  addModule() {
-    this.modules.push(this.formBuilder.group({
-      objective: [''],
-      overview: ['']
-    }));
-    console.log(this.modules);
+  remove(control: string) {
+    let form_array = <FormArray>this.courseGroup.get(control+'s');
+    form_array.removeAt(form_array.length - 1);
   }
 
   setDurationUnit(unit: string) {

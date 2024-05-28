@@ -1,44 +1,98 @@
 <main class="landing" [ngClass]="{'grid': fetching || no_event, 'place-items-center': fetching || no_event}">
     <div class="loader" [class.hidden]="!fetching"></div>
-    <div *ngIf="event">
-        <div class="max-w-[900px] m-auto p-4 mt-4">
-            <figure class="">
-                <img src="{{event.image_url}}" class="object-cover w-full h-full min-h-48" alt="{{event.name}}">
-                <!-- <figcaption class="flex flex-wrap gap-x-4 mt-4">
-                    <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="./assets/svgs/calendar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{date}}</span></span>
-                    <span class="text-mainp flex gap-x-2 items-center text-sm"><img src="./assets/svgs/avatar.svg" alt="" class="w-[14px] h-[14px] pink-icon"><span>{{blog.author}}</span></span>
-                </figcaption> -->
-            </figure>
-        </div>
-        <div class="flex flex-col md:flex-row gap-x-6 gap-y-6 max-w-[900px] m-auto p-4 mt-4">
-            <div class="flex flex-col w-full md:flex-grow gap-y-4">
-                <h3 class="font-semibold text-2xl">{{event.name}}</h3>
-                <div class="text-sm mt-4">{{event.description}}</div>
-                <hr class="bg-gray-400 my-4" />
-                <div class="flex flex-col gap-4">
-                    <div>Start Date: {{start}}</div>
-                    <div>End Date: {{end}}</div>
-                    <div>Event Type: <span class="capitalize">{{event.type ? event.type : 'Not set'}}</span></div>
-                    <div class="flex justify-center gap-x-4 mt-4"> <!-- buttons -->
-                        <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white px-6 py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded">
-                            Contact Us
+    <div *ngIf="event" class="">
+        <section class="relative h-[300px] md:h-[500px] lg:h-[600px]  overflow-hidden bg-blue-400">
+            <swiper-container init="false" class="h-full">
+                <swiper-slide  class="h-full" *ngFor="let url of event.image_urls">
+                    <img src="{{url}}"  class="w-full h-full cover" alt="{{event.name}}">
+                </swiper-slide>
+            </swiper-container>
+            <div class="absolute z-10 top-0 left-0 h-full w-full bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center md:pl-20"><!-- overlay -->
+                @for (pop of pops; track $index) {
+                    <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0 flex flex-col gap-y-2 items-start" [ngClass]="{'hidden': $index != present_pop, 'visible': $index == present_pop}">
+                        <div class="font-bold text-2xl" id="heading">{{pop['heading']}}</div>
+                        <div class="font-medium text-lg " id="sub-heading">{{pop['sub_heading']}}</div>
+                        <div id="hashtags" class="flex flex-wrap gap-4">@for (hashtag of pop['hashtags']; track $index) {<span>{{hashtag}}</span>}</div>
+                        <a id="button" (click)="scrollToEnrollForm()" class="bg-white text-mainp px-4 md:px-6 text-sm md:text-base cursor-pointer py-2 font-[500] border border-transparent rounded shadow-md">
+                            Register&nbsp;Now
                         </a>
-                        <app-watchlist-button type="button" [watched]="watched" [event]="{name: event.name}"></app-watchlist-button>
                     </div>
-                    <!-- <div>Event Price: {{event.pr}}</div> -->
-                    <!-- <span>Share Post:</span>
-                    <img src="./assets/svgs/facebook.svg" class="gray-icon" alt="">
-                    <img src="./assets/svgs/twitter.svg" class="w-[20px] h-[20px] gray-icon" alt="">
-                    <img src="./assets/svgs/linkedin.svg" class="gray-icon" alt=""> -->
+                }
+            </div>
+                 
+        </section>
+        <section class="p-4 mt-4">
+            <div class="">
+                <h3 class="font-semibold text-2xl">{{event.name}}</h3>
+                <div class="mt-4 ">{{event.description}}</div>
+            </div>
+        </section>
+        <section class="p-4">
+            <h3 class="font-semibold text-2xl mb-4">Event Details</h3>
+            <div #enroll_form class="space-y-4">
+                <div>Start Date: {{start}}</div>
+                <div>End Date: {{end}}</div>
+                <div>Event Type: <span class="capitalize">{{event.type ? event.type : 'Not set'}}</span></div>
+                <div class="flex justify-center gap-x-4"> <!-- buttons -->
+                    <a href="https://wa.me/2349162644779/?text={{message_text}}" class="text-white m-2 px-4 sm:px-6 text-sm sm:text-base py-2 font-[500] flex justify-center items-center bg-mainp border border-transparent rounded shadow-md">
+                        Contact&nbsp;Us
+                    </a>
+                    <!-- <app-watchlist-button class="text-sm" type="button" [watched]="watched" [event]="{name: event.name}"></app-watchlist-button> -->
                 </div>
             </div>
-            <!-- <div class="w-full md:max-w-[300px]">
-                <ul class="border border-gray-400 p-4">
-                    <h3 class="text-xl font-semibold mb-4">Recent Posts</h3>
-                    <li class="border-b py-2" *ngFor="let recent of recent_posts"><a routerLink="/blog/{{recent.heading}}" class="cursor-pointer">{{recent.heading}}</a></li>
-                </ul>
-            </div> -->
-        </div>
+        </section>
+        <section class="flex justify-center">
+            <form (submit)="onSubmit(form)" #form [formGroup]="registrationGroup" id="enroll-form" class="w-full max-w-[768px] flex flex-col items-center p-4">
+                <h3 class="text-xl">Register for Event</h3>
+                <div class="w-full max-w-[768px] flex flex-col mt-4 gap-y-4">
+                    <div class="flex flex-col gap-y-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-4 text-sm">
+                        <div>
+                            <input formControlName="first_name" name="first_name" type="text" class="p-4 outline-none border w-full shadow" placeholder="First Name*">
+                            <div class="text-sm text-red-400 mt-2" *ngIf="errors['first_name']">{{errors['first_name']}}</div>
+                        </div>
+                        <div>
+                            <input formControlName="last_name" name="last_name" type="text" class="p-4 outline-none border w-full shadow" placeholder="Last Name*">
+                            <div class="text-sm text-red-400 mt-2" *ngIf="errors['last_nme']">{{errors['last_nme']}}</div>
+                        </div>
+                        <div>
+                            <div class="flex shadow">
+                                <div class="border border-r-0 flex items-center justify-center bg-slate-100 p-4">+234</div>
+                                <input formControlName="phone_number" name="phone_number" type="text" class="p-4 outline-none border border-l-0 w-full" placeholder="Phone Number*">
+                            </div>
+                            <div class="text-sm text-red-400 mt-2" *ngIf="errors['phone_number']">{{errors['phone_number']}}</div>
+                        </div>
+                        <div>
+                            <input formControlName="email" name="email" type="text" class="p-4 outline-none border w-full shadow" placeholder="Email Address*">
+                            <div class="text-sm text-red-400 mt-2" *ngIf="errors['email']">{{errors['email']}}</div>
+                        </div>
+                    </div>
+                    <textarea formControlName="message" name="message" id="" cols="30" rows="10"
+                    class="resize-none border outline-none p-4 shadow" placeholder="Tell us more... (optional)"></textarea>
+                    <div class="flex justify-center">
+                        <button [disabled]="registrationGroup.invalid ||registered || submitted" type="submit" [ngClass]="{'bg-mainp': !registered, 'bg-white': registered, 'text-white': !registered, 'text-mainp': registered}" class="group relative cursor-pointer py-2 px-6 border border-mainp rounded flex gap-x-4 items-center justify-center font-[500]">
+                            <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                            <div>{{registered ? 'Registered!' : 'Register'}}</div>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section class="p-4">
+            <div class="flex gap-x-4 items-center">
+                <span id="enroll">Share Post:</span>
+                <div class="flex gap-x-4">
+                    <a href="{{facebookLink}}" target="_blank">
+                        <img src="./assets/svgs/facebook.svg" class="cursor-pointer gray-icon w-8 h-8" alt="">
+                    </a>
+                    <a href="{{twitterLink}}" target="_blank">
+                        <img src="./assets/svgs/twitter.svg" class="cursor-pointer gray-icon w-8 h-8" alt="">
+                    </a>
+                    <a href="{{linkedInLink}}" target="_blank">
+                        <img src="./assets/svgs/linkedin.svg" class="cursor-pointer gray-icon w-8 h-8" alt="">
+                    </a>
+                </div>
+            </div>
+        </section>
     </div>
     <app-empty-content [message]="no_event" *ngIf="no_event"></app-empty-content>
 </main>

@@ -17,7 +17,7 @@
                     <tbody>
                         <tr *ngFor="let sale of sales; index as i">
                             <td class="tc">{{i + 1}}</td>
-                            <td class="tc">{{sale.student}}</td>
+                            <td class="tc">{{sale.student ? sale.student.full_name : 'Deleted'}}</td>
                             <td class="tc">{{formatCurrency(sale.price)}}</td>
                             <td class="tc">{{formatDate(sale.date)}}</td>
                             <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/admin/sale/{{encryptId(sale.id)}}"></app-redirect-button></td>
