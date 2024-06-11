@@ -11,11 +11,6 @@ import { CertificateService } from 'src/app/services/certificate.service';
   styleUrls: ['./view-certificate.component.css']
 })
 export class ViewCertificateComponent implements OnInit {
-  // @Input() type: 'cohort_certificates' | 'individual_course_certificates';
-  // @Input() cohort_name?: string;
-  // @Input() course_type?: string;
-  // @Input() course_identity?: string;
-  // @Input() for: string;
   @Input() path: string;
 
   // @ViewChild('myParent', {static: true}) parent: CertificatesComponent;

@@ -22,22 +22,6 @@ export class QuizService {
     return <Observable<{status: string, message?: string, quiz?: Quiz}>> this.httpClient.get(url);
   }
 
-  getAllStudents(title: string) { // gets all students indicating those who have been assigned to quiz
-    let url = `${this.domain_name}/admin/quiz/${title}/all-students`;
-    return <Observable<{status: string, message?: string, students?: {first_name: string, last_name: string; email: string, company: {name: string}, id: number, is_assigned: boolean}[]}>> this.httpClient.get(url);
-  }
-
-  getAssignments(title: string) {
-    let url = `${this.domain_name}/admin/quiz/${title}/assignments`;
-    return <Observable<{status: string, message?: string, assignments?: {first_name: string, last_name: string; email: string, company: {name: string}, id: number}[]}>> this.httpClient.get(url);
-  }
-
-  notify(form: FormData, title: string) {
-    let url = `${this.domain_name}/admin/quiz/${title}/notify`;
-    
-    return <Observable<{status: string, message?: string}>>this.httpClient.post(url, form);
-  }
-
   getAll() {
     let url = `${this.domain_name}/admin/quizzes`;
     return <Observable<{quizzes: QuizItem[]}>> this.httpClient.get(url);
@@ -58,17 +42,7 @@ export class QuizService {
     return <Observable<BaseResponse>>this.httpClient.delete(url);
   }
 
-  updateAssignments(form: FormData, title: string) {
-    let url = `${this.domain_name}/admin/quiz/${title}/assignments`;
-    return <Observable<{status: string, message?: string}>> this.httpClient.post(url, form);
-  }
-
-  getAssignedQuizzes() {
-    let url = `${this.domain_name}/quiz/all`;
-    return <Observable<{quizzes: Quiz[]}>> this.httpClient.get(url);
-  }
-
-  // method for quiz questions management
+  // methods for quiz questions management
 
   addQuestion(form: FormData, quiz_title: string) {
     let url = `${this.domain_name}/admin/quiz/${quiz_title}/add-question`;

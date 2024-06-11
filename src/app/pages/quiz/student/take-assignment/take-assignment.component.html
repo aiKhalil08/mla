@@ -1,0 +1,112 @@
+<main class="min-h-[100vh] lg:min-h-0 lg:h-[100vh] bg-[#F2F2F2] p-4"  [ngClass]="{'grid': fetching || empty, 'place-items-center': fetching || empty}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="fetched && !empty" class="container mx-auto h-full">
+        @if (!submitted) {
+            <app-confirm-proceed-modal *ngIf="show_confirm_submit_modal" text="Are you sure you want to submit now?" (canceled)="cancelSubmit()" (proceed)="proceedSubmit()"></app-confirm-proceed-modal>
+    
+            <section class="grid grid-rows-[auto,_1fr] grid-cols-1 h-full gap-y-4">
+                <div class="flex flex-col md:flex-row gap-4 justify-between">
+                    <h3 class="lg:w-3/4">{{assignment_name}}</h3>
+                    <div class="bg-mainp/70 text-white gap-1 font-bold whitespace-nowrap w-full md:w-60 lg:w-1/4 flex items-center justify-between p-4 rounded-lg" #time_box>
+                        <span>Time remaining:</span>
+                        <span>{{remaining_time}}</span>
+                    </div>
+                </div>
+    
+                <div class="flex flex-col lg:flex-row gap-4 overflow-hidden">
+                    <form action="" #form [formGroup]="questions_group" (ngSubmit)="!submitting && onSubmit(form)" class="w-full lg:w-3/4 p-6 bg-white shadow-lg rounded-lg lg:self-start">
+                        <div formGroupName="responses">
+                            @for (question of questions; track $index) {
+                                <div [hidden]="$index != current_question_id" class="space-y-4">
+                                    <div class="text-sm underline underline-offset-2">Question {{$index + 1}} of {{questions.length}}</div>
+                                    <div [innerHTML]="question.text"></div><!-- current question text -->
+                                    <ul class="space-y-2">
+                                        @for (option of question.options; track $index) {
+                                            <li>
+                                                <label class="flex gap-2 p-2 border cursor-pointer rounded-lg hover:bg-zinc-200">
+                                                    <input type="radio" name="{{question.id}}" formControlName="{{question.id}}" [value]="option.id">
+                                                    <span class="">{{option.text}}</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul><!-- current question options -->
+                                </div>
+                            }
+                        </div>
+                        <div class="mt-4 flex justify-between">
+                            <button (click)="previous()" class="py-2 px-6 text-sm border rounded cursor-pointer bg-mainp text-white flex gap-2">
+                                <img src="./assets/svgs/arrow_right.svg" class="h-4 w-4 white-icon rotate-180 translate-y-[1px]" alt="">
+                                <span>Previous</span>
+                            </button>
+                            <button (click)="next()" *ngIf="!reachedLastQuestion" class="py-2 px-6 text-sm border rounded cursor-pointer bg-mainp text-white flex gap-2">
+                                <span>Next</span>
+                                <img src="./assets/svgs/arrow_right.svg" class="h-4 w-4 white-icon translate-y-[1px]" alt="">
+                            </button>
+                            <button (click)="confirmSubmit()" *ngIf="reachedLastQuestion" [ngClass]="{'bg-mainp': !submitted, 'bg-white': submitted, 'text-white': !submitted, 'text-mainp': submitted}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="submitting"><div class="submit-loader" [class.block]="submitting" [class.hidden]="!submitting"></div><div>Submit</div></button>
+                        </div><!-- nav buttons -->
+                    </form>
+                    <div class="w-full lg:w-1/4 p-4 bg-white shadow-lg rounded-lg grid grid-rows-[auto,_1fr] grid-cols-1 h-full">
+                        <h2 class="text-lg font-bold mb-4">Questions ({{questions.length}})</h2>
+                        <ul class="flex gap-2 lg:flex-col overflow-auto no-scrollbar">
+                            @for (question of questions; track $index) {
+                                <li class="w-10 h-10 shrink-0 sm:w-52 lg:w-full sm:h-auto">
+                                    <button (click)="moveTo($index)" [ngClass]="{'bg-gray-300': current_question_id === $index, 'bg-gray-200': current_question_id !== $index}" class="w-full h-full sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300">
+                                        <div class="flex w-full h-full justify-center items-center sm:justify-normal sm:items-stretch sm:gap-2">
+                                            <span>{{$index + 1}}<span class="hidden sm:inline">.</span></span>
+                                            <span class="text-left hidden sm:inline-block" [innerHTML]="question.text"></span>
+                                        </div>
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        } @else if (submitted) {
+            <div class="fixed top-0 left-0 h-full w-full grid place-items-center bg-[#F2F2F2]">
+                <section class="w-full max-w-[800px] flex flex-col gap-y-4">
+                    <div class="bg-white shadow-md p-4 rounded-lg text-center">
+                        <h3 class="font-semibold text-2xl">{{assignment_name}}</h3>
+                        <div class="text-zinc-400">You have successfully submitted!</div>
+                    </div>
+                    <div class="bg-white shadow-md p-4 rounded-lg text-center flex flex-col gap-y-2">
+                        <h3 class="font-semibold text-2xl">You scored</h3>
+                        <div class="">{{attempt_summary.points_obtained}} out of {{attempt_summary.points_obtainable}} points ({{scorePercentage}}%)</div>
+                        <div class="bg-zinc-300 rounded overflow-clip h-6 w-full max-w-[500px] m-auto">
+                            <div class="h-full bg-mainp/90" [style.width.%]="scorePercentage"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-md p-4 rounded-lg">
+                        <h3 class="font-semibold text-2xl text-center mb-4">Summary</h3>
+                        <table class="w-full max-w-[500px] m-auto">
+                            <tr>
+                                <td class="text-zinc-400 p-2">Correct answers</td>
+                                <td class="p-2">{{attempt_summary.correct_answers}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-zinc-400 p-2">Wrong answers</td>
+                                <td class="p-2">{{questions.length - attempt_summary.correct_answers}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-zinc-400 p-2">Time taken</td>
+                                <td class="p-2">{{attempt_summary.time_taken}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="bg-white shadow-md p-4 rounded-lg text-center">
+                        <div class="flex justify-between">
+                            <a routerLink="/quiz/review/{{assignment_name}}" class="py-2 px-6 border rounded cursor-pointer bg-mainp text-white">
+                                Review
+                            </a>
+                            <a href="/quiz" class="py-2 px-6 border rounded cursor-pointer bg-mainp text-white">
+                                Home
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        }
+        
+    </div>
+    <app-empty-content message="{{empty}}" *ngIf="fetched && empty"></app-empty-content>
+</main>

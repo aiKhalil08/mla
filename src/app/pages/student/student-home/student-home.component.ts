@@ -6,6 +6,7 @@ import { SidebarNavLinkComponent } from "../../../partials/links/sidebar-nav-lin
 import { UserInfoBoxComponent } from "../../../partials/user-info-box/user-info-box.component";
 import { CommonModule } from '@angular/common';
 import { LogoutModalComponent } from "../../../partials/logout-modal/logout-modal.component";
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     selector: 'app-student-layout',
@@ -24,6 +25,7 @@ export class StudentHomeComponent {
     {text: 'My Courses', location: '/home/courses', image: './assets/svgs/courses_icon.svg'},
     // {text: 'My Events', location: '/home/events', image: './assets/svgs/events_icon.svg'},
     {text: 'My Certificates', location: '/home/certificates', image: './assets/images/certificate.png'},
+    {text: 'Quiz', location: '/quiz', image: './assets/images/quiz.png'},
     {text: 'Cart', location: '/home/cart', image: './assets/svgs/cart.svg'},
     {text: 'Profile', location: '/home/profile', image: './assets/svgs/profile.svg'},
     {text: 'Affiliate', location: '/home/affiliate', image: './assets/svgs/affiliate.svg'},
@@ -36,9 +38,10 @@ export class StudentHomeComponent {
     // {text: 'Logout', location: '/logout', image: './assets/svgs/logout_icon.svg'},
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private storageService: StorageService) {}
 
   ngOnInit() {
+    this.storageService.set('as', 'student');
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {

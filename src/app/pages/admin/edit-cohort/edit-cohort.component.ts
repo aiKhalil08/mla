@@ -255,21 +255,6 @@ export class EditCohortComponent implements OnInit {
   }
 
 
-
-  
-
-  // handleScheduleSelect(event: Event, embed: HTMLEmbedElement) {
-  //   console.log('in handle schedule select');
-  //   let file = (<HTMLInputElement>event.target).files[0];
-  //   let reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     embed.src = URL.createObjectURL(file);
-  //     this.scheduleSelected = true;
-  //   };
-  //   if (file) reader.readAsDataURL(file);
-  // }
-
-
   onSubmit(form: HTMLFormElement) {
 
     this.tried_to_submit = true;

@@ -36,12 +36,7 @@ export class EventComponent {
   registered: boolean;
   errors: object = {};
 
-  pops: object[] = [
-    {heading: 'Secure Your Future By Learning a Tech Skill', sub_heading: 'Learn a fast paying skill', hashtags: ['#tech', '#skill', '#modern']},
-    {heading: 'Second Secure Your Future By Learning a Tech Skill', sub_heading: 'Second Learn a fast paying skill', hashtags: ['#mla', '#upskill', '#ai']},
-    {heading: 'Third Secure Your Future By Learning a Tech Skill', sub_heading: 'Third Learn a fast paying skill', hashtags: ['#sustainability', '#mitiget', '#tech']},
-    {heading: 'Secure Your Future By Learning a Tech Skill', sub_heading: 'Learn a fast paying skill', hashtags: ['#artificialintelligence', '#lorem', '#ipsum']},
-  ];
+  slide_delay = 13000;
 
   present_pop: number = 0;
   
@@ -49,6 +44,7 @@ export class EventComponent {
   @ViewChild('enroll_form', {static: false}) enroll_form: ElementRef;
 
   registrationGroup: FormGroup;
+  form_error: string;
 
   constructor (private eventService: EventService, private route: ActivatedRoute, private auth: AuthService, private watchlist: EventWatchlistService, private change_detector: ChangeDetectorRef, private fb: FormBuilder) {}
 
@@ -79,6 +75,8 @@ export class EventComponent {
           this.no_event = response.message;
           return;
         }
+        
+        this.event = response.event;
 
         setTimeout(() => {
           // swiper element
@@ -89,7 +87,7 @@ export class EventComponent {
             slidesPerView: 1,
             // loop: true,
             autoplay: {
-              delay: 13000
+              delay: this.slide_delay
             },
             speed: 1000,
           };
@@ -98,14 +96,25 @@ export class EventComponent {
           Object.assign(swiperEl, swiperParams);
 
           swiperEl.addEventListener('swiperslidechange', () => {
-            this.present_pop = (this.present_pop + 1) % this.pops.length;
-            console.log(this.present_pop) 
+            setTimeout(() => {
+              if (this.event.popups.length > 1) this.present_pop = (this.present_pop + 1) % this.event.popups.length;
+              else if (this.event.popups.length == 1) { // create a "flicker" so that pop in out animation can be executed. pop in out animation is the animation of the texts overlying the slider
+                this.present_pop = 10;
+                setTimeout(() => { 
+                  this.present_pop = 0;               
+                }, 20);
+              }
+            }, 1000);
           })
-        
+
+          // manually trigger pop in out animation since slide won't change if the images_url length is 1
+          if (this.event.image_urls.length == 1 && this.event.popups.length > 1) {
+            setInterval(() => this.present_pop = (this.present_pop + 1) % this.event.popups.length, this.slide_delay)
+          }
+
           // and now initialize it
           swiperEl.initialize();
         }, 0);
-        this.event = response.event;
         if (this.auth.isLoggedIn() && this.auth.user().hasRole('student') && this.watchlist.has(this.event.name)) this.watched = true;
         this.message_text = `Hello. I am chatting you regarding ${this.event.name.toUpperCase()}. My name is ___`;
 
@@ -135,6 +144,11 @@ export class EventComponent {
     this.eventService.register(form_data, this.event.name).subscribe({
       next: (response) => {
         this.submitted = false;
+        if (response.status == 'failed') {
+          this.form_error = response.message;
+          alert(response.message);
+          return;
+        }
         this.registered = true;
         this.errors = {};
       }, 

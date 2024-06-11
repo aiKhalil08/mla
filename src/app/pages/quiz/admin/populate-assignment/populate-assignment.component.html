@@ -1,7 +1,7 @@
 <main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
     <div class="loader" [class.hidden]="!fetching"></div>
     <div *ngIf="!fetching && all_students" class="relative max-w-[850px] m-auto">
-        <h3>{{quiz_title}}</h3>
+        <h3>{{assignment_name}}</h3>
 
         <div>
             <input #search_field type="text" placeholder="search student by name, email, or company" name="searchParam" class="placeholder:italic placeholder:text-sm mt-6 w-full p-2 rounded border border-slate-200 outline-none">
@@ -38,7 +38,7 @@
 
             <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
                 <button type="submit" [ngClass]="{'bg-mainp': !created, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="created"><div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div><div>{{created ? 'Updated' : 'Update'}}</div></button>
-                <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location='/quiz/admin/quiz/{{quiz_title}}'></app-redirect-button>
+                <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location='/quiz/admin/assignment/{{assignment_name}}'></app-redirect-button>
             </div>
         </form>
     

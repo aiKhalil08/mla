@@ -40,6 +40,7 @@ export class AddEventComponent implements OnInit {
     this.eventGroup = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      popups: this.formBuilder.array([]),
       date: this.formBuilder.group({
         start: ['', Validators.required],
         duration: ['', Validators.required],
@@ -105,6 +106,10 @@ export class AddEventComponent implements OnInit {
     return <FormArray>this.eventGroup.get('attendees');
   }
 
+  get popups() {
+    return <FormArray>this.eventGroup.get('popups');
+  }
+
   get image() {
     return <FormControl>this.eventGroup.get('image');
   }
@@ -147,17 +152,22 @@ export class AddEventComponent implements OnInit {
   add(control: string) {
     let form_array = <FormArray>this.eventGroup.get(control+'s');
     if (control == 'popup') {
-      form_array.push(this.formBuilder.group({
-        heading: [''],
-        sub_heading: [''],
-        hashtags: this.formBuilder.array([this])
-      }));
+      form_array.push(
+        this.formBuilder.group({
+          heading: [''],
+          subheading: [''],
+          hashtags: this.formBuilder.array(
+            [this.formBuilder.control(''), this.formBuilder.control(''), this.formBuilder.control('')]
+          )
+        })
+      );
     } else form_array.push(this.formBuilder.control(''));
   }
   
-  remove(control: string) {
+  remove(control: string, index?: number) {
     let form_array = <FormArray>this.eventGroup.get(control+'s');
-    form_array.removeAt(form_array.length - 1);
+    index = index ?? form_array.length - 1;
+    form_array.removeAt(index);
   }
 
   get_error_message(control: AbstractControl): string | boolean {
@@ -182,10 +192,6 @@ export class AddEventComponent implements OnInit {
     console.log(this.type)
   }
 
-  addAttendee() {
-    this.attendees.push(this.formBuilder.control(''));
-  }
-  
   setDurationUnit(unit: string) {
     let input = <HTMLInputElement> document.querySelector('[name="date[duration-unit]"]');
     input.value = unit;

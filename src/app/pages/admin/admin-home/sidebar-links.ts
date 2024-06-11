@@ -8,7 +8,7 @@ export const SidebarItems: SidebarItem[] = [
     {text: 'Requests', location: '/admin/requests', image: './assets/svgs/request.svg', permission: 'requests'},
     {text: 'Users', location: '/admin/users', image: './assets/svgs/users_icon.svg', permission: 'students'},
     {text: 'External Users', location: '/admin/external-users', image: './assets/svgs/external-user.svg', permission: 'students'},
-    {text: 'Quiz', location: '/quiz/admin', image: './assets/svgs/external-user.svg', permission: 'quiz'},
+    {text: 'Quiz', location: '/quiz/admin', image: './assets/images/quiz.png', permission: 'quiz'},
     {text: 'Cohorts', location: '/admin/cohorts', image: './assets/svgs/cohort.svg', permission: 'cohorts'},
     {text: 'Certificates', location: '/admin/certificates', image: './assets/images/certificate.png', permission: 'certificates'},
     {text: 'Sales', location: '/admin/sales', image: './assets/svgs/sales.svg', permission: 'sales'},

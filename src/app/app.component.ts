@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
   landing_page: boolean = true;
   page_type: string;
 
+  dont_show_wa_icon: string[] = ['enroll', 'take_quiz', 'review']; // whatsapp icon are not show for these routes
+
   // dropdown_items: any[] = [1,2,3,];
 
   dropdown_items: DropdownItem[] = [
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
       name: 'Resources',
       items: [
         {'item-name': 'Blogs', link: '/blogs'},
-        {'item-name': 'About Us', link: '/about-us'},
+        // {'item-name': 'About Us', link: '/about-us'},
         {'item-name': 'Help', link: '/connect-with-us'},
       ]
     }
@@ -50,12 +52,12 @@ export class AppComponent implements OnInit {
     else if ((<string>document.location.pathname).match('/enroll*')) this.page_type = 'enroll';
     else if ((<string>document.location.pathname).match('/reset-password')) this.page_type = 'login';
     else if ((<string>document.location.pathname).match('/login*')) this.page_type = 'login';
+    // else if ((<string>document.location.pathname).match('/quiz/take')) this.page_type = 'take_quiz';
     else if ((<string>document.location.pathname).match('/home*')) this.page_type = 'student_portal';
     else if ((<string>document.location.pathname).match('/quiz*')) this.page_type = 'quiz_portal';
     else if ((<string>document.location.pathname).match('/contact-for-course')) this.page_type = 'contact';
 
-
-    if (Array('admin_portal', 'student_portal', 'quiz_portal', 'enroll', 'login', 'student', 'contact').includes(this.page_type)) {
+    if (Array('admin_portal', 'student_portal', 'quiz_portal', 'take_quiz', 'enroll', 'login', 'student', 'contact').includes(this.page_type)) {
       this.landing_page = false;
     }
   }
@@ -87,5 +89,9 @@ export class AppComponent implements OnInit {
       this.expanded = true;
       target.src = './assets/svgs/cancel.svg';
     }
+  }
+
+  get isLoggedIn() {
+    return this.auth.isLoggedIn();
   }
 }

@@ -1,0 +1,34 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded" class="relative max-w-[750px] m-auto flex flex-col gap-y-6">
+        <h3>Assignments History</h3>
+
+        <div *ngIf="assignments.length > 0; else empty" class="max-w-full overflow-auto">
+            <table class="text-sm border-collapse border border-slate-500 w-full">
+                <thead class="text-mainp">
+                    <tr class="">
+                        <th class="tc">#</th>
+                        <th class="tc">Name</th>
+                        <th class="tc">Date Completed</th>
+                        <th class="tc">Score</th>
+                        <th class="tc">Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let assignment of assignments; index as i">
+                        <td class="tc">{{i + 1}}</td>
+                        <td class="tc">{{assignment.name}}</td>
+                        <td class="tc">{{formatDate(assignment.end_date)}}</td>
+                        <td class="tc">{{assignment.score.obtained+'/'+assignment.score.obtainable}}</td>
+                        <td class="tc text-center"><app-redirect-button theme="pink" text="Review" location="/quiz/review/{{assignment.name}}"></app-redirect-button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #empty>
+            <div class="p-4 bg-gray-300 rounded">
+                You haven't taken any assignment.
+            </div>
+        </ng-template>
+    </div>
+</main>

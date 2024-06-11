@@ -1,24 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, debounceTime, fromEvent } from 'rxjs';
-import { QuizService } from 'src/app/services/quiz.service';
+import { AssignedStudent } from 'src/app/interfaces/assignment';
+import { AssignmentService } from 'src/app/services/assignment.service';
 import { RedirectButtonComponent } from "../../../../partials/buttons/redirect-button/redirect-button.component";
 import { EmptyContentComponent } from "../../../../partials/empty-content/empty-content.component";
 
-type AssignedStudent = {first_name: string, last_name: string; email: string, company: {name: string}, id: number, is_assigned: boolean};
-
 @Component({
-    selector: 'app-update-assignments',
+    selector: 'app-populate-assignment',
     standalone: true,
-    templateUrl: './update-assignments.component.html',
-    styleUrl: './update-assignments.component.css',
+    templateUrl: './populate-assignment.component.html',
+    styleUrl: './populate-assignment.component.css',
     imports: [CommonModule, ReactiveFormsModule, RedirectButtonComponent, EmptyContentComponent]
 })
-export class UpdateAssignmentsComponent implements OnInit {
-
-  quiz_title: string;
+export class PopulateAssignmentComponent {
+  assignment_name: string;
   fetching: boolean;
 
 
@@ -39,22 +37,22 @@ export class UpdateAssignmentsComponent implements OnInit {
   @ViewChild('search_field', {static: false}) search_field: ElementRef;
 
 
-  constructor (private route: ActivatedRoute, private quizService: QuizService, private fb: FormBuilder, private change_detector: ChangeDetectorRef) {}
+  constructor (private route: ActivatedRoute, private assignmentService: AssignmentService, private fb: FormBuilder, private change_detector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
 
     this.route.queryParams.subscribe((params) => {
-      this.quiz_title = params['t'];
+      this.assignment_name = params['n'];
       // console.log(this.quiz_title)
     });
 
 
-    this.fetchAllStudents(); // gets all students indicating those who are assigned to quiz
+    this.fetchAllStudents(); // gets all students indicating those who are already assigned to assignment
   }
 
   fetchAllStudents() {
     this.fetching = true;
-    this.quizService.getAllStudents(this.quiz_title).subscribe({
+    this.assignmentService.getAllStudents(this.assignment_name).subscribe({
       next: (response) => {
         console.log(response)
         this.fetching = false;
@@ -127,7 +125,7 @@ handleResponse(response: {
     this.submitted = true;
     
     let formData = new FormData(form);
-    this.quizService.updateAssignments(formData, this.quiz_title).subscribe({
+    this.assignmentService.updateStudents(formData, this.assignment_name).subscribe({
       next: (response) => {
         this.submitted = false;
         if (response.status == 'failed') {
@@ -135,7 +133,6 @@ handleResponse(response: {
           return;
         }
         this.created = true;
-        // this.handleResponse(response)
       },
     });
     

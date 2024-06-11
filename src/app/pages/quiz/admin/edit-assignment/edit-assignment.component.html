@@ -1,0 +1,52 @@
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching || error, 'place-items-center': fetching || error}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="!fetching && assignment">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <h3>{{assignment.name}}</h3>
+            <div (click)="editable = true; shuffle_questions.enable(); shuffle_options.enable()" class="bg-mainp text-white border-transparent border py-2 px-6 text-sm rounded cursor-pointer">Edit</div>
+        </div>
+    
+        <app-report-bar *ngIf="edited" message="Assignment has been edited" type="success"></app-report-bar>
+    
+        <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="assignment_group" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="name" class="text-mainp required">Name</label>
+                <input [readonly]="!editable" type="text" name="name" id="name" class="p-2 outline-none border border-slate-200 rounded" formControlName="name">
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && name.invalid">{{get_error_message(name)}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full ckeditor">
+                <label for="description" class="text-mainp required">Description</label>
+                <ckeditor class="text-sm" [ngClass]="{'pointer-events-none': !editable}" [editor]="editor" formControlName="description"></ckeditor>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && description.invalid">{{get_error_message(description)}}</div>
+            </div>
+    
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label for="duration" class="text-mainp required">Duration</label>
+                <div class="flex gap-x-2">
+                    <input [readonly]="!editable" type="number" min="0" name="duration" id="duration" class="p-2 outline-none border grow w-20 border-slate-200 rounded " formControlName="duration">
+                    <input type="text" value="minutes" class="p-2 outline-none border grow w-20 border-slate-200 rounded text-gray-400" disabled>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && duration.invalid">{{get_error_message(duration)}}</div>
+            </div>
+    
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label class="text-mainp optional">Shuffle</label>
+                <div class="space-y-3" formGroupName="shuffle">
+                    <mat-slide-toggle formControlName="questions">Shuffle questions</mat-slide-toggle>
+                    <mat-slide-toggle formControlName="options">Shuffle options</mat-slide-toggle>
+                </div>
+            </div>
+           
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button [disabled]="!editable || edited || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !edited, 'bg-white': edited, 'text-white': !edited, 'text-mainp': edited, 'bg-mainp/70': tried_to_submit && form_invalid,}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center">
+                    <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                    <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                    <div>{{edited ? 'Edited' : 'Edit'}}</div>
+                </button>
+                <app-redirect-button theme="white" text="{{!edited ? 'Cancel' : 'Back'}}" [location]="location"></app-redirect-button>
+            </div>
+        </form>
+    </div>
+    <app-empty-content message="{{error}}" *ngIf="!fetching && error"></app-empty-content>
+</main>

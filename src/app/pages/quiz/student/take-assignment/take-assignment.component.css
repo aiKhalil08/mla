@@ -1,0 +1,9 @@
+.flickering-background {
+    animation: flicker-red 1s linear infinite;
+}
+
+@keyframes flicker-red {
+    0% {background-color: rgba(221, 18, 123, 0.7);}
+    50% {background-color: rgba(255, 0, 0, 0.7);}
+    100% {background-color: rgba(221, 18, 123, 0.7);}
+}

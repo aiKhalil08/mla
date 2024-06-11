@@ -6,9 +6,7 @@ import Timer from 'easytimer.js';
 import LoginResponse from 'src/app/interfaces/login-response';
 import { JWTService } from 'src/app/services/jwt.service';
 import { LoginService } from 'src/app/services/login.service';
-import { RefreshTokenService } from 'src/app/services/refresh-token.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { StudentService } from 'src/app/services/student.service';
 import { CartService } from 'src/app/services/cart.service';
 import { EventWatchlistService } from 'src/app/services/event-watchlist.service';
 import { AffiliateService } from 'src/app/services/affiliate.service';
@@ -82,10 +80,6 @@ export class SigninComponent implements OnInit{
       email: [this.email],
       otp: ['', Validators.required],
     });
-
-    // console.log(btoa('muhammadiidiagbon@gmail.com:123456'));
-    // console.log(atob('bXVoYW1tYWRpaWRpYWdib25AZ21haWwuY29tOjEyMzQ1Ng=='))
-    // this.startCountdown();
   }
 
   handleResolved(response: string) {
@@ -232,7 +226,7 @@ export class SigninComponent implements OnInit{
 
     if (!response.is_super_admin && !response.is_external_user) {
       this.cartService.set_cart(response.cart);
-      this.watchlistService.set_watchlist(response.watchlist)
+      // this.watchlistService.set_watchlist(response.watchlist)
       this.affiliateSevice.set_affiliate(response.affiliate);
     } else if (response.is_super_admin) {
       location = 'admin';
@@ -240,12 +234,20 @@ export class SigninComponent implements OnInit{
       location = 'quiz';
     }
 
-    if (this.storageService.exists('intended')) {
-      document.location.href = this.storageService.get('intended');
-      this.storageService.remove('intended');
-      return;
-    }
 
+    if (this.storageService.exists('intended')) {
+      let url = new URL(this.storageService.get('intended'));
+      if (/^\/quiz*/.test(url.pathname)) {
+        if (response.is_super_admin) location = 'admin';
+        else if (response.is_external_user) location = 'quiz';
+        else location = 'home';
+      } else {
+        location = this.storageService.get('intended');
+      }
+
+      this.storageService.remove('intended');
+    }
+    
     document.location.href = location;
   }
 

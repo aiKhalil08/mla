@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { RefreshTokenService } from './refresh-token.service';
+import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { getUnixTime } from 'date-fns';
 
@@ -11,7 +9,7 @@ export class JWTService {
 
   private token_name = 'token'
 
-  constructor(@Inject('DOMAIN_NAME') private domain_name, private httpClient: HttpClient, private refreshToken: RefreshTokenService, private storage: StorageService) { }
+  constructor(private storage: StorageService) { }
 
 
   set (token: string) {

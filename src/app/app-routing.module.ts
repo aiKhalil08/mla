@@ -14,9 +14,7 @@ import { CertificationCourseListComponent } from './partials/certification-cours
 import { OffshoreCourseListComponent } from './partials/offshore-course-list/offshore-course-list.component';
 import { EventComponent } from './pages/event/event.component';
 import { EventsComponent } from './pages/events/events.component';
-import { adminAuthGuard } from './guards/admin-auth.guard';
 import { studentNotLoggedInGuard } from './guards/student-not-logged-in.guard';
-import { adminNotLoggedInGuard } from './guards/admin-not-logged-in.guard';
 import { ContactForCourseComponent } from './pages/contact-for-course/contact-for-course.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { TermsAndConditionComponent } from './pages/terms-and-condition/terms-and-condition.component';
@@ -33,6 +31,8 @@ import { userNotExternalGuard } from './guards/user-not-external.guard';
 import { userIsAdminGuard } from './guards/user-is-admin.guard';
 import { QuizLayoutComponent } from './pages/quiz/quiz-layout/quiz-layout.component';
 import { userCanTakeQuizGuard } from './guards/user-can-take-quiz.guard';
+import { TakeAssignmentComponent } from './pages/quiz/student/take-assignment/take-assignment.component';
+import { ReviewAssignmentComponent } from './pages/quiz/student/review-assignment/review-assignment.component';
 
 
 const routes: Routes = [
@@ -80,11 +80,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/student/routes')
   },
   {
-    path: 'quiz',
-    component: QuizLayoutComponent,
-    title: 'Quiz',
+    path: 'quiz/take/:name',
+    component: TakeAssignmentComponent,
+    title: 'Take Quiz | Quiz',
     canActivate: [userAuthGuard, userCanTakeQuizGuard],
-    loadChildren: () => import('./pages/quiz/student/routes')
+  },
+  {
+    path: 'quiz/review/:name',
+    component: ReviewAssignmentComponent,
+    title: 'Review Quiz | Quiz',
+    canActivate: [userAuthGuard, userCanTakeQuizGuard],
   },
   {
     path: 'quiz/admin',
@@ -92,6 +97,13 @@ const routes: Routes = [
     title: 'Quiz Admin',
     canActivate: [userAuthGuard, userIsAdminGuard],
     loadChildren: () => import('./pages/quiz/admin/routes')
+  },
+  {
+    path: 'quiz',
+    component: QuizLayoutComponent,
+    title: 'Quiz',
+    canActivate: [userAuthGuard, userCanTakeQuizGuard],
+    loadChildren: () => import('./pages/quiz/student/routes')
   },
 ];
 

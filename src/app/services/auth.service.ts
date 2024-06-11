@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { JWTService } from './jwt.service';
 import { CartService } from './cart.service';
-import { EventWatchlistService } from './event-watchlist.service';
-import { XSRFService } from './xsrf.service';
 import { AffiliateService } from './affiliate.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private token: JWTService, private cart: CartService, private watchlist: EventWatchlistService, private xsrf: XSRFService, private affiliate: AffiliateService) { }
+  constructor(private token: JWTService, private cart: CartService, private storageService: StorageService, private affiliate: AffiliateService) { }
 
   isLoggedIn() {
     return this.token.exists() && !this.token.isExpired();// && this.token.getUserRoles().includes(role);
@@ -42,8 +41,7 @@ export class AuthService {
   logout() {
     this.token.remove();
     this.cart.remove();
-    this.watchlist.remove();
-    this.xsrf.delete();
+    this.storageService.remove('as');
     this.affiliate.remove();
   }
 }

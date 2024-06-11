@@ -27,6 +27,30 @@
                 <textarea [readOnly]="!editable" type="text" rows="6" name="description" id="event-description" class="p-2 outline-none border border-slate-200 rounded resize-none" formControlName="description"></textarea>
                 <div class="text-red-500 text-sm" *ngIf="tried_to_submit && description.invalid">{{get_error_message(description)}}</div>
             </div>
+            <div class="flex flex-col gap-y-2 w-full relative" formArrayName="popups">
+                <img src="./assets/svgs/dash.svg" (click)="editable && remove('popup')" class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-4 mr-2" alt="">
+                <img src="./assets/svgs/plus.svg" (click)="editable && add('popup')"
+                class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
+                <label for="event-attendees" class="text-mainp optional">Pop up Info</label>
+                <div class="my-2 flex flex-col gap-y-2" *ngFor="let popup of popups.controls; index as i" formGroupName="{{i}}">
+                    <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
+                        <label for="start" class="text-gray text-sm min-w-[100px]">Heading: </label>
+                        <input max="50" [readonly]="!editable" type="text" formControlName="heading" name="popups[{{i}}][heading]" name="" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+                    </div>
+                    <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
+                        <label for="start" class="text-gray text-sm min-w-[100px]">Subheading: </label>
+                        <input max="60" [readonly]="!editable" type="text" formControlName="subheading" name="popups[{{i}}][subheading]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+                    </div>
+                    <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
+                        <label for="start" class="text-gray text-sm min-w-[100px] self-start">Hashtags: </label>
+                        <div class="flex flex-col gap-y-4" formArrayName="hashtags">
+                            <input max="15" [readonly]="!editable" type="text" formControlName="{{0}}" name="popups[{{i}}][hashtags][0]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+                            <input max="15" [readonly]="!editable" type="text" formControlName="{{1}}" name="popups[{{i}}][hashtags][1]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+                            <input max="15" [readonly]="!editable" type="text" formControlName="{{2}}" name="popups[{{i}}][hashtags][2]" id="event-attendees" class="p-2 outline-none border border-slate-200 rounded grow">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="flex flex-col gap-y-2" formGroupName="date">
                 <label for="start-date" class="text-mainp required">Event Date</label>
                 <div class="flex flex-col gap-y-2 max-w-[200px] sm:gap-x-2 sm:flex-row sm:items-center sm:max-w-none">
@@ -87,7 +111,7 @@
                 </div>
             </div>
             <div class="flex flex-col gap-y-2 w-full relative" formArrayName="attendees">
-                <img src="./assets/svgs/plus.svg" (click)="editable && addAttendee()"
+                <img src="./assets/svgs/plus.svg" (click)="editable && add('attendee')"
                     class="pink-icon w-4 h-4 cursor-pointer absolute top-0 right-0" alt="">
                 <label for="event-attendees" class="text-mainp optional">Event Attendees</label>
                 <div class="flex gap-x-2 items-center" *ngFor="let objective of attendees.controls; index as i">

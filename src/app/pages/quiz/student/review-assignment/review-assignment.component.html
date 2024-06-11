@@ -1,0 +1,64 @@
+<main class="min-h-[100vh] lg:min-h-0 lg:h-[100vh] bg-[#F2F2F2] p-4"  [ngClass]="{'grid': fetching || empty, 'place-items-center': fetching || empty}">
+    <div class="loader" [class.hidden]="!fetching"></div>
+    <div *ngIf="fetched && !empty" class="container mx-auto h-full">
+    
+        <section class="grid grid-rows-[auto,_1fr] grid-cols-1 h-full gap-y-4">
+            <div class="flex flex-col md:flex-row gap-4">
+                <h3 class="lg:w-3/4">{{assignment_name}}</h3>
+                <a href="/quiz" class="py-2 px-6 border rounded cursor-pointer flex max-w-fit justify-center bg-mainp text-white">
+                    Home
+                </a>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-4 overflow-hidden">
+                <div class="w-full lg:w-3/4 p-6 bg-white shadow-lg rounded-lg lg:self-start">
+                    <div [formGroup]="responses_group">
+                        @for (question of questions; track $index) {
+                            <div [hidden]="$index != current_question_id" class="space-y-4">
+                                <div class="text-sm underline underline-offset-2">Question {{$index + 1}} of {{questions.length}}</div>
+                                <div [innerHTML]="question.text"></div><!-- current question text -->
+                                <ul class="space-y-2">
+                                    @for (option of question.options; track $index) {
+                                        <li>
+                                            <label class="flex gap-2 p-2 border pointer-events-none cursor-pointer rounded-lg hover:bg-zinc-200" [ngClass]="{'bg-green-400/70': question.correct_answer_id == option.id}">
+                                                <input type="radio" name="{{question.id}}" [disabled]="true" formControlName="{{question.id}}" [value]="option.id">
+                                                <span class="">{{option.text}}</span>
+                                            </label>
+                                        </li>
+                                    }
+                                </ul><!-- current question options -->
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <button (click)="previous()" class="py-2 px-6 text-sm border rounded cursor-pointer bg-mainp text-white flex gap-2">
+                            <img src="./assets/svgs/arrow_right.svg" class="h-4 w-4 white-icon rotate-180 translate-y-[1px]" alt="">
+                            <span>Previous</span>
+                        </button>
+                        <button (click)="next()" *ngIf="!reachedLastQuestion" class="py-2 px-6 text-sm border rounded cursor-pointer bg-mainp text-white flex gap-2">
+                            <span>Next</span>
+                            <img src="./assets/svgs/arrow_right.svg" class="h-4 w-4 white-icon translate-y-[1px]" alt="">
+                        </button>
+                        <!-- <button (click)="confirmSubmit()" *ngIf="reachedLastQuestion" [ngClass]="{'bg-mainp': !submitted, 'bg-white': submitted, 'text-white': !submitted, 'text-mainp': submitted}" class="cursor-pointer py-2 px-6 text-sm border border-transparent rounded flex gap-x-4 items-center justify-center" [disabled]="submitting"><div class="submit-loader" [class.block]="submitting" [class.hidden]="!submitting"></div><div>Submit</div></button> -->
+                    </div><!-- nav buttons -->
+                </div>
+                <div class="w-full lg:w-1/4 p-4 bg-white shadow-lg rounded-lg grid grid-rows-[auto,_1fr] grid-cols-1 h-full">
+                    <h2 class="text-lg font-bold mb-4">Questions ({{questions.length}})</h2>
+                    <ul class="flex gap-2 lg:flex-col overflow-auto no-scrollbar">
+                        @for (question of questions; track $index) {
+                            <li class="w-10 h-10 shrink-0 sm:w-52 lg:w-full sm:h-auto">
+                                <button (click)="moveTo($index)" [ngClass]="{'bg-gray-300': current_question_id === $index, 'bg-gray-200': current_question_id !== $index}" class="w-full h-full sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300">
+                                    <div class="flex w-full h-full justify-center items-center sm:justify-normal sm:items-stretch sm:gap-2">
+                                        <span>{{$index + 1}}<span class="hidden sm:inline">.</span></span>
+                                        <span class="text-left hidden sm:inline-block" [innerHTML]="question.text"></span>
+                                    </div>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </section>
+        </div>
+    <app-empty-content message="{{empty}}" *ngIf="fetched && empty"></app-empty-content>
+</main>

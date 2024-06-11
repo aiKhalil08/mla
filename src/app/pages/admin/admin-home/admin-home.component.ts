@@ -6,10 +6,10 @@ import { UserInfoBoxComponent } from "../../../partials/user-info-box/user-info-
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LogoutModalComponent } from "../../../partials/logout-modal/logout-modal.component";
-import { JWTService } from 'src/app/services/jwt.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SidebarItems } from './sidebar-links';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     selector: 'app-admin-layout',
@@ -28,11 +28,11 @@ export class AdminHomeComponent {
     {text: 'Dashboard', location: '/admin', image: './assets/svgs/dashboard_icon.svg'},
   ];
 
-  constructor(private router: Router, private auth: AuthService, private admin: AdminService, private t: JWTService) {}
+  constructor(private router: Router, private auth: AuthService, private admin: AdminService, private storageService: StorageService) {}
 
   ngOnInit() {
 
-    // console.log(this.t.payload())
+    this.storageService.set('as', 'admin');
 
     if (this.auth.user().hasRole('super_admin')) this.authorized_sidebar_items = this.all_sidebar_items
     else {

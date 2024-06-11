@@ -11,6 +11,7 @@ import { SidebarNavLinkComponent } from "../../../partials/links/sidebar-nav-lin
 import { CommonModule } from '@angular/common';
 import { AdminSidebarItems, StudentSidebarItems } from './sidebar-links';
 import { AdminService } from 'src/app/services/admin.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     selector: 'app-quiz-layout',
@@ -27,24 +28,23 @@ export class QuizLayoutComponent implements OnInit {
 
   authorized_sidebar_items: SidebarItem[];
 
-  constructor(private router: Router, private auth: AuthService, private admin: AdminService, private userService: ExternalUserService, private t: JWTService) {}
+  constructor(private router: Router, private auth: AuthService, private admin: AdminService, private storageService: StorageService) {}
 
   ngOnInit() {
 
+
     // load the sidebar links based on the user role
-    if (this.auth.user().hasRole('admin') || this.auth.user().hasRole('super_admin')) {
+    if (this.storageService.get('as') == 'admin') {
       // load admin sidebar links
       this.all_sidebar_items = AdminSidebarItems;
+      this.authorized_sidebar_items = this.all_sidebar_items
 
-      if (this.auth.user().hasRole('super_admin')) this.authorized_sidebar_items = this.all_sidebar_items
-      else {
-        this.all_sidebar_items.forEach(item => {
-          if (item.permission && this.admin.hasPermission(item.permission)) this.authorized_sidebar_items.push(item);
-        });
-      }
-    } else if (this.auth.user().hasRole('external_user')) {
+    } else if (this.auth.user().hasRole('external_user') || this.storageService.get('as') == 'student') {
       // load external user sidebar links
       this.all_sidebar_items = StudentSidebarItems;
+
+      let dashboard_link = this.all_sidebar_items.find(item => item.location == '/home');
+      if (this.auth.user().hasRole('external_user')) dashboard_link.location = '/quiz';
 
       this.authorized_sidebar_items = this.all_sidebar_items;
     }

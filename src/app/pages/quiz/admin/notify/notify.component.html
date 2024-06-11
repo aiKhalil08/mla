@@ -9,17 +9,17 @@
     <form class="mt-6 flex flex-col gap-y-6 max-w-[600px]" action="" #form [formGroup]="notisGroup" (ngSubmit)="!submitted && onSubmit(form)">
         
         <div class="flex flex-col gap-y-2">
-            <div for="subject" class="text-mainp text-[15px]">Quiz Title</div>
-            <div>{{quiz_title}}</div>
+            <div for="subject" class="text-mainp text-[15px]">Assignment</div>
+            <div>{{assignment_name}}</div>
             <!-- <input type="text" name="subject" id="subject" class="p-2 text-sm outline-none border border-slate-200 rounded" formControlName="subject"> -->
         </div>
 
         <div class="shadow bg-white">
             <header class="p-4">
-                <mat-slide-toggle [formControl]="notify_all_users_control">Notify all assigned users</mat-slide-toggle>
+                <mat-slide-toggle [formControl]="notify_all_students_control">Notify all assigned users</mat-slide-toggle>
             </header>
             <hr class="h-[1px] bg-black">
-            <div class="max-h-0 opacity-100 transition-[max-height] duration-200 ease-linear overflow-hidden" [ngClass]="{'max-h-[300px]': !notify_all_users_control.value, 'opacity-0': !notify_all_users_control.value}">
+            <div class="max-h-0 opacity-100 transition-[max-height] duration-200 ease-linear overflow-hidden" [ngClass]="{'max-h-[300px]': !notify_all_students_control.value, 'opacity-0': !notify_all_students_control.value}">
                 <div class="p-4 grid place-items-center">
                     <div class="list-loader small" *ngIf="fetching_assigned_students"></div>
                     <div *ngIf="!fetching_assigned_students && fetch_error" class="text-red-500">{{fetch_error}}</div>

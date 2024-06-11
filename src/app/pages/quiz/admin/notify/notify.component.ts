@@ -10,6 +10,7 @@ import { RedirectButtonComponent } from "../../../../partials/buttons/redirect-b
 import { QuizService } from 'src/app/services/quiz.service';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
+import { AssignmentService } from 'src/app/services/assignment.service';
 
 type AssignedStudent = {first_name: string, last_name: string; email: string, company: {name: string}, id: number, selected?: boolean};
 
@@ -22,14 +23,14 @@ type AssignedStudent = {first_name: string, last_name: string; email: string, co
 })
 export class NotifyComponent implements OnInit {
 
-  notify_all_users_control: FormControl;
+  notify_all_students_control: FormControl;
   assigned_students: AssignedStudent[] = [];
   assigned_students_fetched: boolean = false;
   notisGroup: FormGroup;
   formError: string = null;
   submitted: boolean = false;
   sent: boolean = false;
-  quiz_title: string;
+  assignment_name: string;
   action_done: string = null;
   action_in_progress: string = null;
   error_in_action: string = null;
@@ -46,13 +47,13 @@ export class NotifyComponent implements OnInit {
 
   recepients: AssignedStudent[] = [];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private quizService: QuizService) {}
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private assignmentService: AssignmentService) {}
 
 
   ngOnInit(): void {
 
     this.route.queryParams.subscribe((params) => {
-      this.quiz_title = params['t'];
+      this.assignment_name = params['n'];
     });
 
 
@@ -61,9 +62,9 @@ export class NotifyComponent implements OnInit {
       body: ['', Validators.required],
     });
 
-    this.notify_all_users_control = this.fb.control(true);
+    this.notify_all_students_control = this.fb.control(true);
 
-    this.notify_all_users_control.valueChanges.subscribe(value => {
+    this.notify_all_students_control.valueChanges.subscribe(value => {
       if (value == false && !this.assigned_students_fetched ) this.fetchAssignedStudents();
       if (value == true) {
         this.recepients = [];
@@ -74,14 +75,14 @@ export class NotifyComponent implements OnInit {
 
   fetchAssignedStudents() {
     this.fetching_assigned_students = true;  
-    this.quizService.getAssignments(this.quiz_title).subscribe({
+    this.assignmentService.getStudents(this.assignment_name).subscribe({
       next: (response) => {
         this.fetching_assigned_students = false;
         if (response.status == 'failed') {
           this.fetch_error = response.message;
           return null;
         }
-        this.assigned_students = response.assignments;
+        this.assigned_students = response.students;
         this.assigned_students_fetched = true;
 
         this.search_param_control = this.fb.control('');
@@ -93,7 +94,7 @@ export class NotifyComponent implements OnInit {
 
 
   get location() {
-    return `/quiz/admin/quiz/${this.quiz_title}`;
+    return `/quiz/admin/assignment/${this.assignment_name}`;
   }
 
   get body() {
@@ -119,14 +120,14 @@ export class NotifyComponent implements OnInit {
 
     form_data.append('body', this.body.value)
 
-    if (this.notify_all_users_control.value == true) {
+    if (this.notify_all_students_control.value == true) {
       form_data.append('notify_all', JSON.stringify(true));
     } else {
       form_data.append('notify_all', JSON.stringify(false));
       form_data.append('recepient_ids', JSON.stringify(this.recepients.map(r => r.id)));
     }
 
-    this.quizService.notify(form_data, this.quiz_title).subscribe({
+    this.assignmentService.notifyStudents(form_data, this.assignment_name).subscribe({
       next: response => {
         this.submitted = false;
         this.action_in_progress = null;

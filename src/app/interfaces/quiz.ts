@@ -17,6 +17,7 @@ interface QuizWithAssignments extends QuizItem {
 
 interface Question {
     id: string;
+    correct_answer_id?: number;
     text: string;
     points: number;
     type: {name: string};
@@ -25,8 +26,14 @@ interface Question {
 }
 
 interface Option {
+    id: number;
     text: string;
-    is_correct: boolean;
+    is_correct?: boolean; // the is_correct property is only included when the question is being fetched by an admin
 }
 
-export {QuizItem, Quiz, QuizWithAssignments, Question}
+interface Response {
+    question_id: number;
+    option_id: number;
+}
+
+export {QuizItem, Quiz, QuizWithAssignments, Question, Response}

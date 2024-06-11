@@ -8,15 +8,19 @@
                 </swiper-slide>
             </swiper-container>
             <div class="absolute z-10 top-0 left-0 h-full w-full bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center md:pl-20"><!-- overlay -->
-                @for (pop of pops; track $index) {
-                    <div class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0 flex flex-col gap-y-2 items-start" [ngClass]="{'hidden': $index != present_pop, 'visible': $index == present_pop}">
-                        <div class="font-bold text-2xl" id="heading">{{pop['heading']}}</div>
-                        <div class="font-medium text-lg " id="sub-heading">{{pop['sub_heading']}}</div>
-                        <div id="hashtags" class="flex flex-wrap gap-4">@for (hashtag of pop['hashtags']; track $index) {<span>{{hashtag}}</span>}</div>
-                        <a id="button" (click)="scrollToEnrollForm()" class="bg-white text-mainp px-4 md:px-6 text-sm md:text-base cursor-pointer py-2 font-[500] border border-transparent rounded shadow-md">
+                @for (pop of event.popups; track $index) {
+                    <div id="pops-container" class="w-4/5 text-white mx-auto md:w-[500px] md:mx-0 flex flex-col gap-y-2 items-start" [ngClass]="{'hidden': $index != present_pop, 'visible': $index == present_pop}">
+                        <div class="font-bold text-2xl" id="heading">{{pop.heading}}</div>
+                        <div class="font-medium text-lg " id="sub-heading">{{pop.subheading}}</div>
+                        <div id="hashtags" class="flex flex-wrap gap-4">@for (hashtag of pop.hashtags; track $index) {<span>{{hashtag}}</span>}</div>
+                        <a id="button" (click)="scrollToEnrollForm()" class="bg-white text-mainp px-4 md:px-6 text-sm md:text-base cursor-pointer py-2 font-[500] border border-mainp rounded shadow-md">
                             Register&nbsp;Now
                         </a>
                     </div>
+                } @empty {
+                    <a (click)="scrollToEnrollForm()" class="bg-white text-mainp px-4 md:px-6 text-sm md:text-base cursor-pointer py-2 font-[500] border border-mainp rounded shadow-md self-center">
+                        Register&nbsp;Now
+                    </a>
                 }
             </div>
                  

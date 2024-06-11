@@ -19,12 +19,7 @@ export class LogoutModalComponent {
   }
 
   logout() {
-    // let type = this.auth.user().type;
     this.auth.logout();
-    // if (type != 'student') {
-    //   document.location.href = 'login/'+type;
-    //   return;
-    // }
     document.location.href = 'login'
   }
 }

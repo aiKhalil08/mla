@@ -21,8 +21,6 @@ export class AddCohortComponent implements OnInit {
   cohortGroup!: FormGroup;
   unit_folded: boolean = true;
   type_folded: boolean = true;
-  // scheduleSelected: boolean = false;
-  // imageFile: any = null;
   submitted: boolean = false;
   created: boolean = false;
   

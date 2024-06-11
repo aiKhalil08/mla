@@ -44,12 +44,6 @@ export class PopulateCohortComponent implements OnInit {
     this.get_students();
   }
 
-  // ngAfterViewInit() {
-  //   this.search_field = this.el.nativeElement.querySelector('input');
-  //   console.log(this.search_field)
-  //   this.get_students();
-  // }
-
   get students() {
     return <FormArray>this.studentsGroup.get('students');
   }

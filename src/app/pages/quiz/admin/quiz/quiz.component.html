@@ -12,11 +12,8 @@
                 </div>
                 <div class="absolute top-full bg-white shadow-2xl w-40 right-0 overflow-hidden duration-150 ease-linear" [ngClass]="{'max-h-0': actions_folded, 'max-h-[300px]': !actions_folded}">
                     <ul class="w-full border border-mainp">
-                        <li><a [routerLink]="['/quiz/admin/update-assignments']" [queryParams]="{'t': quiz.title}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Assignments</a></li>
 
                         <li><a [routerLink]="['/quiz/admin/questions']" [queryParams]="{'t': quiz.title}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Questions</a></li>
-
-                        <li><a [routerLink]="['/quiz/admin/notify']" [queryParams]="{'t': quiz.title}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Notify Students</a></li>
 
                         <li><a [routerLink]="['/quiz/admin/edit-quiz']" [queryParams]="{'t': quiz.title}" class="block py-2 px-4 cursor-pointer hover:bg-slate-200 border-b border-slate-400">Edit</a></li>
 

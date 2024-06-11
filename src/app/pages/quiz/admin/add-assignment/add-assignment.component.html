@@ -1,1 +1,68 @@
-<p>add-assignment works!</p>
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': fetching_quizzes, 'place-items-center': fetching_quizzes}">
+    <div class="loader" [class.hidden]="!fetching_quizzes"></div>
+    <div *ngIf="quizzes_fetched">
+        <app-confirm-proceed-modal *ngIf="show_confirm_submit_modal" [text]="confirm_submit_text" (canceled)="cancelSubmit()" (proceed)="proceedSubmit()"></app-confirm-proceed-modal>
+        <h3>Add Assignment</h3>
+    
+        <app-report-bar *ngIf="created" message="Assignment has been added" type="success"></app-report-bar>
+    
+        <form #form action="" class="mt-6 flex flex-col gap-y-6 max-w-[500px]" [formGroup]="assignment_group" (ngSubmit)="!submitted && onSubmit(form)" enctype="multipart/form-data">
+            <div *ngIf="formError" class="text-red-500">{{formError}}</div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="name" class="text-mainp required">Name</label>
+                <input type="text" name="name" id="name" class="p-2 outline-none border border-slate-200 rounded" formControlName="name">
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && name.invalid">{{get_error_message(name)}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full">
+                <label for="search_box" class="text-mainp required">Quiz</label>
+                <div class="relative h-[38px]"><!-- self-stretch -->
+
+                    <input autocomplete="off" id="search_box" [formControl]="search_control" placeholder="quiz title" type="text" class="p-2 cursor-pointer absolute top-0 left-0 w-full h-full rounded border border-slate-200 outline-none">
+                    <div class="options bg-white absolute rounded w-full top-full mt-1 left-0 shadow-2xl z-40" *ngIf="search_param">
+                        @for (quiz of quizzes; track quiz.title) {
+                            @if (search_param && check_match(quiz)) {
+                                <label class="block cursor-pointer p-2 hover:bg-slate-200" (click)="search_control.setValue(quiz.title); removeQuizList()">
+                                    <input type="radio" class="hidden" name="quiz_title" formControlName="quiz_title" [value]="quiz.title">
+                                    <span>{{quiz.title}}</span>
+                                </label>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && quiz_title.invalid">{{get_error_message(quiz_title)}}</div>
+                <div *ngIf="errors['quiz_title']" class="text-red-500 text-sm">{{errors['quiz_title'][0]}}</div>
+            </div>
+            <div class="flex flex-col gap-y-2 w-full ckeditor">
+                <label for="description" class="text-mainp required">Description</label>
+                <ckeditor class="text-sm" [editor]="editor" formControlName="description"></ckeditor>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && description.invalid">{{get_error_message(description)}}</div>
+            </div>
+    
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label for="duration" class="text-mainp required">Duration</label>
+                <div class="flex gap-x-2">
+                    <input type="number" min="0" name="duration" id="duration" class="p-2 outline-none border grow w-20 border-slate-200 rounded " formControlName="duration">
+                    <input type="text" value="minutes" class="p-2 outline-none border grow w-20 border-slate-200 rounded text-gray-400" disabled>
+                </div>
+                <div class="text-red-500 text-sm" *ngIf="tried_to_submit && duration.invalid">{{get_error_message(duration)}}</div>
+            </div>
+    
+            <div class="flex flex-col gap-y-2 w-full max-w-[200px]">
+                <label class="text-mainp optional">Shuffle</label>
+                <div class="space-y-3" formGroupName="shuffle">
+                    <mat-slide-toggle formControlName="questions">Shuffle questions</mat-slide-toggle>
+                    <mat-slide-toggle formControlName="options">Shuffle options</mat-slide-toggle>
+                </div>
+            </div>
+           
+            <div class="mt-4 flex items-center gap-x-8 w-full max-w-[300px]">
+                <button [disabled]="created || (tried_to_submit && form_invalid) || submitted" type="submit" [ngClass]="{'bg-mainp': !created, 'bg-mainp/70': tried_to_submit && form_invalid, 'bg-white': created, 'text-white': !created, 'text-mainp': created}" class="group relative cursor-pointer py-2 px-6 border border-transparent rounded flex gap-x-4 items-center justify-center" (click)="confirmSubmit()">
+                    <app-tooltip  message="Please rectify all errors" class="hidden" [ngClass]="{'group-hover:block': tried_to_submit && form_invalid}"></app-tooltip>
+                    <div class="submit-loader" [class.block]="submitted" [class.hidden]="!submitted"></div>
+                    <div>{{created ? 'Added' : 'Add'}}</div>
+                </button>
+                <app-redirect-button theme="white" text="{{!created ? 'Cancel' : 'Back'}}" location="/quiz/admin/assignments"></app-redirect-button>
+            </div>
+        </form>
+    </div>
+</main>

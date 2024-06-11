@@ -1,20 +1,18 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Inject, Injectable } from "@angular/core";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { XSRFService } from "../services/xsrf.service";
 import { JWTService } from "../services/jwt.service";
-import { RefreshTokenService } from "../services/refresh-token.service";
-import { Observable, map } from "rxjs";
-import { AuthService } from "../services/auth.service";
+import { Observable } from "rxjs";
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
     private protectedRoutes = [
-        /^admin/, /^student/, /^user/, /^quiz/
+        /^admin/, /^student/, /^user/, /^quiz/, /^assignment/
     ]
 
-    constructor(private xsrf: XSRFService, private jwt: JWTService, private refresh: RefreshTokenService, private auth: AuthService, @Inject('DOMAIN_NAME') private domain_name, private httpClient: HttpClient) {}
+    constructor(private xsrf: XSRFService, private jwt: JWTService,) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | null {
         // add credentials (cookies) and x-xsrf-token header to all requests

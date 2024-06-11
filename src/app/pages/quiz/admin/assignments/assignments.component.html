@@ -1,1 +1,29 @@
-<p>assignments works!</p>
+<main class="portal md:ml-[320px] bg-[#F2F2F2] p-4" [ngClass]="{'grid': !loaded, 'place-items-center': !loaded}">
+    <div class="loader" [class.hidden]="loaded"></div>
+    <div *ngIf="loaded">
+        <div class="relative flex flex-col gap-y-6">
+            <h3>All Quizzes</h3>
+            <div class="max-w-full overflow-auto">
+                <table class="text-sm border-collapse border border-slate-500 w-full">
+                    <thead class="text-mainp">
+                        <tr class="">
+                            <th class="tc">#</th>
+                            <th class="tc">Name</th>
+                            <th class="tc">Quiz</th>
+                            <th class="tc">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let assignment of assignments; index as i">
+                            <td class="tc">{{i + 1}}</td>
+                            <td class="tc">{{assignment.name}}</td>
+                            <td class="tc">{{assignment.quiz.title}}</td>
+                            <td class="tc text-center"><app-redirect-button theme="pink" text="View" location="/quiz/admin/assignment/{{assignment.name}}"></app-redirect-button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <app-redirect-button class="sm:absolute sm:top-0 sm:right-0" theme="pink" text="Add Assignment" location="/quiz/admin/add-assignment"></app-redirect-button>
+        </div>
+    </div>
+</main>

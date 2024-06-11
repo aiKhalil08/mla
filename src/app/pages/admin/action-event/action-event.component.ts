@@ -68,6 +68,16 @@ export class ActionEventComponent implements OnInit {
         this.eventGroup = this.formBuilder.group({
           name: [this.event.name, Validators.required],
           description: [this.event.description, Validators.required],
+          popups: this.formBuilder.array(
+            this.event.popups.map(popup => this.formBuilder.group({
+              heading: [popup.heading],
+              subheading: [popup.subheading],
+              hashtags: this.formBuilder.array([
+                this.formBuilder.control(popup.hashtags[0]),
+                this.formBuilder.control(popup.hashtags[1]),
+                this.formBuilder.control(popup.hashtags[2]),
+              ])
+            }))),
           date: this.formBuilder.group({
             start: [this.event.date.start, Validators.required],
             duration: [this.event.date.duration, Validators.required],
@@ -153,6 +163,10 @@ export class ActionEventComponent implements OnInit {
 
   get attendees() {
     return <FormArray>this.eventGroup.get('attendees');
+  }
+
+  get popups() {
+    return <FormArray>this.eventGroup.get('popups');
   }
 
   get unit() {
@@ -248,8 +262,25 @@ export class ActionEventComponent implements OnInit {
   }
   
 
-  addAttendee() {
-    if (this.editable) this.attendees.push(this.formBuilder.control(''));
+  add(control: string) {
+    let form_array = <FormArray>this.eventGroup.get(control+'s');
+    if (control == 'popup') {
+      form_array.push(
+        this.formBuilder.group({
+          heading: [''],
+          subheading: [''],
+          hashtags: this.formBuilder.array(
+            [this.formBuilder.control(''), this.formBuilder.control(''), this.formBuilder.control('')]
+          )
+        })
+      );
+    } else form_array.push(this.formBuilder.control(''));
+  }
+  
+  remove(control: string, index?: number) {
+    let form_array = <FormArray>this.eventGroup.get(control+'s');
+    index = index ?? form_array.length - 1;
+    form_array.removeAt(index);
   }
   
   deleteEvent(heading: string) {

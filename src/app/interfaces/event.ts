@@ -6,9 +6,16 @@ interface EventItem {
     image_url: string,
 };
 
+type Popup = {
+    heading?: string;
+    subheading?: string;
+    hashtags?: string[];
+}
+
 interface Event$ {
     name: string,
     description: string,
+    popups: Popup[],
     date: Date,
     type: 'virtual' | 'physical',
     price: Price,

@@ -14,7 +14,7 @@ export class UserService {
   
   csrfRequest() {
     let url = `http://localhost:8000/sanctum/csrf-cookie`;
-    // let url = `htt/ps://mlaapi.mitiget.com/sanctum/csrf-cookie`;
+    // let url = `https://mlaapi.mitiget.com/sanctum/csrf-cookie`;
     return this.httpClient.get(url, );
   }
   
